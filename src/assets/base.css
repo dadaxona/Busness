@@ -1,0 +1,73 @@
+.impimag{
+    background-image: url(../dist-assets/images/photo-wide-4.jpg);
+}
+.impimag2{
+    background-image: url(../dist-assets/images/photo-wide-4.jpg);
+}
+.scroltab2{
+    height: 211px;
+}
+.higgg{
+    height: 100%;
+}
+.scroltab{
+    overflow-y: scroll;
+}
+.searchbar {
+    width: 300px;
+    padding: 5px;
+}
+.usersearch{
+    width: 20%;
+    padding: 5px;
+    position: absolute;
+    right: 1%;
+}
+.tiptov{
+    width: 20%;
+    padding: 5px;
+    position: absolute;
+    right: 1%;
+}
+.yerkaz{
+    width: 20%;
+    padding: 5px;
+    position: absolute;
+    right: 1%;
+}
+.tovarsq{
+    width: 20%;
+    padding: 5px;
+    position: absolute;
+    right: 1%;
+}
+.chiqim{
+    width: 20%;
+    padding: 5px;
+    position: absolute;
+    right: 1%;
+}
+.foyda{
+    width: 20%;
+    padding: 5px;
+    position: absolute;
+    right: 1%;
+}
+.scroltab3{
+    height: 500px;
+}
+.modal-mask {
+    position: fixed;
+    z-index: 9998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    display: table;
+    transition: opacity .5s ease;
+}
+.modal-wrapper {
+    display: table-cell;
+    vertical-align: top;
+}
