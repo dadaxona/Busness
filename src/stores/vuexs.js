@@ -38,6 +38,6 @@ const store = createStore({
             return state.todo.length
           }
     },
-})
+});
 
 export default store
