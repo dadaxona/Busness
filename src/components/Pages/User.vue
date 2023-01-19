@@ -1,35 +1,104 @@
 <script>
-  import { RouterLink, RouterView } from 'vue-router'
-  import { mapState, mapGetters, mapMutations, mapActions} from 'vuex'
+  import { RouterLink } from 'vue-router'
+  import { mapState, mapGetters, mapActions} from 'vuex'
   export default {
         data() {
             return {
+              login:'',
+              token:'',
+              id: '',
+              name: '',
+              firma: '',
+              tel: '',
+              telegram: '',
+              Searvh: '',
               showModal: false,
-                // none: '',
+              showModalDel: false
             }
         },
         methods: {
           ...mapActions([
-            'increment',
-            'increment2'
-        ]),
-        increment2sdsad(){
-          const data = [
-            {"son": 10},
-          ];
-          this.increment2(data)
-        }
+            'FilterAuthAc',
+            'OriginalMethodUrlGet',
+            'OriginalMethodUrlPost'
+          ]),
+          FilterAuth(){
+            this.FilterAuthAc();
+          },
+          Localstor(){
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            this.login = auth.login,
+            this.token = auth.token
+          },
+          deletmij(id, name){
+            this.id = id,
+            this.name = name,
+            this.showModalDel = true
+          },
+          UserDelet(){
+            this.OriginalMethodUrlPost({
+              'method': 'post',
+              'url2': 'mijozdelete',
+              'url': 'mijozget',
+              'id': this.id,
+              'login': this.login,
+              'token': this.token,
+            });
+            this.Clears();
+          },
+          SaveUser(){
+            this.OriginalMethodUrlPost({
+              'method': 'post',
+              'url2': 'mijozcreate',
+              'url': 'mijozget',
+              'id': this.id,
+              'login': this.login,
+              'token': this.token,
+              'name': this.name,
+              'firma': this.firma,
+              'tel': this.tel,
+              'telegram': this.telegram,
+              'summa': 0,
+            });
+            this.Clears();
+          },
+          OriginalGet(){
+            this.OriginalMethodUrlGet({
+              'method': 'post',
+              'url': 'mijozget',
+              'login': this.login,
+              'token': this.token,
+            });
+          },
+          editmij(id, name, firma, tel, telegram){
+            this.id = id,
+            this.name = name,
+            this.firma = firma,
+            this.tel = tel,
+            this.telegram = telegram
+            this.showModal = true
+          },
+          Clears(){
+            this.id = '',
+            this.name = '',
+            this.firma = '',
+            this.tel = '',
+            this.telegram = '',
+            this.showModal = false,
+            this.showModalDel = false
         },
-        computed: {
-          ...mapState({
-            name: state => state.name,
-            count: state => state.count,
-          }),
+      },
+      computed: {
           ...mapGetters({
-            doneCount:'doneTodosCount',
+            Itemobjects: "Itemobjects",
           }),
         },
-      }
+        mounted() {
+          this.FilterAuth();
+          this.Localstor();
+          this.OriginalGet();
+        }
+    }
 </script>
 
 <template>
@@ -38,25 +107,34 @@
         <div class="card text-left">
             <div class="card-body">
                 <button class="btn btn-success mb-2" @click="showModal = true">Mijoz qo'shish</button>
-                <input type='text' id="usersearch" class="usersearch" />
+                <input type='text' id="usersearch" class="usersearch" v-model="Searvh"/>
                 <div class="table-responsive">
                   <div class="scroltab3">
                     <table class="table scroltab">
                         <thead>
                             <tr>
-                                <th><button @click="increment">incerament</button></th>
-                                <th><button @click="increment2sdsad">incerament</button></th>
                                 <th>Name</th>
-                                <th>Avatar</th>
-                                <th>Email</th>
-                                <th>Status</th>
+                                <th>Firma INN</th>
+                                <th>Tel</th>
+                                <th>Telegram</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                          {{name}}
-                          {{count}}
-                          {{doneCount}}
+                          <tr v-for="item in Itemobjects" :key="item.id">
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.firma }}</td>
+                            <td>{{ item.tel }}</td>
+                            <td>{{ item.telegram }}</td>
+                            <td>
+                              <a class="text-success mr-2" v-on:click="editmij(item.id, item.name, item.firma, item.tel, item.telegram)">
+                                <i class="nav-icon i-Pen-2 font-weight-bold"></i>
+                              </a>
+                              <a class="text-danger mr-2" v-on:click="deletmij(item.id, item.name)">
+                                <i class="nav-icon i-Close-Window font-weight-bold"></i>
+                              </a>
+                            </td>
+                          </tr>    
                         </tbody>
                     </table>
                   </div>
@@ -72,17 +150,34 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Modal User</h5>
+              <h5 class="modal-title">Create User</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" @click="showModal = false">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <p>Modal body text goes here.</p>
+              <div class="row">
+                <div class="col-md-12 form-group mb-3">
+                    <label for="firstName1">First name</label>
+                    <input class="form-control" id="firstName1" type="text" v-model="name" placeholder="Enter name">
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                    <label for="lastName1">Enter firma</label>
+                    <input class="form-control" id="lastName1" type="text" v-model="firma" placeholder="Enter firma">
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                    <label for="exampleInputEmail1">Enter tel</label>
+                    <input class="form-control" id="phone" type="text" v-model="tel" placeholder="Enter tel">
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                    <label for="phone">Enter telegram</label>
+                    <input class="form-control" id="telegram" type="text"  v-model="telegram" placeholder="Enter telegram">
+                </div>
+            </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" @click="showModal = false">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-primary" v-on:click="SaveUser">Save changes</button>
             </div>
           </div>
         </div>
@@ -90,4 +185,32 @@
     </div>
   </transition>
 </div>
+
+<div v-if="showModalDel">
+  <transition name="modal">
+    <div class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title text-danger">Delete User</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" @click="showModalDel = false">&times;</span>
+              </button>
+            </div>
+              <input type="hidden" name="" id="" v-model="id">
+              <div class="col-md-12 form-group mb-3">
+                <input class="form-control text-center" type="text"  v-model="name" disabled>
+            </div>
+            <div class="modal-body text-center">
+              <button type="button" class="btn btn-danger mx-2" @click="showModalDel = false">No</button>
+              <button type="button" class="btn btn-primary" v-on:click="UserDelet">Yes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+
 </template>

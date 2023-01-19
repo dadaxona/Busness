@@ -1,46 +1,44 @@
 <script>
     import { RouterLink } from 'vue-router'
+    import { mapState, mapGetters, mapMutations, mapActions} from 'vuex'
     export default {
         data() {
             return {
-                user: [],
-                pro: [],
-                token: '',
                 username: '',
                 login: '',
                 biznesty: '',
                 password: '',
                 repassword: '',
-                
+                token: '',                
                 answer: '',
                 items: [{ biznes: 'Dokon' }, { biznes: 'Cafe' }, { biznes: 'Ochert' }]
             }
         },
 
         methods: {
+            ...mapActions([
+                'SignUpAc',
+                'SessiondAc'
+            ]),
             SignUp() {
-                // Axios
-                this.pro = localStorage.getItem("user");
                 if (this.password == this.repassword) {
-                    this.answer = true
-                    this.token = Math.random().toString(36).slice(2);
-                    if(this.pro){
-                        this.user = JSON.parse(this.pro);
-                        this.user.push({"username": this.username , "login": this.login, "biznesty": this.biznesty, "password": this.password, "token": this.token});
-                        localStorage.setItem('user', JSON.stringify(this.user));
-                        this.Cl()
-                    } else {
-                        this.user.push({"username": this.username , "login": this.login, "biznesty": this.biznesty, "password": this.password, "token": this.token});
-                        localStorage.setItem('user', JSON.stringify( this.user));
-                        this.Cl()
-                    }
+                    this.token = Math.random().toString(36).substr(2);
+                    this.answer = true;
+                    this.SignUpAc({
+                        'method': 'post',
+                        'url': 'register',
+                        'name': this.username,
+                        'login': this.login,
+                        'biznes': this.biznesty,
+                        'password': this.password,
+                        'token': this.token
+                    });                    
+                    this.Cl()
                 } else {
                     this.answer = false
                 }
             },
-            
             Cl(){
-                localStorage.setItem('auth', JSON.stringify({"auth": true, "username": this.username, "login": this.login, "token": this.token}));
                 this.token = '';
                 this.username = '';
                 this.login = '';
@@ -48,20 +46,10 @@
                 this.password = '';
                 this.repassword = '';
                 this.answer = '';
-                this.$router.push('dash');
             },
 
             Sessiond(){
-                var auth = JSON.parse(localStorage.getItem('auth'));
-                if (auth) {
-                    if (auth.auth === true) {
-                        this.$router.push('dash');
-                    } else {
-
-                    }
-                } else {
-                    
-                }
+                this.SessiondAc();
             }
             
         },

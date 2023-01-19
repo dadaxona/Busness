@@ -1,43 +1,29 @@
 <script>
-    import { RouterLink, RouterView } from 'vue-router'
-
+    import { RouterLink } from 'vue-router'
+    import { mapState, mapGetters, mapMutations, mapActions} from 'vuex'
     export default {
         data() {
             return {
-                auth: '',
-                // none: '',
+
             }
         },
 
         methods: {
+            ...mapActions([
+            'FilterAuthAc'
+            ]),   
             FilterAuth(){
-                const auth = JSON.parse(localStorage.getItem('auth'));
-                if (auth) {
-                    if (auth.auth === true) {
-                        this.user = JSON.parse(localStorage.getItem("user"));
-                        const us = this.user.find(logine => { 
-                            if (logine.login == auth.login && logine.token == auth.token) {
-                               return logine;
-                            } else {}
-                        });
-                        if (us) {
-                            this.auth = us.username;
-                            // this.$router.push('/dash');
-                        } else {
-                            localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": ''}));
-                            this.$router.push('/login');
-                        }
-                    } else {
-                        this.$router.push('/login');
-                    }
-                } else {
-                    this.$router.push('/login');
-                }
+                this.FilterAuthAc();
             },
             Logaut_user(){
                 localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": ''}));
-                this.FilterAuth()
+                this.FilterAuth();
             }
+        },
+        computed: {
+          ...mapGetters({
+            auth:'authtenticat',
+          }),
         },
         mounted() {
             this.FilterAuth()
@@ -195,7 +181,7 @@
                             <div class="dropdown-header">
                                 <i class="i-Lock-User mr-1"></i> {{auth}}
                             </div>
-                            <a class="dropdown-item">Account settings</a>
+                            <RouterLink class="dropdown-item" to="/setting">Account settings</RouterLink>
                             <a class="dropdown-item">Billing history</a>
                             <a class="dropdown-item" v-on:click="Logaut_user">Sign out</a>
                         </div>

@@ -11,6 +11,7 @@ import Sqlar from '../components/Pages/Sqlar.vue'
 import Tovartip from '../components/Pages/Tovartip.vue'
 import User from '../components/Pages/User.vue'
 import Yetkazuvchi from '../components/Pages/Yetkazuvchi.vue'
+import Setting from '../components/Pages/Setting.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,9 +35,14 @@ const router = createRouter({
           component: Statistika
         },
         {
+          path: '/setting',
+          name: 'setting',
+          component: Setting
+        },
+        {
           path: '/treding',
           name: 'treding',
-          component: Savdo       
+          component: Savdo
         },
         {
           path: '/tovartip',

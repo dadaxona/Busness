@@ -1,43 +1,45 @@
 <script>
     import { RouterLink } from 'vue-router'
-
+    import axios from 'axios'
+    import { mapState, mapGetters, mapMutations, mapActions} from 'vuex'
     export default {
         data() {
             return {
-                user: [],
                 login: '',
                 password: '',
                 filtor: '',
             }
         },
         methods: {
+            ...mapActions([
+                'SignUpAc',
+                'SessiondAc'
+            ]),
             Autend(){
-                // Axios
-                this.user = JSON.parse(localStorage.getItem("user"));
-                var data = this.user.find(logine => logine.login == this.login && logine.password == this.password);
-
-                if (data) {
-                    localStorage.setItem('auth', JSON.stringify({"auth": true, "username": data.username, "login": data.login, "token": data.token}));
-                    this.Sessiond();                   
-                    this.filtor = true;
-                    this.login = '';
-                    this.password = '';
-                } else {
-                    this.filtor = false;
-                }
+            this.SignUpAc({
+                'method': 'post',
+                'url': 'loginauth',
+                'login': this.login,
+                'password': this.password
+            });
+            
+                // const url = "http://26.20.205.206/api/test";
+                // const data = {
+                //     name: "KFC", 
+                //     address: "Bagat", 
+                //     phoneNumber: "+9998995909555",
+                // };
+                // const headers = new Headers();
+                // headers.append('Content-Type', 'application/json');
+                // headers.append('Accept', 'application/json');
+                // headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZXN0YXVyYW50Iiwicm9sZXMiOlt7Im5hbWUiOiJST0xFX1JFU1RBVVJBTlQifV0sImlhdCI6MTY3MzYyNzg1NCwiZXhwIjoxNjczNjQ5NDU0fQ.Uppc9cdgaHnWXQDkl5CHyhJ5WxWw_1t8P1jdYhAJtJc")
+                // axios.post(url, data, headers).then(data => {
+                //     console.log(data.data)
+                // })
             },
 
             Sessiond(){
-                var auth = JSON.parse(localStorage.getItem('auth'));
-                if (auth) {
-                    if (auth.auth === true) {
-                        this.$router.push('dash');
-                    } else {
-                        
-                    }                    
-                } else {
-                    
-                }
+                this.SessiondAc();
             }
         },
         mounted() {
