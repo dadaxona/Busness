@@ -124,7 +124,7 @@ const store = createStore({
                 state.jami = jami.summa;
             } else {
                 state.objects5 = local;
-                state.jami = 0;                
+                state.jami = 0;
             }
             if (local.length > 0) {
                 state.togl = 1;
