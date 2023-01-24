@@ -198,6 +198,9 @@
                     <li class="nav-item"><RouterLink class="nav-item-hold" to="treding"><i class="nav-icon i-Library"></i><span class="nav-text">Savdo</span></RouterLink>
                         
                     </li>
+                    <li class="nav-item"><RouterLink class="nav-item-hold" to="valyuta"><i class="nav-icon i-Library"></i><span class="nav-text">Valyuta</span></RouterLink>
+                        
+                    </li>
                     <li class="nav-item"><RouterLink class="nav-item-hold" to="user"><i class="nav-icon i-Suitcase"></i><span class="nav-text">Mijoz</span></RouterLink>
                         
                     </li>

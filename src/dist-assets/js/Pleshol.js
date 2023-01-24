@@ -68,6 +68,43 @@ function run2() {
     printPhrases2(phrases, $('#usersearch'));
 }
 // 3
+
+function addToPlaceholder3val(toAdd, el) {
+    el.attr('placeholder', el.attr('placeholder') + toAdd);
+    return new Promise(resolve => setTimeout(resolve, 100));
+}
+function clearPlaceholder3val(el) {
+    el.attr("placeholder", "");
+}
+function printPhrase223val(phrase, el) {
+    return new Promise(resolve => {
+        clearPlaceholder3val(el);
+        let letters = phrase.split('');
+        letters.reduce(
+            (promise, letter, index) => promise.then(_ => {
+                if (index === letters.length - 1) {
+                    setTimeout(resolve, 1000);
+                }
+                return addToPlaceholder3val(letter, el);
+            }),
+            Promise.resolve()
+        );
+    });
+}
+function printPhrases3val(phrases, el) {
+    phrases.reduce(
+        (promise, phrase) => promise.then(_ => printPhrase223val(phrase, el)), 
+        Promise.resolve()
+    );
+}
+function run3val() {
+    let phrases = [
+        "Search Valyuta",
+    ];
+    printPhrases3val(phrases, $('#valyuta'));
+}
+// valyuta ^^^^
+
 function addToPlaceholder3(toAdd, el) {
     el.attr('placeholder', el.attr('placeholder') + toAdd);
     return new Promise(resolve => setTimeout(resolve, 100));
@@ -247,6 +284,7 @@ setInterval(() => {
   run();
   run2();
   run3();
+  run3val();
   run4();
   run5();
   run6();

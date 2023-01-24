@@ -10,6 +10,7 @@
               idtip: '',
               nametip: '',
               showModal: false,
+              showModalDal: false
             }
         },
         methods: {
@@ -51,10 +52,27 @@
             });
             this.Clears();
           },
+          delettip(id, name){
+            this.idtip = id,
+            this.nametip = name,
+            this.showModalDal = true
+          },
+          TipsDelet(){
+            this.OriginalMethodUrlPost({
+              'method': 'post',
+              'url2': 'tipsdelete',
+              'url': 'gettip',
+              'id': this.idtip,
+              'login': this.login,
+              'token': this.token,
+            });
+            this.Clears();
+          },
           Clears(){
             this.idtip = '',
             this.nametip = '',
-            this.showModal = false
+            this.showModal = false,
+            this.showModalDal = false
           },
         },
         computed: {
@@ -93,7 +111,7 @@
                               <a class="text-success mr-2" v-on:click="edittip(item.id, item.name)">
                                 <i class="nav-icon i-Pen-2 font-weight-bold"></i>
                               </a>
-                              <a class="text-danger mr-2" v-on:click="delettip(item.id)">
+                              <a class="text-danger mr-2" v-on:click="delettip(item.id, item.name)">
                                 <i class="nav-icon i-Close-Window font-weight-bold"></i>
                               </a>
                             </td>
@@ -129,6 +147,34 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" v-on:click="showModal = false">Close</button>
               <button type="button" class="btn btn-primary" v-on:click="CreateTip">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+
+
+<div v-if="showModalDal">
+  <transition name="modal">
+    <div class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title text-danger">Delete Tip</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" @click="showModalDal = false">&times;</span>
+              </button>
+            </div>
+              <input type="hidden" name="" id="" v-model="id">
+              <div class="col-md-12 form-group mb-3">
+                <input class="form-control text-center" type="text"  v-model="nametip" disabled>
+            </div>
+            <div class="modal-body text-center">
+              <button type="button" class="btn btn-danger mx-2" @click="showModalDal = false">No</button>
+              <button type="button" class="btn btn-primary" v-on:click="TipsDelet">Yes</button>
             </div>
           </div>
         </div>

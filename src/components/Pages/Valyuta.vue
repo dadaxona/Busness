@@ -1,5 +1,5 @@
 <script>
-  import { RouterLink } from 'vue-router'
+  import { RouterLink, RouterView } from 'vue-router'
   import { mapState, mapGetters, mapActions} from 'vuex'
   export default {
         data() {
@@ -30,8 +30,8 @@
           CreateYetkazuvchi(){
             this.OriginalMethodUrlPost({
               'method': 'post',
-              'url2': 'post_update_yetkaz',
-              'url': 'getyetkaz',
+              'url2': 'post_update_valyuta',
+              'url': 'getvalyuta',
               'id': this.id,
               'name': this.name,
               'summa': this.summa,
@@ -49,7 +49,7 @@
           getTip(){
             this.OriginalMethodUrlGet({
               'method': 'post',
-              'url': 'getyetkaz',
+              'url': 'getvalyuta',
               'login': this.login,
               'token': this.token
             });
@@ -62,8 +62,8 @@
           YetkazDelet(){
             this.OriginalMethodUrlPost({
               'method': 'post',
-              'url2': 'yetkaz_delete',
-              'url': 'getyetkaz',
+              'url2': 'valyuta_delete',
+              'url': 'getvalyuta',
               'id': this.id,
               'login': this.login,
               'token': this.token,
@@ -96,8 +96,8 @@
     <div class="col-md-12 mb-3">
         <div class="card text-left">
             <div class="card-body">
-                <button class="btn btn-success mb-2" @click="showModal = true">Yetkazuvchi qo`shish</button>
-                <input type='text' id="yerkaz" class="yerkaz" />
+                <button class="btn btn-success mb-2" @click="showModal = true">Valyuta qo`shish</button>
+                <input type='text' id="valyuta" class="valyuta" />
                 <div class="table-responsive">
                   <div class="scroltab3">
                     <table class="table scroltab">
@@ -136,7 +136,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Modal Yetkazuvchi</h5>
+              <h5 class="modal-title">Modal Valyuta</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" v-on:click="showModal = false">&times;</span>
               </button>
@@ -144,8 +144,8 @@
             <div class="modal-body">
               <div class="row">
                 <div class="col-md-12 form-group mb-3">
-                    <label for="firstName1">Name Yetkazuvchi</label>
-                    <input class="form-control" id="firstName1" type="text" v-model="name" placeholder="Yetkazuvchi name">
+                    <label for="firstName1">Name Valyuta</label>
+                    <input class="form-control" id="firstName1" type="text" v-model="name" placeholder="Valyuta name">
                 </div>
                 <div class="col-md-12 form-group mb-3">
                   <label for="firstName1">Summa</label>
@@ -171,7 +171,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title text-danger">Delete Yetkazuvchi</h5>
+              <h5 class="modal-title text-danger">Delete Valyuta</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" @click="showModalDel = false">&times;</span>
               </button>

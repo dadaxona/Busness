@@ -12,6 +12,7 @@ import Tovartip from '../components/Pages/Tovartip.vue'
 import User from '../components/Pages/User.vue'
 import Yetkazuvchi from '../components/Pages/Yetkazuvchi.vue'
 import Setting from '../components/Pages/Setting.vue'
+import Valyuta from '../components/Pages/Valyuta.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,6 +44,11 @@ const router = createRouter({
           path: '/treding',
           name: 'treding',
           component: Savdo
+        },
+        {
+          path: '/valyuta',
+          name: 'valyuta',
+          component: Valyuta
         },
         {
           path: '/tovartip',
