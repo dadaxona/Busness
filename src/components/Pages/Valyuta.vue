@@ -9,6 +9,7 @@
               id: '',
               name: '',
               summa: '',
+              valy: '',
               login:'',
               token:'',
             }
@@ -78,6 +79,17 @@
             this.showModalDel = false
           },
         },
+        watch: {
+          valy(row){
+            this.OriginalMethodUrlGet({
+              'method': 'post',
+              'url': 'getvalyuta',
+              'search': row,
+              'login': this.login,
+              'token': this.token
+            });
+          }
+        },
         computed: {
           ...mapGetters({
             Itemobjects: 'Itemobjects'
@@ -97,7 +109,7 @@
         <div class="card text-left">
             <div class="card-body">
                 <button class="btn btn-success mb-2" @click="showModal = true">Valyuta qo`shish</button>
-                <input type='text' id="valyuta" class="valyuta" />
+                <input type='text' id="valyuta" class="valyuta" v-model="valy"/>
                 <div class="table-responsive">
                   <div class="scroltab3">
                     <table class="table scroltab">

@@ -9,6 +9,7 @@
               userdatatip: '',
               idtip: '',
               nametip: '',
+              tiptov: '',
               showModal: false,
               showModalDal: false
             }
@@ -75,6 +76,17 @@
             this.showModalDal = false
           },
         },
+        watch: {
+          tiptov(row){
+            this.OriginalMethodUrlGet({
+              'method': 'post',
+              'url': 'gettip',
+              'search': row,
+              'login': this.login,
+              'token': this.token
+            });
+          }
+        },
         computed: {
           ...mapGetters({
             Itemobjects: 'Itemobjects'
@@ -94,7 +106,7 @@
         <div class="card text-left">
             <div class="card-body">
                 <button class="btn btn-success mb-2" v-on:click="showModal = true">Tip qo`shish</button>
-                <input type='text' id="tiptov" class="tiptov" />
+                <input type='text' id="tiptov" class="tiptov" v-model="tiptov" />
                 <div class="table-responsive">
                   <div class="scroltab3">
                     <table class="table scroltab">

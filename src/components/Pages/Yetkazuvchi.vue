@@ -9,6 +9,7 @@
               id: '',
               name: '',
               summa: '',
+              yerkazse: '',
               login:'',
               token:'',
             }
@@ -78,6 +79,17 @@
             this.showModalDel = false
           },
         },
+        watch: {
+          yerkazse(row){
+            this.OriginalMethodUrlGet({
+              'method': 'post',
+              'url': 'getyetkaz',
+              'search': row,
+              'login': this.login,
+              'token': this.token
+            });
+          }
+        },
         computed: {
           ...mapGetters({
             Itemobjects: 'Itemobjects'
@@ -97,7 +109,7 @@
         <div class="card text-left">
             <div class="card-body">
                 <button class="btn btn-success mb-2" @click="showModal = true">Yetkazuvchi qo`shish</button>
-                <input type='text' id="yerkaz" class="yerkaz" />
+                <input type='text' id="yerkaz" class="yerkaz" v-model="yerkazse" />
                 <div class="table-responsive">
                   <div class="scroltab3">
                     <table class="table scroltab">

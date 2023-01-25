@@ -16,6 +16,7 @@
               sotilish:'',
               sotilish2:'',
               valyuta:'',
+              tovarsqlad: '',
               login:'',
               token:'',
             }
@@ -106,6 +107,17 @@
             this.showModalDel = false
           },
         },
+        watch: {
+          tovarsqlad(row){
+            this.SqladDB({
+              'method': 'post',
+              'url': 'getdb',
+              'search': row,
+              'login': this.login,
+              'token': this.token
+            });
+          }
+        },
         computed: {
           ...mapGetters({
             objects3: 'objects3',
@@ -128,7 +140,7 @@
         <div class="card text-left">
             <div class="card-body">
                 <button class="btn btn-success mb-2" @click="showModal = true">Tovar qo`shish</button>
-                <input type='text' id="tovarsq" class="tovarsq" />
+                <input type='text' id="tovarsq" class="tovarsq" v-model="tovarsqlad" />
                 <div class="table-responsive">
                   <div class="scroltab3">
                     <table class="table scroltab">

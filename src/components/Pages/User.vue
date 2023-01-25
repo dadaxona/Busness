@@ -88,6 +88,17 @@
             this.showModalDel = false
         },
       },
+      watch: {
+        Searvh(row){
+          this.OriginalMethodUrlGet({
+            'method': 'post',
+            'url': 'mijozget',
+            'search': row,
+            'login': this.login,
+            'token': this.token
+          });
+        }
+      },
       computed: {
           ...mapGetters({
             Itemobjects: "Itemobjects",

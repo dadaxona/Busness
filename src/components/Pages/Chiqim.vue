@@ -10,6 +10,7 @@
               qayerga: '',
               sabap: '',
               summa: '',
+              chiqimse: '',
               login:'',
               token:'',
             }
@@ -81,6 +82,17 @@
             this.showModalDel = false
           },
         },
+        watch: {
+          chiqimse(row){
+            this.OriginalMethodUrlGet({
+              'method': 'post',
+              'url': 'chiqim_get',
+              'search': row,
+              'login': this.login,
+              'token': this.token
+            });
+          }
+        },
         computed: {
           ...mapGetters({
             Itemobjects: 'Itemobjects'
@@ -100,7 +112,7 @@
         <div class="card text-left">
             <div class="card-body">
                 <button class="btn btn-success mb-2" @click="showModal = true">Chiqim qo`shish</button>
-                <input type='text' id="chiqim" class="chiqim" />
+                <input type='text' id="chiqim" class="chiqim" v-model="chiqimse" />
                 <div class="table-responsive">
                   <div class="scroltab3">
                     <table class="table scroltab">
