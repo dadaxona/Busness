@@ -12,6 +12,7 @@ const store = createStore({
         objects3: [],
         objects4: [],
         objects5: [],
+        objects6: [],
         status: '',
         jami: '',
         togl: ''
@@ -89,7 +90,6 @@ const store = createStore({
                 state.objects2 = data.data.data2;
                 state.objects3 = data.data.data3;
                 state.objects4 = data.data.data4;
-                console.log(data.data.data4)
             });
         },
         Live_Search_Sqlad_Mut: (state, request) => {
@@ -100,6 +100,7 @@ const store = createStore({
             }).then(data => {
                 state.Items = data.data.data2;
                 state.objects4 = data.data.data4;
+                state.objects6 = data.data.data5;
             });
         },
         Delete_Sotuv_Mut: (state, request) => {
@@ -122,16 +123,13 @@ const store = createStore({
                 localStorage.setItem('Jami', JSON.stringify({'summa': jav}));
                 const jami = JSON.parse(localStorage.getItem('Jami'));
                 state.jami = jami.summa;
+                state.togl = 1;
             } else {
                 state.objects5 = local;
                 state.jami = 0;
-            }
-            if (local.length > 0) {
-                state.togl = 1;
-            } else {
                 state.togl = '';
             }
-        }
+        },
     },
     actions: {
         FilterAuthAc (context) {
@@ -277,6 +275,22 @@ const store = createStore({
             }
             localStorage.setItem('Kurs',  JSON.stringify({'u': request.kurs1}));
             context.commit('Live_Search_Sotuv_Mut');
+        },
+        Oplata_Start_Action: (context, request) => {
+            axios({
+                method: request.method,
+                url: 'http://localhost:1122/api/' + request.url2,
+                data: request
+            }).then(data => {
+                if (data.data == 200) {
+                    localStorage.removeItem('Jami');
+                    localStorage.removeItem('sotuv');
+                    context.commit('Live_Search_Sotuv_Mut');
+                    context.commit('Live_Search_Sqlad_Mut', request)
+                } else {
+                    
+                }
+            });
         }
     },
     getters: {
@@ -291,6 +305,9 @@ const store = createStore({
         },
         JamiSumma(state){
             return new Intl.NumberFormat().format(state.jami);
+        },
+        JamiSumma2(state){
+            return state.jami;
         },
         Itemobjects (state) {
             return state.objects;
@@ -312,6 +329,9 @@ const store = createStore({
         },
         tog(state){
             return state.togl;
+        },
+        MijozSelect(state){
+            return state.objects6;
         }
     },
 });
