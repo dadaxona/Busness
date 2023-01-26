@@ -23,6 +23,7 @@
         computed: {
           ...mapGetters({
             auth:'authtenticat',
+            objectauth: 'objectauth'
           }),
         },
         mounted() {
@@ -235,8 +236,8 @@
                         <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                             <div class="card-body text-center"><i class="i-Add-User"></i>
                                 <div class="content">
-                                    <p class="text-muted mt-2 mb-0">New Leads</p>
-                                    <p class="text-primary text-24 line-height-1 mb-2">205</p>
+                                    <p class="text-muted mt-2 mb-0">Clent</p>
+                                    <p class="text-primary text-24 line-height-1 mb-2">{{ objectauth.mijoz }}</p>
                                 </div>
                             </div>
                         </div>
@@ -245,8 +246,8 @@
                         <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                             <div class="card-body text-center"><i class="i-Financial"></i>
                                 <div class="content">
-                                    <p class="text-muted mt-2 mb-0">Sales</p>
-                                    <p class="text-primary text-24 line-height-1 mb-2">$4021</p>
+                                    <p class="text-muted mt-2 mb-0">Savdo</p>
+                                    <p class="text-primary text-24 line-height-1 mb-2">$ {{ objectauth.savdo }}</p>
                                 </div>
                             </div>
                         </div>
@@ -255,8 +256,8 @@
                         <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                             <div class="card-body text-center"><i class="i-Checkout-Basket"></i>
                                 <div class="content">
-                                    <p class="text-muted mt-2 mb-0">Orders</p>
-                                    <p class="text-primary text-24 line-height-1 mb-2">80</p>
+                                    <p class="text-muted mt-2 mb-0">Zaqaz</p>
+                                    <p class="text-primary text-24 line-height-1 mb-2">{{ objectauth.zaqaz }}</p>
                                 </div>
                             </div>
                         </div>
@@ -265,8 +266,8 @@
                         <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                             <div class="card-body text-center"><i class="i-Money-2"></i>
                                 <div class="content">
-                                    <p class="text-muted mt-2 mb-0">Expense</p>
-                                    <p class="text-primary text-24 line-height-1 mb-2">$1200</p>
+                                    <p class="text-muted mt-2 mb-0">Qardorlar</p>
+                                    <p class="text-primary text-24 line-height-1 mb-2">$ {{ objectauth.qarz }}</p>
                                 </div>
                             </div>
                         </div>

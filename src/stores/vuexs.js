@@ -3,7 +3,12 @@ import { createStore } from 'vuex'
 
 const store = createStore({
     state: {
-        count: 0,
+        objectauth: {
+            mijoz: '',
+            savdo: '',
+            zaqaz: '',
+            qarz: '',
+        },
         auth: '',
         Items: [],
         objects: [],
@@ -32,8 +37,11 @@ const store = createStore({
                         }
                     }).then(data => {
                         if (data.data) {
-                            if (data.data.login == auth.login && data.data.token == auth.token) {
+                            if (data.data.user.login == auth.login && data.data.user.token == auth.token) {
                                 state.auth = auth.login;
+                                state.objectauth.mijoz = data.data.mijoz;
+                                state.objectauth.savdo = data.data.savdo;
+                                state.objectauth.qarz = data.data.karz;
                             } else {
                                 localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": ''}));
                                 window.location.href = 'login';
@@ -295,6 +303,7 @@ const store = createStore({
                     localStorage.removeItem('sotuv');
                     context.commit('Live_Search_Sotuv_Mut');
                     context.commit('Live_Search_Sqlad_Mut', request)
+                    context.commit('FilterAuthMut')
                 } else {
                     
                 }
@@ -304,6 +313,9 @@ const store = createStore({
     getters: {
         authtenticat (state) {
             return state.auth;
+        },
+        objectauth(state){
+            return state.objectauth;
         },
         Items (state) {
             return state.Items;
