@@ -107,6 +107,16 @@ const store = createStore({
             const local = JSON.parse(localStorage.getItem('sotuv'));
             local.splice(request.i, 1);
             localStorage.setItem('sotuv', JSON.stringify(local));
+            const local2 = JSON.parse(localStorage.getItem('sotuv'));
+            if (local2) {
+                if (local2.length > 0) {
+                    state.togl = 1;
+                } else {
+                    state.togl = '';
+                }
+            } else {
+                state.togl = '';
+            }
         },
         Live_Search_Sotuv_Mut: (state) => {
             var summa = 0;
@@ -123,7 +133,7 @@ const store = createStore({
                 localStorage.setItem('Jami', JSON.stringify({'summa': jav}));
                 const jami = JSON.parse(localStorage.getItem('Jami'));
                 state.jami = jami.summa;
-                state.togl = 1;
+                if (local.length > 0) state.togl = 1;
             } else {
                 state.objects5 = local;
                 state.jami = 0;
@@ -193,10 +203,8 @@ const store = createStore({
             }
             context.commit('Live_Search_Sotuv_Mut');
         },
-        Delete_Sotuv_Ac: (context, request) => {
-            const local = JSON.parse(localStorage.getItem('sotuv'));
-            local.splice(request.id, 1);
-            localStorage.setItem('sotuv', JSON.stringify(local));
+        Delete_Sotuv_Ac: (context, request) => {    
+            context.commit('Delete_Sotuv_Mut', request);
             context.commit('Live_Search_Sotuv_Mut');
         },
         Plus_Minus_Ac: (context, request) => {

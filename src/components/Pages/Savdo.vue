@@ -508,7 +508,7 @@
       </div>
     </transition>
   </div>
-  <div v-if="ModalOplate">
+  <!-- <div v-if="ModalOplate">
     <transition name="modal">
       <div class="modal-mask">
         <div class="modal-wrapper">
@@ -609,5 +609,99 @@
         </div>
       </div>
     </transition>
+  </div> -->
+  <div v-if="ModalOplate" class="modal_okn">
+    <div class="modal_okna">
+      <div class="modal-header">
+        <h5 class="modal-title">Sotish Oynasi</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" v-on:click="ModalOplate = false">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6 form-group mb-3">
+              <label for="firstName1">Jami Summa</label>
+              <input class="form-control" type="text" v-model="JamiSumma" disabled>
+          </div>
+          <div class="col-md-6 form-group mb-3">
+            <label for="firstName1">Mijozni tanlang</label>
+            <select class="form-control" name="" id="" v-model="mijozs">
+              <option value="">--Tanlang--</option>
+              <option v-for="itema in MijozSelect" :value="itema.id">{{ itema.name }}</option>
+            </select>
+          </div>
+          <div class="col-md-12 form-group mb-3">
+            <label for="firstName1">Naqt</label>
+            <div class="row">
+              <div class="col-10">
+                <input class="form-control" type="text" v-on:keyup="naqt1(naqt)" v-model="naqt">
+              </div>
+              <div class="col-1">
+                <button class="btn btn-success" v-on:click="naqinp">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor" class="bi bi-unindent" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M13 8a.5.5 0 0 0-.5-.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H12.5A.5.5 0 0 0 13 8Z"/>
+                    <path fill-rule="evenodd" d="M3.5 4a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 1 0v-7a.5.5 0 0 0-.5-.5Z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 form-group mb-3">
+            <label for="firstName1">Karta</label>
+            <div class="row">
+              <div class="col-10">
+                <input class="form-control" type="text" v-on:keyup="plastik1(plastik)" v-model="plastik">
+              </div>
+              <div class="col-1">
+                <button class="btn btn-success" v-on:click="plasinp">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor" class="bi bi-unindent" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M13 8a.5.5 0 0 0-.5-.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H12.5A.5.5 0 0 0 13 8Z"/>
+                    <path fill-rule="evenodd" d="M3.5 4a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 1 0v-7a.5.5 0 0 0-.5-.5Z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 form-group mb-3">
+            <label for="firstName1">Bank</label>
+            <div class="row">
+              <div class="col-10">
+                <input class="form-control" type="text" v-on:keyup="bank1(bank)" v-model="bank">
+              </div>
+              <div class="col-1">
+                <button class="btn btn-success" v-on:click="bankinp">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor" class="bi bi-unindent" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M13 8a.5.5 0 0 0-.5-.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H12.5A.5.5 0 0 0 13 8Z"/>
+                    <path fill-rule="evenodd" d="M3.5 4a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 1 0v-7a.5.5 0 0 0-.5-.5Z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 form-group mb-3">
+            <label>Karz</label>
+            <input class="form-control" type="text" v-model="karz" disabled>
+          </div>
+          <div v-if="karz == 0">
+          </div>
+          <div v-else class="col-md-12 form-group mb-3">
+            <label class="text-danger">Data Crok</label>
+            <input class="form-control border-danger" type="date" v-model="srok">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 border-top">
+        <div v-if="karz == 0" class="mt-4 mb-4">
+          <button type="button" class="btn btn-success p-3 widt" v-on:click="OplataStart">Save changes</button>
+        </div>
+        <div v-else-if="srok && mijozs" class="mt-4 mb-4">
+          <button type="button" class="btn btn-success p-3 widt" v-on:click="OplataStart">Save changes</button>
+        </div>
+        <div v-else class="mt-4 mb-4">
+          <button type="button" class="btn btn-light p-3 widt">Save changes</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
