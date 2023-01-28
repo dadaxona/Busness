@@ -10,7 +10,7 @@
 
         methods: {
             ...mapActions([
-            'FilterAuthAc'
+                'FilterAuthAc'
             ]),   
             FilterAuth(){
                 this.FilterAuthAc();

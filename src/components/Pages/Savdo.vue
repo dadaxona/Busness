@@ -23,6 +23,9 @@
               bank: '',
               karz: '',
               srok: '',
+              chesxbox: '',
+              Kamentariya: '',
+              Kamentariya2: '',
               showModalEditor: false,
               ModalOplate: false
             }
@@ -98,16 +101,16 @@
                 }
               }
               this.Sotuvga_Olish_Action({
-              'id': obj.id,
-              'name': obj.name,
-              'soni': 1,
-              'soni2': obj.soni,
-              'chegirma': 0,
-              'sotilish': sum,
-              'jami': sum,
-              'summa': obj.summa,
-              'valyuta': obj.valyuta,
-            });
+                'id': obj.id,
+                'name': obj.name,
+                'soni': 1,
+                'soni2': obj.soni,
+                'chegirma': 0,
+                'sotilish': sum,
+                'jami': sum,
+                'summa': obj.summa,
+                'valyuta': obj.valyuta,
+              });
             } else {
               
             }
@@ -161,8 +164,18 @@
             this.bank = '',
             this.karz = '',
             this.srok = '',
+            this.chesxbox = '',
+            this.Kamentariya = '',
+            this.Kamentariya2 = '',
             this.showModalEditor = false,
             this.ModalOplate = false
+          },
+          chesx(){
+            if (this.chesxbox === 1) {
+              this.chesxbox = 0;
+            } else {
+              this.chesxbox = 1;
+            }
           },
           sonival(val){
             if (val > this.soni2) {
@@ -249,21 +262,33 @@
             this.bank = this.JamiSumma2;
           },
           OplataStart(){
-            this.Oplata_Start_Action({
-              'method': 'post',
-              'url2': 'oplata',
-              'url': 'live_search',
-              'jamisum': this.JamiSumma2,
-              'mijozId': this.mijozs,
-              'naqt': this.naqt,
-              'plastik': this.plastik,
-              'bank': this.bank,
-              'karz': this.karz,
-              'srok': this.srok,
-              'login': this.login,
-              'token': this.token,
-              'local': JSON.parse(localStorage.getItem('sotuv'))
-            });
+            if (this.chesxbox == 1 && this.Kamentariya) {
+              this.Oplata_Start_Action({
+                'method': 'post',
+                'url2': 'karzina',
+                'url': 'live_search',
+                'name': this.Kamentariya,
+                'login': this.login,
+                'token': this.token,
+                'local': JSON.parse(localStorage.getItem('sotuv'))
+              }); 
+            } else {
+              this.Oplata_Start_Action({
+                'method': 'post',
+                'url2': 'oplata',
+                'url': 'live_search',
+                'jamisum': this.JamiSumma2,
+                'mijozId': this.mijozs,
+                'naqt': this.naqt,
+                'plastik': this.plastik,
+                'bank': this.bank,
+                'karz': this.karz,
+                'srok': this.srok,
+                'login': this.login,
+                'token': this.token,
+                'local': JSON.parse(localStorage.getItem('sotuv'))
+              });              
+            }
             this.Clears();
           }
         },
@@ -276,6 +301,13 @@
               'login': this.login,
               'token': this.token
             });
+          },
+          Kamentariya(r){
+            if (r) {
+              this.Kamentariya2 = 1;
+            } else {
+             this.Kamentariya2 = 0;
+            }
           }
         },
         computed: {
@@ -683,6 +715,17 @@
             <label>Karz</label>
             <input class="form-control" type="text" v-model="karz" disabled>
           </div>
+          <div class="col-md-12 form-group mb-3">
+            <label>Zaqazga olish</label>
+            <div class="row">
+              <div class="col-2 mx-4">
+                <input class="form-check-input" type="checkbox" v-on:click="chesx">
+              </div>
+              <div class="col-9">
+                <input class="form-control" type="text" v-model="Kamentariya" placeholder="Kamentariya">
+              </div>
+            </div>
+          </div>
           <div v-if="karz == 0">
           </div>
           <div v-else class="col-md-12 form-group mb-3">
@@ -693,6 +736,9 @@
       </div>
       <div class="col-md-12 border-top">
         <div v-if="karz == 0" class="mt-4 mb-4">
+          <button type="button" class="btn btn-success p-3 widt" v-on:click="OplataStart">Save changes</button>
+        </div>
+        <div v-else-if="chesxbox == 1 && Kamentariya2" class="mt-4 mb-4">
           <button type="button" class="btn btn-success p-3 widt" v-on:click="OplataStart">Save changes</button>
         </div>
         <div v-else-if="srok && mijozs" class="mt-4 mb-4">

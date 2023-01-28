@@ -4,13 +4,14 @@ import { createStore } from 'vuex'
 const store = createStore({
     state: {
         objectauth: {
-            mijoz: '',
-            savdo: '',
-            zaqaz: '',
-            qarz: '',
+            mijoz: 0,
+            savdo: 0,
+            zaqaz: 0,
+            qarz: 0,
         },
         auth: '',
         Items: [],
+        Itemsfiltr: [],
         objects: [],
         objects1: [],
         objects2: [],
@@ -41,6 +42,7 @@ const store = createStore({
                                 state.auth = auth.login;
                                 state.objectauth.mijoz = data.data.mijoz;
                                 state.objectauth.savdo = data.data.savdo;
+                                state.objectauth.zaqaz = data.data.zaqaz;
                                 state.objectauth.qarz = data.data.karz;
                             } else {
                                 localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": ''}));
@@ -101,15 +103,20 @@ const store = createStore({
             });
         },
         Live_Search_Sqlad_Mut: (state, request) => {
-            axios({
-                method: request.method,
-                url: 'http://localhost:1122/api/' + request.url,
-                data: request
-            }).then(data => {
-                state.Items = data.data.data2;
-                state.objects4 = data.data.data4;
-                state.objects6 = data.data.data5;
-            });
+            if (request.search) {
+                state.Items = state.Itemsfiltr.filter((item) => item.name.toLowerCase().includes(request.search))
+            } else {
+                axios({
+                    method: request.method,
+                    url: 'http://localhost:1122/api/' + request.url,
+                    data: request
+                }).then(data => {
+                    state.Items = data.data.data2;
+                    state.Itemsfiltr = data.data.data2;
+                    state.objects4 = data.data.data4;
+                    state.objects6 = data.data.data5;
+                });                
+            }
         },
         Delete_Sotuv_Mut: (state, request) => {
             const local = JSON.parse(localStorage.getItem('sotuv'));
