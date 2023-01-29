@@ -290,7 +290,7 @@
               });              
             }
             this.Clears();
-          }
+          }     
         },
         watch: {
           search(row){
@@ -318,7 +318,8 @@
             JamiSumma2: 'JamiSumma2',
             valyudata: 'valyudata',
             MijozSelect: 'MijozSelect',
-            tog: 'tog'
+            tog: 'tog',
+            objectauth2: 'objectauth2'
           }),
         },
         mounted() {
@@ -717,11 +718,11 @@
           </div>
           <div class="col-md-12 form-group mb-3">
             <label>Zaqazga olish</label>
-            <div class="row">
-              <div class="col-2 mx-4">
+            <div class="row text-right">
+              <div class="col-1">
                 <input class="form-check-input" type="checkbox" v-on:click="chesx">
               </div>
-              <div class="col-9">
+              <div class="col-11">
                 <input class="form-control" type="text" v-model="Kamentariya" placeholder="Kamentariya">
               </div>
             </div>
@@ -735,17 +736,17 @@
         </div>
       </div>
       <div class="col-md-12 border-top">
-        <div v-if="karz == 0" class="mt-4 mb-4">
-          <button type="button" class="btn btn-success p-3 widt" v-on:click="OplataStart">Save changes</button>
+        <div v-if="karz == 0" class="mt-4 mb-4 text-right">
+          <button type="button" class="btn btn-success" v-on:click="OplataStart">Save changes</button>
         </div>
-        <div v-else-if="chesxbox == 1 && Kamentariya2" class="mt-4 mb-4">
-          <button type="button" class="btn btn-success p-3 widt" v-on:click="OplataStart">Save changes</button>
+        <div v-else-if="chesxbox == 1 && Kamentariya2" class="mt-4 mb-4 text-right">
+          <button type="button" class="btn btn-success" v-on:click="OplataStart">Save changes</button>
         </div>
-        <div v-else-if="srok && mijozs" class="mt-4 mb-4">
-          <button type="button" class="btn btn-success p-3 widt" v-on:click="OplataStart">Save changes</button>
+        <div v-else-if="srok && mijozs" class="mt-4 mb-4 text-right">
+          <button type="button" class="btn btn-success" v-on:click="OplataStart">Save changes</button>
         </div>
-        <div v-else class="mt-4 mb-4">
-          <button type="button" class="btn btn-light p-3 widt">Save changes</button>
+        <div v-else class="mt-4 mb-4 text-right">
+          <button type="button" class="btn btn-light">Save changes</button>
         </div>
       </div>
     </div>

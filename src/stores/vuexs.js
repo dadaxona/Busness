@@ -6,8 +6,16 @@ const store = createStore({
         objectauth: {
             mijoz: 0,
             savdo: 0,
+            savdo2: 0,
             zaqaz: 0,
             qarz: 0,
+        },
+        objectauth2: {
+            mijoz: [],
+            savdo: [],
+            savdo2: [],
+            zaqaz: [],
+            qarz: [],
         },
         auth: '',
         Items: [],
@@ -40,10 +48,17 @@ const store = createStore({
                         if (data.data) {
                             if (data.data.user.login == auth.login && data.data.user.token == auth.token) {
                                 state.auth = auth.login;
-                                state.objectauth.mijoz = data.data.mijoz;
-                                state.objectauth.savdo = data.data.savdo;
-                                state.objectauth.zaqaz = data.data.zaqaz;
-                                state.objectauth.qarz = data.data.karz;
+                                state.objectauth.mijoz = data.data.mijoz.length;
+                                state.objectauth.savdo = data.data.savdo.length;
+                                state.objectauth.savdo2 = data.data.savdo2.length;
+                                state.objectauth.zaqaz = data.data.zaqaz.length;
+                                state.objectauth.qarz = data.data.karz.length;
+                    
+                                state.objectauth2.mijoz = data.data.mijoz;
+                                state.objectauth2.savdo = data.data.savdo;
+                                state.objectauth2.savdo2 = data.data.savdo2;
+                                state.objectauth2.zaqaz = data.data.zaqaz;
+                                state.objectauth2.qarz = data.data.karz;
                             } else {
                                 localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": ''}));
                                 window.location.href = 'login';
@@ -323,6 +338,9 @@ const store = createStore({
         },
         objectauth(state){
             return state.objectauth;
+        },
+        objectauth2(state){
+            return state.objectauth2;
         },
         Items (state) {
             return state.Items;
