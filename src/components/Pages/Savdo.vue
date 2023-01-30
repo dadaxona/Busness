@@ -647,7 +647,7 @@
     <div class="modal_okna">
       <div class="modal-header">
         <h5 class="modal-title">Sotish Oynasi</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true" v-on:click="ModalOplate = false">&times;</span>
         </button>
       </div>
