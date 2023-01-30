@@ -379,7 +379,7 @@
                             </svg>
                           </span>
                         </td>
-                        <td>{{ item.chegirma | formatNumber }}</td>
+                        <td>{{ item.chegirma | formatNumber }} %</td>
                         <td>{{ item.jami | formatNumber }}</td>
                         <td>
                           <a class="text-success mr-4" v-on:click="editr(item)">
@@ -518,7 +518,7 @@
                       <input class="form-control" type="number" v-on:keyup="sonival(soni)" v-model="soni">
                   </div>
                   <div class="col-md-6 form-group mb-3">
-                    <label for="firstName1">Soni</label>
+                    <label for="firstName1">Summa</label>
                     <input class="form-control" type="text" v-on:keyup="summaval(summa)" v-model="summa">
                   </div>
                   <div class="col-md-12 form-group mb-3">
