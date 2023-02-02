@@ -254,6 +254,7 @@
                 <div class="col-md-12 form-group mb-3">
                   <label for="firstName1">Valyuta</label>
                   <select class="form-control" v-model="valyuta" name="adress" id="adress">
+                   <option value="">--Tanlang--</option>
                     <option v-for="item in valyudata">
                         {{item.name}}
                     </option>

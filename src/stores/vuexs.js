@@ -9,6 +9,7 @@ const store = createStore({
             savdo2: 0,
             zaqaz: 0,
             qarz: 0,
+            srok: 0,
         },
         objectauth2: {
             mijoz: [],
@@ -16,6 +17,7 @@ const store = createStore({
             savdo2: [],
             zaqaz: [],
             qarz: [],
+            srok: [],
         },
         auth: '',
         Items: [],
@@ -29,7 +31,8 @@ const store = createStore({
         objects6: [],
         status: '',
         jami: '',
-        togl: ''
+        togl: '',
+        date: new Date().toLocaleDateString('en-CA')
         
     },
     mutations: {
@@ -43,22 +46,31 @@ const store = createStore({
                         data: {
                             login: auth.login,
                             token: auth.token,
+                            date: state.date
                         }
                     }).then(data => {
-                        if (data.data) {
-                            if (data.data.user.login == auth.login && data.data.user.token == auth.token) {
-                                state.auth = auth.login;
-                                state.objectauth.mijoz = data.data.mijoz.length;
-                                state.objectauth.savdo = data.data.savdo.length;
-                                state.objectauth.savdo2 = data.data.savdo2.length;
-                                state.objectauth.zaqaz = data.data.zaqaz.length;
-                                state.objectauth.qarz = data.data.karz.length;
-                    
-                                state.objectauth2.mijoz = data.data.mijoz;
-                                state.objectauth2.savdo = data.data.savdo;
-                                state.objectauth2.savdo2 = data.data.savdo2;
-                                state.objectauth2.zaqaz = data.data.zaqaz;
-                                state.objectauth2.qarz = data.data.karz;
+                        if (data.data.code == 200) {
+                            if (data.data) {
+                                if (data.data.user.login == auth.login && data.data.user.token == auth.token) {
+                                    state.auth = auth.login;
+                                    state.objectauth.mijoz = data.data.mijoz.length;
+                                    state.objectauth.savdo = data.data.savdo.length;
+                                    state.objectauth.savdo2 = data.data.savdo2.length;
+                                    state.objectauth.zaqaz = data.data.zaqaz.length;
+                                    state.objectauth.qarz = data.data.karz.length;
+                                    state.objectauth.srok = data.data.srok.length;
+                        
+                                    state.objectauth2.mijoz = data.data.mijoz;
+                                    state.objectauth2.savdo = data.data.savdo;
+                                    state.objectauth2.savdo2 = data.data.savdo2;
+                                    state.objectauth2.zaqaz = data.data.zaqaz;
+                                    state.objectauth2.qarz = data.data.karz;
+                                    state.objectauth2.srok = data.data.srok;
+                                    
+                                } else {
+                                    localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": ''}));
+                                    window.location.href = 'login';
+                                }
                             } else {
                                 localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": ''}));
                                 window.location.href = 'login';
@@ -133,6 +145,54 @@ const store = createStore({
                 });                
             }
         },
+        Live_Telegram_Chet: (state ,request) => {
+            var formatter = new Intl.NumberFormat();
+            var jami = JSON.parse(localStorage.getItem('Jami'));
+            var s = request.plastik + request.naqt + request.bank;
+            var mijoz = state.objects6.find(e => { if (e.id === request.mijozId) return e; });
+            if (mijoz) {
+                var k3= "";
+                k3+= "Ассалому алайкум хурматли mijoz сизнинг харидларинггиз ройхати.";
+                k3+= " \n";
+                k3+= " \n";
+                for(let i = 0;i < request.local.length; i++){
+                    k3+= ""
+                    k3+= request.local[i]["name"];
+                    k3+= "--" + request.local[i]["soni"];
+                    k3+= "*" + formatter.format(request.local[i]["jami"]);
+                    k3+= ";\n";
+                    k3+= "Chegirma: " + formatter.format(request.local[i]["chegirma"]);
+                    k3+= ";\n";
+                }
+                k3+= "\n";
+                k3+= "Жами суммаси" + " ,    " + formatter.format(request.jamisum);
+                k3+= ";\n";
+                k3+= "Туланди" + " ,         " + formatter.format(s);
+                k3+= ";\n";
+                k3+= "Карзинггиз" + " ,      " + formatter.format(request.karz);
+                k3+= ";\n";
+                k3+= "Тулаш муддати" + " ,   " + request.srok;
+                k3+= ";\n";
+                k3+= "Жами карзинггиз" + " , " + formatter.format(mijoz.karz);
+                k3+= "\n";
+                k3+= "\n";
+                k3+= "Хурмат билан << ID Group >>";
+                if (mijoz.telegram) {
+                    axios({
+                        method: 'post',
+                        url: "https://api.telegram.org/bot5654991728:AAFmwykYzSKGqTdZL5HT-JwyRHTJUGN7Cac/sendMessage",
+                        data: {
+                            chat_id: mijoz.telegram,
+                            text: k3
+                        },
+                    });
+                } else {
+                    
+                }
+            } else {
+                
+            }
+        },
         Delete_Sotuv_Mut: (state, request) => {
             const local = JSON.parse(localStorage.getItem('sotuv'));
             local.splice(request.i, 1);
@@ -170,6 +230,7 @@ const store = createStore({
                 state.togl = '';
             }
         },
+
     },
     actions: {
         FilterAuthAc (context) {
@@ -314,18 +375,108 @@ const store = createStore({
             localStorage.setItem('Kurs',  JSON.stringify({'u': request.kurs1}));
             context.commit('Live_Search_Sotuv_Mut');
         },
+        Delet_Stor_act: (context) => {
+            localStorage.removeItem('Jami');
+            localStorage.removeItem('sotuv');
+            context.commit('Live_Search_Sotuv_Mut');
+        },
         Oplata_Start_Action: (context, request) => {
+            var formatter = new Intl.NumberFormat();
             axios({
                 method: request.method,
                 url: 'http://localhost:1122/api/' + request.url2,
                 data: request
             }).then(data => {
                 if (data.data == 200) {
+                    if (request.driver == 1) {
+                        var s = request.plastik + request.naqt + request.bank;
+                        var k= "";
+                        k+= "             " + " << ID Group >> ";
+                        k+= " \n";
+                        k+= "________________________________________________";
+                        k+= " \n";
+                        for(let i = 0;i < request.local.length; i++){
+                            k+= ""
+                            k+= request.local[i]["name"];
+                            k+= ";\n";
+                            k+= request.local[i]["soni"];
+                            k+= "*" + formatter.format(request.local[i]["jami"]);
+                            k+= ";\n";
+                            k+= "Chegirma: " + formatter.format(request.local[i]["chegirma"]);
+                            k+= ";\n";
+                            k+= "------------------------------------------------";
+                            k+= "\n";
+                        }
+                        k+= "________________________________________________";
+                        k+= "\n";
+                        k+= "Жами суммаси: " + "    " + formatter.format(request.jamisum);
+                        k+= ";\n";
+                        k+= "Туланди: " + "         " + formatter.format(s);
+                        k+= ";\n";
+                        k+= "Карзинггиз: " + "      " + formatter.format(request.karz);
+                        k+= ";\n";
+                        k+= "Тулаш муддати: " + "   " + request.srok;
+                        k+= ";\n";
+                        k+= "------------------------------------------------";
+                        k+= ";\n";
+                        k+= "          Хурмат билан << ID Group >>";
+                        axios({
+                            method: 'post',
+                            url: "http://printer/api/printer",
+                            data: {
+                                driver: 'XP-80',
+                                text: k
+                            }
+                        });
+                    } else {
+                        var s2 = request.plastik + request.naqt + request.bank;
+                        var k2= "";
+                        k2+= "      " + " << ID Group >> ";
+                        k2+= " \n";
+                        k2+= "________________________________";
+                        k2+= " \n";
+                        for(let i = 0;i < request.local.length; i++){
+                            k2+= ""
+                            k2+= request.local[i]["name"];
+                            k2+= ";\n";
+                            k2+= request.local[i]["soni"];
+                            k2+= "*" + formatter.format(request.local[i]["jami"]);
+                            k2+= ";\n";
+                            k2+= "Chegirma: " + formatter.format(request.local[i]["chegirma"]);
+                            k2+= ";\n";
+                            k2+= "--------------------------------";
+                            k2+= "\n";
+                        }
+                        k2+= "________________________________";
+                        k2+= "\n";
+                        k2+= "Жами суммаси" + " ,    " + formatter.format(request.jamisum);
+                        k2+= ";\n";
+                        k2+= "Туланди" + " ,         " + formatter.format(s2);
+                        k2+= ";\n";
+                        k2+= "Карзинггиз" + " ,      " + formatter.format(request.karz);
+                        k2+= ";\n";
+                        k2+= "Тулаш муддати" + " ,   " + request.srok;
+                        k2+= ";\n";
+                        k2+= "--------------------------------";
+                        k+= ";\n";
+                        k2+= "Хурмат билан << ID Group >>";
+                        axios({
+                            method: 'post',
+                            url: "http://printer/api/printer",
+                            data: {
+                                driver: 'XP-8',
+                                text: k2
+                            }
+                        });
+                    }
+                    if (request.mijozId) {
+                        context.commit('Live_Telegram_Chet', request);              
+                    } else { }
                     localStorage.removeItem('Jami');
                     localStorage.removeItem('sotuv');
-                    context.commit('Live_Search_Sotuv_Mut');
                     context.commit('Live_Search_Sqlad_Mut', request)
-                    context.commit('FilterAuthMut')
+                    context.commit('Live_Search_Sotuv_Mut');
+                    context.commit('FilterAuthMut');
                 } else {
                     
                 }

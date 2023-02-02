@@ -23,6 +23,7 @@
               bank: '',
               karz: '',
               srok: '',
+              drive: '',
               chesxbox: '',
               Kamentariya: '',
               Kamentariya2: '',
@@ -40,7 +41,9 @@
             'Plus_Minus_Ac',
             'EditStoreg',
             'Valyuta_Kurs',
-            'Oplata_Start_Action'
+            'Oplata_Start_Action',
+            'Driver_Act',
+            'Delet_Stor_act'
           ]),
           Localstor(){
             const auth = JSON.parse(localStorage.getItem('auth'));
@@ -164,6 +167,7 @@
             this.bank = '',
             this.karz = '',
             this.srok = '',
+            this.drive = '',
             this.chesxbox = '',
             this.Kamentariya = '',
             this.Kamentariya2 = '',
@@ -262,6 +266,8 @@
             this.bank = this.JamiSumma2;
           },
           OplataStart(){
+            var kurs = JSON.parse(localStorage.getItem('Kurs')).u;
+            var qarz = '';
             if (this.chesxbox == 1 && this.Kamentariya) {
               this.Oplata_Start_Action({
                 'method': 'post',
@@ -273,16 +279,22 @@
                 'local': JSON.parse(localStorage.getItem('sotuv'))
               }); 
             } else {
+              if (kurs == 1) {
+                qarz = this.karz;
+              } else {
+                qarz = this.karz * kurs;
+              }
               this.Oplata_Start_Action({
                 'method': 'post',
                 'url2': 'oplata',
                 'url': 'live_search',
+                'driver': this.drive,
                 'jamisum': this.JamiSumma2,
                 'mijozId': this.mijozs,
                 'naqt': this.naqt,
                 'plastik': this.plastik,
                 'bank': this.bank,
-                'karz': this.karz,
+                'karz': qarz,
                 'srok': this.srok,
                 'login': this.login,
                 'token': this.token,
@@ -290,7 +302,23 @@
               });              
             }
             this.Clears();
-          }     
+          },
+          driverpMount(){
+            var dri =JSON.parse(localStorage.getItem('Driver'));
+            if (dri) {
+              this.drive = JSON.parse(localStorage.getItem('Driver')).d;
+            } else {
+              localStorage.setItem('Driver',  JSON.stringify({'d': 1}));
+              this.drive = 1;
+            }
+          },
+          dr(d){
+            localStorage.setItem('Driver',  JSON.stringify({'d': d}));
+            this.driverpMount();
+          },
+          deletStor(){
+            this.Delet_Stor_act();
+          }
         },
         watch: {
           search(row){
@@ -319,6 +347,7 @@
             valyudata: 'valyudata',
             MijozSelect: 'MijozSelect',
             tog: 'tog',
+            drive: 'drive',
             objectauth2: 'objectauth2'
           }),
         },
@@ -328,6 +357,7 @@
           this.Sqlad();
           this.NSotuv();
           this.toogler2();
+          this.driverpMount();
           this.checkedTyp3();
         }
   }
@@ -339,13 +369,13 @@
           <div class="card-body">
             <div v-if="tog">
               <button class="btn btn-success btn-sm m-1" type="button">Excel</button>
-              <button class="btn btn-success btn-sm m-1" type="button">Delete</button>
-              <button class="btn btn-success btn-sm m-1" type="button">Pdf</button>
+              <button class="btn btn-primary btn-sm m-1" type="button">Pdf</button>
+              <button class="btn btn-danger btn-sm m-1" type="button" v-on:click="deletStor">Delete</button>
             </div>
             <div v-else>
               <button class="btn btn-light btn-sm m-1" type="button">Excel</button>
-              <button class="btn btn-light btn-sm m-1" type="button">Delete</button>
               <button class="btn btn-light btn-sm m-1" type="button">Pdf</button>
+              <button class="btn btn-light btn-sm m-1" type="button">Delete</button>
             </div>
               <div class="table-responsive">
                 <div class="scroltab2">
@@ -449,16 +479,42 @@
             </div>
           </div>
         </div>
+        <div v-if="drive == 1">
+          <div class="row">
+            <div class="col-12 text-center border-bottom">
+              Printer Driver
+            </div>
+            <div class="col-6">
+              <span>XP-80</span><input class="form-check-input ml-2" type="checkbox" checked>
+            </div>
+            <div class="col-6">
+              <span>XP-58</span><input class="form-check-input ml-2" type="checkbox" v-on:click="dr(2)">
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          <div class="row">
+            <div class="col-12 text-center">
+              Printer Driver
+            </div>
+            <div class="col-6">
+              <span>XP-80</span><input class="form-check-input ml-2" type="checkbox" v-on:click="dr(1)">
+            </div>
+            <div class="col-6">
+              <span>XP-58</span><input class="form-check-input ml-2" type="checkbox" checked>
+            </div>
+          </div>
+        </div>
         <div v-if="tog">
-          <div class="row mt-4">
-            <button class="btn btn-success mt-4 widt" v-on:click="oplate(true)">
+          <div class="row">
+            <button class="btn btn-success mt-2 widt" v-on:click="oplate(true)">
               Sotish       
             </button>
           </div>
         </div>
         <div v-else>
-          <div class="row mt-4">
-            <button class="btn btn-light mt-4 widt">
+          <div class="row">
+            <button class="btn btn-light mt-2 widt">
               Sotish       
             </button>
           </div>

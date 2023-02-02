@@ -19,11 +19,11 @@
                 localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": ''}));
                 this.FilterAuth();
             },
-            asdasdasd(){
-                console.log(this.objectauth2)
+            modalsokna(typ){
+                this.okna = typ;
             },
             targolya(){
-                this.okna = true
+                console.log(this.objectauth2)
             }
         },
         computed: {
@@ -34,98 +34,21 @@
           }),
         },
         mounted() {
-            this.FilterAuth(),
-            this.asdasdasd();
+            this.FilterAuth()
         }
     }
 </script>
 
 <template>
-        <div class="app-admin-wrap layout-horizontal-bar">
-            <div class="main-header">
-                <div class="logo"><img src="../../dist-assets/images/logo.png" alt="" /></div>      
-                <div class="d-flex align-items-center">
-                    <!-- Mega menu-->
-                    <div class="dropdown mega-menu d-none d-md-block"><a class="btn text-muted dropdown-toggle mr-3" id="dropdownMegaMenuButton" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mega Menu</a>
-                        <div class="dropdown-menu text-left" aria-labelledby="dropdownMenuButton">
-                            <div class="row m-0">
-                                <div class="col-md-4 p-4 bg-img">
-                                    <h2 class="title">Mega Menu <br /> Sidebar</h2>
-                                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores natus laboriosam fugit, consequatur.</p>
-                                    <p class="mb-4">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Exercitationem odio amet eos dolore suscipit placeat.</p>
-                                    <button class="btn btn-lg btn-rounded btn-outline-warning">Learn More</button>
-                                </div>
-                                <div class="col-md-4 p-4">
-                                    <p class="text-primary text--cap border-bottom-primary d-inline-block">Features</p>
-                                    <div class="menu-icon-grid w-auto p-0"><a href="#"><i class="i-Shop-4"></i> Home</a><a href="#"><i class="i-Library"></i> UI Kits</a><a href="#"><i class="i-Drop"></i> Apps</a><a href="#"><i class="i-File-Clipboard-File--Text"></i> Forms</a><a href="#"><i class="i-Checked-User"></i> Sessions</a><a href="#"><i class="i-Ambulance"></i> Support</a></div>
-                                </div>
-                                <div class="col-md-4 p-4">
-                                    <p class="text-primary text--cap border-bottom-primary d-inline-block">Components</p>
-                                    <ul class="links">
-                                        <li><a href="accordion.html">Accordion</a></li>
-                                        <li><a href="alerts.html">Alerts</a></li>
-                                        <li><a href="buttons.html">Buttons</a></li>
-                                        <li><a href="badges.html">Badges</a></li>
-                                        <li><a href="carousel.html">Carousels</a></li>
-                                        <li><a href="lists.html">Lists</a></li>
-                                        <li><a href="popover.html">Popover</a></li>
-                                        <li><a href="tables.html">Tables</a></li>
-                                        <li><a href="datatables.html">Datatables</a></li>
-                                        <li><a href="modals.html">Modals</a></li>
-                                        <li><a href="nouislider.html">Sliders</a></li>
-                                        <li><a href="tabs.html">Tabs</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="app-admin-wrap layout-horizontal-bar">
+        <div class="main-header">
+            <div class="logo"><img src="../../dist-assets/images/logo.png" alt="" /></div>         
                 <div style="margin: auto"></div>
-                <div class="header-part-right">
-                    <!-- Full screen toggle--><i class="i-Full-Screen header-icon d-none d-sm-inline-block" data-fullscreen=""></i>
-                    <!-- Grid menu Dropdown-->
-                    <div class="dropdown"><i class="i-Safe-Box text-muted header-icon" id="dropdownMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <div class="menu-icon-grid"><a href="#"><i class="i-Shop-4"></i> Home</a><a href="#"><i class="i-Library"></i> UI Kits</a><a href="#"><i class="i-Drop"></i> Apps</a><a href="#"><i class="i-File-Clipboard-File--Text"></i> Forms</a><a href="#"><i class="i-Checked-User"></i> Sessions</a><a href="#"><i class="i-Ambulance"></i> Support</a></div>
-                        </div>
+                    <div class="header-part-right">
+                        <i class="i-Full-Screen header-icon d-none d-sm-inline-block" data-fullscreen=""></i>
+                    <div class="dropdown" v-on:click="modalsokna(true)">
+                        <div class="badge-top-container"><span class="badge badge-primary">{{ objectauth.srok }}</span><i class="i-Bell text-muted header-icon"></i></div>
                     </div>
-                    <!-- Notificaiton-->
-                    <div class="dropdown">
-                        <div class="badge-top-container" id="dropdownNotification" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="badge badge-primary">3</span><i class="i-Bell text-muted header-icon"></i></div>
-                        <!-- Notification dropdown-->
-                        <div class="dropdown-menu dropdown-menu-right notification-dropdown rtl-ps-none" aria-labelledby="dropdownNotification" data-perfect-scrollbar="" data-suppress-scroll-x="true">
-                            <div class="dropdown-item d-flex">
-                                <div class="notification-icon"><i class="i-Speach-Bubble-6 text-primary mr-1"></i></div>
-                                <div class="notification-details flex-grow-1">
-                                    <p class="m-0 d-flex align-items-center"><span>New message</span><span class="badge badge-pill badge-primary ml-1 mr-1">new</span><span class="flex-grow-1"></span><span class="text-small text-muted ml-auto">10 sec ago</span></p>
-                                    <p class="text-small text-muted m-0">James: Hey! are you busy?</p>
-                                </div>
-                            </div>
-                            <div class="dropdown-item d-flex">
-                                <div class="notification-icon"><i class="i-Receipt-3 text-success mr-1"></i></div>
-                                <div class="notification-details flex-grow-1">
-                                    <p class="m-0 d-flex align-items-center"><span>New order received</span><span class="badge badge-pill badge-success ml-1 mr-1">new</span><span class="flex-grow-1"></span><span class="text-small text-muted ml-auto">2 hours ago</span></p>
-                                    <p class="text-small text-muted m-0">1 Headphone, 3 iPhone x</p>
-                                </div>
-                            </div>
-                            <div class="dropdown-item d-flex">
-                                <div class="notification-icon"><i class="i-Empty-Box text-danger mr-1"></i></div>
-                                <div class="notification-details flex-grow-1">
-                                    <p class="m-0 d-flex align-items-center"><span>Product out of stock</span><span class="badge badge-pill badge-danger ml-1 mr-1">3</span><span class="flex-grow-1"></span><span class="text-small text-muted ml-auto">10 hours ago</span></p>
-                                    <p class="text-small text-muted m-0">Headphone E67, R98, XL90, Q77</p>
-                                </div>
-                            </div>
-                            <div class="dropdown-item d-flex">
-                                <div class="notification-icon"><i class="i-Data-Power text-success mr-1"></i></div>
-                                <div class="notification-details flex-grow-1">
-                                    <p class="m-0 d-flex align-items-center"><span>Server Up!</span><span class="badge badge-pill badge-success ml-1 mr-1">3</span><span class="flex-grow-1"></span><span class="text-small text-muted ml-auto">14 hours ago</span></p>
-                                    <p class="text-small text-muted m-0">Server rebooted successfully</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Notificaiton End-->
-                    <!-- User avatar dropdown-->
                     <div class="dropdown">
                         <div class="user col align-self-end"><img id="userDropdown" src="../../dist-assets/images/faces/1.jpg" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
@@ -146,6 +69,9 @@
                     <div class="container-fluid">
                         <div class="topnav rtl-ps-none" id="" data-perfect-scrollbar="" data-suppress-scroll-x="true">
                             <ul class="menu float-left">
+                                <li>
+                                    <button v-on:click="targolya">asdsad</button>
+                                </li>
                                 <li>
                                     <div>
                                         <div>
@@ -278,6 +204,74 @@
                     </div>
                 <RouterView />
             </div>
+        </div>
+    </div>
+
+    <div v-if="okna" class="div1">
+        <div class="div2">
+            <button type="button" class="close mb-3 mt-3 mr-3" v-on:click="modalsokna(false)">
+                <span aria-hidden="true" v-on:click="showModalEditor = false">&times;</span>
+            </button>
+            <table class="table scroltab">
+                <thead>
+                    <tr>
+                        <th>Mijoz</th>
+                        <th>Savdo</th>
+                        <th>Muddat</th>
+                        <th>Karz</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in objectauth2.srok" :key="item.id" v-on:click="">
+                    <td> 
+                        <span style="color: #2b64e2;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                            </svg>
+                        </span>
+                        {{ item.mijoz }}
+                    </td>
+                    <td>
+                        <span style="color: #6363ff;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
+                                <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
+                              </svg>
+                        </span>
+                        {{ item.jamisumma }}
+                    </td>
+                    <td>
+                        <span style="color:green">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-calendar-date-fill" viewBox="0 0 16 16">
+                                <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zm5.402 9.746c.625 0 1.184-.484 1.184-1.18 0-.832-.527-1.23-1.16-1.23-.586 0-1.168.387-1.168 1.21 0 .817.543 1.2 1.144 1.2z"/>
+                                <path d="M16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-6.664-1.21c-1.11 0-1.656-.767-1.703-1.407h.683c.043.37.387.82 1.051.82.844 0 1.301-.848 1.305-2.164h-.027c-.153.414-.637.79-1.383.79-.852 0-1.676-.61-1.676-1.77 0-1.137.871-1.809 1.797-1.809 1.172 0 1.953.734 1.953 2.668 0 1.805-.742 2.871-2 2.871zm-2.89-5.435v5.332H5.77V8.079h-.012c-.29.156-.883.52-1.258.777V8.16a12.6 12.6 0 0 1 1.313-.805h.632z"/>
+                              </svg>
+                        </span>
+                        {{ item.srok }}
+                    </td>
+                    <td>
+                        <span style="color: #d34e15;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-currency-dollar" viewBox="0 0 16 16">
+                                <path d="M4 10.781c.148 1.667 1.513 2.85 3.591 3.003V15h1.043v-1.216c2.27-.179 3.678-1.438 3.678-3.3 0-1.59-.947-2.51-2.956-3.028l-.722-.187V3.467c1.122.11 1.879.714 2.07 1.616h1.47c-.166-1.6-1.54-2.748-3.54-2.875V1H7.591v1.233c-1.939.23-3.27 1.472-3.27 3.156 0 1.454.966 2.483 2.661 2.917l.61.162v4.031c-1.149-.17-1.94-.8-2.131-1.718H4zm3.391-3.836c-1.043-.263-1.6-.825-1.6-1.616 0-.944.704-1.641 1.8-1.828v3.495l-.2-.05zm1.591 1.872c1.287.323 1.852.859 1.852 1.769 0 1.097-.826 1.828-2.2 1.939V8.73l.348.086z"/>
+                            </svg>-
+                        </span>
+                        <span class="text-danger">
+                            {{ item.karz }}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-success pt-0 pb-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-stack-overflow" viewBox="0 0 16 16">
+                                <path d="M12.412 14.572V10.29h1.428V16H1v-5.71h1.428v4.282h9.984z"/>
+                                <path d="M3.857 13.145h7.137v-1.428H3.857v1.428zM10.254 0 9.108.852l4.26 5.727 1.146-.852L10.254 0zm-3.54 3.377 5.484 4.567.913-1.097L7.627 2.28l-.914 1.097zM4.922 6.55l6.47 3.013.603-1.294-6.47-3.013-.603 1.294zm-.925 3.344 6.985 1.469.294-1.398-6.985-1.468-.294 1.397z"/>
+                            </svg>
+                        </button>
+                    </td>
+                  </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </template>

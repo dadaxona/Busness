@@ -11,6 +11,7 @@
               firma: '',
               tel: '',
               telegram: '',
+              summa: 0,
               Searvh: '',
               showModal: false,
               showModalDel: false
@@ -58,7 +59,7 @@
               'firma': this.firma,
               'tel': this.tel,
               'telegram': this.telegram,
-              'summa': 0,
+              'summa': this.summa,
             });
             this.Clears();
           },
@@ -70,12 +71,13 @@
               'token': this.token,
             });
           },
-          editmij(id, name, firma, tel, telegram){
-            this.id = id,
-            this.name = name,
-            this.firma = firma,
-            this.tel = tel,
-            this.telegram = telegram
+          editmij(item){
+            this.id = item.id,
+            this.name = item.name,
+            this.firma = item.firma,
+            this.tel = item.tel,
+            this.telegram = item.telegram
+            this.summa = item.summa,
             this.showModal = true
           },
           Clears(){
@@ -84,9 +86,11 @@
             this.firma = '',
             this.tel = '',
             this.telegram = '',
+            this.summa = '',
             this.showModal = false,
             this.showModalDel = false
-        },
+        }, 
+        
       },
       watch: {
         Searvh(row){
@@ -128,6 +132,8 @@
                                 <th>Firma INN</th>
                                 <th>Tel</th>
                                 <th>Telegram</th>
+                                <th>Balans</th>
+                                <th>Karz</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -137,8 +143,10 @@
                             <td>{{ item.firma }}</td>
                             <td>{{ item.tel }}</td>
                             <td>{{ item.telegram }}</td>
+                            <td class="text-success">{{ item.summa }}</td>
+                            <td class="text-danger">{{ item.karz }}</td>
                             <td>
-                              <a class="text-success mr-2" v-on:click="editmij(item.id, item.name, item.firma, item.tel, item.telegram)">
+                              <a class="text-success mr-2" v-on:click="editmij(item)">
                                 <i class="nav-icon i-Pen-2 font-weight-bold"></i>
                               </a>
                               <a class="text-danger mr-2" v-on:click="deletmij(item.id, item.name)">
@@ -183,6 +191,10 @@
                 <div class="col-md-12 form-group mb-3">
                     <label for="phone">Enter telegram</label>
                     <input class="form-control" id="telegram" type="text"  v-model="telegram" placeholder="Enter telegram">
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                  <label for="balans">Balans</label>
+                  <input class="form-control" id="summa" type="text"  v-model="summa" placeholder="Balans">
                 </div>
             </div>
             </div>
