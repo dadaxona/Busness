@@ -18,6 +18,7 @@ const store = createStore({
             zaqaz: [],
             qarz: [],
             srok: [],
+            karzina: []
         },
         auth: '',
         Items: [],
@@ -32,7 +33,8 @@ const store = createStore({
         status: '',
         jami: '',
         togl: '',
-        date: new Date().toLocaleDateString('en-CA')
+        date: new Date().toLocaleDateString('en-CA'),
+        savdoobj: []
         
     },
     mutations: {
@@ -66,6 +68,7 @@ const store = createStore({
                                     state.objectauth2.zaqaz = data.data.zaqaz;
                                     state.objectauth2.qarz = data.data.karz;
                                     state.objectauth2.srok = data.data.srok;
+                                    state.objectauth2.karzina = data.data.karzina;
                                     
                                 } else {
                                     localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": ''}));
@@ -129,9 +132,16 @@ const store = createStore({
                 state.objects4 = data.data.data4;
             });
         },
+        Zaqaz_Olish_Mut: (state, request) => {
+            axios({
+                method: request.method,
+                url: 'http://localhost:1122/api/' + request.url,
+                data: request
+            });
+        },
         Live_Search_Sqlad_Mut: (state, request) => {
             if (request.search) {
-                state.Items = state.Itemsfiltr.filter((item) => item.name.toLowerCase().includes(request.search))
+                state.Items = state.Itemsfiltr.filter((item) => item.name.toLowerCase().includes(request.search));
             } else {
                 axios({
                     method: request.method,
@@ -147,7 +157,6 @@ const store = createStore({
         },
         Live_Telegram_Chet: (state ,request) => {
             var formatter = new Intl.NumberFormat();
-            var jami = JSON.parse(localStorage.getItem('Jami'));
             var s = request.plastik + request.naqt + request.bank;
             var mijoz = state.objects6.find(e => { if (e.id === request.mijozId) return e; });
             if (mijoz) {
@@ -230,7 +239,15 @@ const store = createStore({
                 state.togl = '';
             }
         },
-
+        SavdoBut_Mut: (state, request) => {
+            axios({
+                method: request.method,
+                url: 'http://localhost:1122/api/' + request.url,
+                data: request
+            }).then(data => {
+                state.savdoobj = data.data;
+            });  
+        }
     },
     actions: {
         FilterAuthAc (context) {
@@ -279,7 +296,6 @@ const store = createStore({
         Sotuvga_Olish_Action: (context, request) => {
             const praduct = [];
             const local = JSON.parse(localStorage.getItem('sotuv'));
-            var kurs = JSON.parse(localStorage.getItem('Kurs')).u;
             if (local) {
                 var fin = local.find(e => { if (e.id === request.id) return e; })
                 if (fin) {
@@ -326,6 +342,52 @@ const store = createStore({
                 });
             }
             context.commit('Live_Search_Sotuv_Mut');
+        },
+        Zaqaz_Olish_Ac: ({ commit, state }, request) => {
+            localStorage.setItem('sotuv', JSON.stringify([]));
+            const local = JSON.parse(localStorage.getItem('sotuv'));
+            for (let i = 0; i < state.objectauth2.karzina.length; i++) {
+                if (state.objectauth2.karzina[i].zaqazId == request.id) {
+                    var sq = state.Items.find(e => { if (e.id === state.objectauth2.karzina[i].tovar) return e; })
+                    var cheg = '';
+                    var son = '';
+                    if (state.objectauth2.karzina[i].chegrma) {
+                        cheg = state.objectauth2.karzina[i].chegrma;
+                    } else {
+                        cheg = 0;
+                    }
+                    if (state.objectauth2.karzina[i].soni > sq.soni) {
+                        son = sq.soni;
+                    } else {
+                        son = state.objectauth2.karzina[i].soni;
+                    }
+                    var sql = {
+                        'id': sq.id,
+                        'name': state.objectauth2.karzina[i].name,
+                        'sotilish': state.objectauth2.karzina[i].sotilish,
+                        'soni': son,
+                        'soni2': sq.soni,
+                        'chegirma': cheg,
+                        'jami': state.objectauth2.karzina[i].jami
+                    };
+                    if (local) {
+                        var fin = local.find(e => { if (e.id === sql.id) return e; })
+                        if (fin) {
+        
+                        } else {
+                            local.push(sql);
+                            localStorage.setItem('sotuv', JSON.stringify(local));
+                        }
+                    } else {
+                        localStorage.setItem('sotuv', JSON.stringify([sql]));
+                    }
+                } else {
+                    
+                }
+            }
+            commit('Live_Search_Sotuv_Mut');
+            commit('Zaqaz_Olish_Mut', request);
+            commit('FilterAuthMut');
         },
         EditStoreg: (context, request) => {
             const local = JSON.parse(localStorage.getItem('sotuv'));
@@ -481,6 +543,22 @@ const store = createStore({
                     
                 }
             });
+        },
+        Tolov_Avt: (context, request) => {
+            axios({
+                method: request.method,
+                url: 'http://localhost:1122/api/' + request.url,
+                data: request,
+            }).then(data => {
+                if (data.data == 200) {
+                    context.commit('FilterAuthMut')
+                } else {
+                    
+                }
+            });
+        },
+        SavdoBut_Ac: (context, request) => {
+            context.commit('SavdoBut_Mut', request);
         }
     },
     getters: {
@@ -528,6 +606,17 @@ const store = createStore({
         },
         MijozSelect(state){
             return state.objects6;
+        },
+        savdoobj(state){
+            return state.savdoobj;
+        },
+        JamisummaSotuv(state){
+            var s = 0;
+            for (let i = 0; i < state.savdoobj.length; i++) {
+                s += parseFloat(state.savdoobj[i].jami);
+            }
+            return s;
+
         }
     },
 });
