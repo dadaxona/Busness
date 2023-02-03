@@ -8,7 +8,7 @@
               showModalDel: false,
               id: '',
               name: '',
-              summa: '',
+              summa: 0,
               yerkazse: '',
               login:'',
               token:'',
@@ -74,7 +74,7 @@
           Clears(){
             this.id = '',
             this.name = '',
-            this.summa = '',
+            this.summa = 0,
             this.showModal = false,
             this.showModalDel = false
           },

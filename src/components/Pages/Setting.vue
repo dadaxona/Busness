@@ -1,84 +1,103 @@
 <script>
   import { RouterLink } from 'vue-router'
-  import axios from 'axios'
+  import { mapState, mapGetters, mapActions} from 'vuex'
   export default {
         data() {
             return {
               showModal: false,
-              userdata: [],
-
+              showModalDel5: false,
+              pasw: '',
               id: '',
               name: '',
-              login: '',
+              login2: '',
               biznes: '',
               password: '',
+              login: '', 
+              token: ''
             }
         },
         methods: {
-          getItem(){
-            const auth = JSON.parse(localStorage.getItem('auth'));
-            if (auth) {
-              if (auth.auth === true) {
-                axios({
-                  method: 'post',
-                  url: 'http://localhost:1122/api/userget',
-                  data: {
-                    login: auth.login,
-                    token: auth.token,
-                  }
-                }).then(data => {
-                  if (data.data) {
-                    this.userdata = data.data;
-                  } else {
-                    this.userdata = [];
-                  }
-                })
-              } else {
-                this.$router.push('login');
-              }
-            } else {
-              this.$router.push('login');
-            }
+          ...mapActions([
+            'FilterAuthAc',
+            'Origi_Ac',
+            'OrigiPost_Ac',
+            'UserProfilDel_Ac'
+          ]),
+          FilterAuth(){
+            this.FilterAuthAc();
           },
-          edirer(id, name, login, biznes, password){
-            this.id = id,
-            this.name = name,
-            this.login = login,
-            this.biznes = biznes,
-            this.password = password,
+          Localstor(){
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            this.login = auth.login,
+            this.token = auth.token
+          },
+          Origin(){
+            this.Origi_Ac({
+              'method': 'post',
+              'url': 'userget',
+              'login': this.login,
+              'token': this.token,
+            });
+          },
+          edirer(result){
+            this.id = result.id,
+            this.name = result.name,
+            this.login2 = result.login,
+            this.biznes = result.biznes,
+            this.password = result.password,
             this.showModal = true
           },
           SubmiteForm(){
-            axios({
-              method: 'put',
-              url: 'http://localhost:1122/api/updateuser',
-              data: {
-                id: this.id,
-                name: this.name,
-                login: this.login,
-                biznes: this.biznes,
-                password: this.password
-              }
-            }).then(data => {
-              if (data.data.code == 200) {
-                this.cleare()
-              } else {
-  
-              }
-            })
+            this.OrigiPost_Ac({
+              'method': 'post',
+              'url2': 'user_update_any',
+              'url': 'userget',
+              'id': this.id,
+              'name': this.name,
+              'login2': this.login2,
+              'biznes': this.biznes,
+              'password': this.password,
+              'login': this.login,
+              'token': this.token,
+            });
+            this.cleare();
+          },
+          deleter(item){
+            this.id = item.id,
+            this.name = item.name,
+            this.password = item.password,
+            this.showModalDel5 = true
+          },
+          UserProfilDel(){
+            if (this.pasw == this.password) {
+              this.UserProfilDel_Ac({
+                'method': 'post',
+                'url': 'user_del_clear',
+                'id': this.id,
+              })              
+            } else {
+              
+            }
           },
           cleare(){
             this.id = '',
             this.name = '',
-            this.login = '',
+            this.login2 = '',
             this.biznes = '',
             this.password = '',
             this.showModal = false,
-            this.getItem()
+            this.showModalDel5 = false
           },
         },
+        computed: {
+          ...mapGetters({
+            userdata: "userdata",
+          }),
+        },
         mounted() {
-            this.getItem()
+          this.FilterAuth();
+          this.Localstor();
+          this.Origin();
         }
       }
 </script>
@@ -88,8 +107,7 @@
     <div class="col-md-12 mb-3">
         <div class="card text-left">
             <div class="card-body">
-                <button class="btn btn-success mb-2" @click="showModal = true">Admin Setting</button>
-                <input type='text' id="chiqim" class="chiqim" />
+              <h4>User Profil</h4>
                 <div class="table-responsive">
                   <div class="scroltab3">
                     <table class="table scroltab">
@@ -109,10 +127,10 @@
                             <td>{{ item.biznes }}</td>
                             <td>{{ item.password }}</td>
                             <td>
-                              <a class="text-success mr-2" v-on:click="edirer(item.id, item.name, item.login, item.biznes, item.password)">
+                              <a class="text-success mr-2" v-on:click="edirer(item)">
                                 <i class="nav-icon i-Pen-2 font-weight-bold"></i>
                               </a>
-                              <a class="text-danger mr-2" v-on:click="deleter(item.id)">
+                              <a class="text-danger mr-2" v-on:click="deleter(item)">
                                 <i class="nav-icon i-Close-Window font-weight-bold"></i>
                               </a>
                             </td>
@@ -167,4 +185,34 @@
     </div>
   </transition>
 </div>
+
+<div v-if="showModalDel5">
+  <transition name="modal">
+    <div class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title text-danger">Delete Profil</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" @click="showModalDel5 = false">&times;</span>
+              </button>
+            </div>
+              <div class="col-md-12 form-group mb-3">
+                <input class="form-control text-center" type="text"  v-model="name" disabled>
+            </div>
+            <div class="col-md-12 form-group mb-3">
+              <input type="text" class="form-control" name="" v-model="pasw" placeholder="Password">
+            </div>
+            <div class="modal-body text-center">
+              <button type="button" class="btn btn-danger mx-2" @click="showModalDel5 = false">No</button>
+              <button type="button" class="btn btn-primary" v-on:click="UserProfilDel">Yes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+
 </template>

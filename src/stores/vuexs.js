@@ -20,10 +20,19 @@ const store = createStore({
             srok: [],
             karzina: []
         },
+        foydaobj: {
+            savdo: 0,
+            rasxod: 0,
+            chiqishqarz: 0,
+            kirishqarz: 0,
+            foyda: 0,
+            sqlad: 0,
+        },
         auth: '',
         Items: [],
         Itemsfiltr: [],
         objects: [],
+        userdata: [],
         objects1: [],
         objects2: [],
         objects3: [],
@@ -97,8 +106,12 @@ const store = createStore({
                 url: 'http://localhost:1122/api/' + datar.url,
                 data: datar
             }).then(data => {
-                localStorage.setItem('auth', JSON.stringify({"auth": true,"username": data.data.username , "login": data.data.login, "biznesty": data.data.biznes, "token": data.data.token}));
-                window.location.href = 'dash';
+                if (data.data.code == 200) {
+                    localStorage.setItem('auth', JSON.stringify({"auth": true,"username": data.data.data.username , "login": data.data.data.login, "biznesty": data.data.data.biznes, "token": data.data.data.token}));
+                    window.location.href = 'dash';                    
+                } else {
+                    
+                }
             });
         },
 
@@ -247,6 +260,43 @@ const store = createStore({
             }).then(data => {
                 state.savdoobj = data.data;
             });  
+        },
+        Foyda_Mut: (state, request) => {
+            axios({
+                method: request.method,
+                url: 'http://localhost:1122/api/' + request.url,
+                data: request
+            }).then(data => {
+                state.foydaobj.savdo = data.data.sav;
+                state.foydaobj.rasxod = data.data.chiq;
+                state.foydaobj.chiqishqarz = data.data.yet;
+                state.foydaobj.kirishqarz = data.data.qarz;
+                state.foydaobj.foyda = data.data.foyda;
+                state.foydaobj.sqlad = data.data.sql;
+            });  
+        },
+        OrigiPost_Mut: (state, request) => {
+            axios({
+                method: request.method,
+                url: 'http://localhost:1122/api/' + request.url,
+                data: request
+            }).then(data => {
+                state.userdata = data.data;
+            });
+        },
+        UserProfilDel_Mut: (state, request) => {
+            axios({
+                method: request.method,
+                url: 'http://localhost:1122/api/' + request.url,
+                data: request
+            }).then(data => {
+                if (data.data == 200) {
+                    localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": ''}));
+                    window.location.href = 'login';
+                } else {
+                    
+                }
+            });
         }
     },
     actions: {
@@ -255,6 +305,24 @@ const store = createStore({
         },
         SignUpAc: (context, data) => {
             context.commit('SignUpMut', data)
+        },
+        Origi_Ac: (context, request) => {
+            context.commit('OrigiPost_Mut', request) 
+        },
+        UserProfilDel_Ac: (context, request) => {
+            context.commit('UserProfilDel_Mut', request) 
+        },
+        OrigiPost_Ac: (context, request) => {
+            axios({
+                method: request.method,
+                url: 'http://localhost:1122/api/' + request.url2,
+                data: request
+            }).then(data => {
+                if (data.data == 200){
+                    localStorage.setItem('auth', JSON.stringify({"auth": true,"username": request.name , "login": request.login2, "biznesty": request.biznes, "token": request.token}));
+                    context.commit('OrigiPost_Mut', request)                    
+                }
+            });
         },
         SessiondAc: (context) => {
             context.commit('SessiondMut')
@@ -405,26 +473,13 @@ const store = createStore({
         Valyuta_Kurs: (context, request) => {
             var kurs = JSON.parse(localStorage.getItem('Kurs')).u;
             const local = JSON.parse(localStorage.getItem('sotuv'));
-            if (kurs == 1) {
+            if (kurs == 99999) {
                 if (local) {
                     if (local.length > 0) {
                         for (let i = 0; i < local.length; i++) {
+                            local[i].olinish = local[i].olinish / request.kurs1;
                             local[i].sotilish = local[i].sotilish / request.kurs1;
                             local[i].jami = local[i].jami / request.kurs1;
-                            localStorage.setItem('sotuv', JSON.stringify(local));
-                        }
-                    } else {
-                        
-                    }                    
-                } else {
-                    
-                }
-            } else {
-                if (local) {
-                    if (local.length > 0) {
-                        for (let i = 0; i < local.length; i++) {
-                            local[i].sotilish = local[i].sotilish * kurs / request.kurs1;
-                            local[i].jami = local[i].jami * kurs / request.kurs1;
                             localStorage.setItem('sotuv', JSON.stringify(local));
                         }
                     } else {
@@ -433,8 +488,23 @@ const store = createStore({
                 } else {
                     
                 }
+            } else {
+                if (local) {
+                    if (local.length > 0) {
+                        for (let i = 0; i < local.length; i++) {
+                            local[i].olinish = local[i].olinish * kurs / request.kurs1;
+                            local[i].sotilish = local[i].sotilish * kurs / request.kurs1;
+                            local[i].jami = local[i].jami * kurs / request.kurs1;
+                            localStorage.setItem('sotuv', JSON.stringify(local));
+                        }
+                    } else {
+
+                    }
+                } else {
+                    
+                }
             }
-            localStorage.setItem('Kurs',  JSON.stringify({'u': request.kurs1}));
+            localStorage.setItem('Kurs',  JSON.stringify({'u': request.kurs1, 'uid': request.kursid,  'un': request.kursname}));
             context.commit('Live_Search_Sotuv_Mut');
         },
         Delet_Stor_act: (context) => {
@@ -559,11 +629,17 @@ const store = createStore({
         },
         SavdoBut_Ac: (context, request) => {
             context.commit('SavdoBut_Mut', request);
+        },
+        Foyda_Act: (context, request) => {
+            context.commit('Foyda_Mut', request);
         }
     },
     getters: {
         authtenticat (state) {
             return state.auth;
+        },
+        userdata(state){
+            return state.userdata;
         },
         objectauth(state){
             return state.objectauth;
@@ -616,7 +692,9 @@ const store = createStore({
                 s += parseFloat(state.savdoobj[i].jami);
             }
             return s;
-
+        },
+        foyda(state){
+            return state.foydaobj;
         }
     },
 });

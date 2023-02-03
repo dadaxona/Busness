@@ -1,12 +1,47 @@
 <script>
-  import { RouterLink, RouterView } from 'vue-router'
+  import { RouterLink } from 'vue-router'
+  import { mapState, mapGetters, mapActions} from 'vuex'
   export default {
         data() {
             return {
-              showModal: false,
-                // none: '',
+              login: '',
+              token: ''
             }
         },
+        methods: {
+          ...mapActions([
+            'FilterAuthAc',
+            'SqladMethodUrlPost',
+            'SqladDB',
+            'Foyda_Act'
+          ]),
+          FilterAuth(){
+            this.FilterAuthAc();
+          },
+          Localstor(){
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            this.login = auth.login,
+            this.token = auth.token
+          },
+          OriginalGet(){
+            this.Foyda_Act({
+              'method': 'post',
+              'url': 'foyda_post',
+              'login': this.login,
+              'token': this.token,
+            });
+          },
+        },
+        computed: {
+          ...mapGetters({
+            foyda: 'foyda'
+          }),
+        },
+        mounted() {
+          this.FilterAuth();
+          this.Localstor();
+          this.OriginalGet();
+        }
       }
 </script>
 
@@ -14,55 +49,35 @@
   <div class="row mb-4">
     <div class="col-md-12 mb-3">
         <div class="card text-left">
-            <div class="card-body">
-                <button class="btn btn-success mb-2" @click="showModal = true">Foyda qo`shish</button>
-                <input type='text' id="foyda" class="foyda" />
-                <div class="table-responsive">
-                  <div class="scroltab3">
-                    <table class="table scroltab">
-                        <thead>
-                            <tr>
-                                <th>Tovar</th>
-                                <th>Name</th>
-                                <th>Avatar</th>
-                                <th>Email</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                     
-                        </tbody>
-                    </table>
-                  </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div v-if="showModal">
-  <transition name="modal">
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Modal Foyda</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true" @click="showModal = false">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>Modal body text goes here.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" @click="showModal = false">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-4 alert alert-primary text-center">
+                <h4>Savdo</h4>
+                {{ foyda.savdo }}
+              </div>
+              <div class="col-4 alert alert-danger text-center">
+                <h4>Rasxod</h4>
+                {{ foyda.rasxod }}
+              </div>
+              <div class="col-4 alert alert-danger text-center">
+                <h4>Chiqim qarz</h4>
+                {{ foyda.chiqishqarz }}
+              </div>
+              <div class="col-4 alert alert-danger text-center">
+                <h4>Qarz</h4>
+                {{ foyda.kirishqarz }}
+              </div>
+              <div class="col-4 alert alert-success text-center">
+                <h4>Foyda</h4>
+                {{ foyda.foyda }}
+              </div>
+              <div class="col-4 alert alert-success text-center">
+                <h4>Sqlad Summa</h4>
+                {{ foyda.sqlad }}
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </transition>
-</div>
 </template>

@@ -24,6 +24,7 @@
               karz: '',
               srok: '',
               drive: '',
+              date: new Date().toLocaleDateString('en-CA'),
               chesxbox: '',
               Kamentariya: '',
               Kamentariya2: '',
@@ -72,40 +73,46 @@
           },
           Sotuvga_Olish(obj){
             var sum = '';
-            var kurs = JSON.parse(localStorage.getItem('Kurs')).u;
+            var olsh = '';
+            var kurs = JSON.parse(localStorage.getItem('Kurs'));
             if (obj.soni > 0) {
-              if (kurs == '') {
+              if (kurs.uid == 99999) {
                 if (obj.summa == '') {
                   if (this.checke === 1) {
                     sum = obj.sotilish2;
                   } else {
                     sum = obj.sotilish;
                   }
+                  olsh = obj.olinish;
                 } else {
                   if (this.checke === 1) {
                     sum = obj.sotilish2 * obj.summa;
                   } else {
                     sum = obj.sotilish * obj.summa;
-                  }  
+                  }
+                  olsh = obj.olinish * obj.summa;
                 }
               } else {
                 if (obj.summa == '') {
                   if (this.checke === 1) {
-                    sum = obj.sotilish2 / kurs;
+                    sum = obj.sotilish2 / kurs.u;
                   } else {
-                    sum = obj.sotilish / kurs;
+                    sum = obj.sotilish / kurs.u;
                   }
+                  olsh = obj.olinish / kurs.u;
                 } else {
                   if (this.checke === 1) {
-                    sum = obj.sotilish2 * obj.summa / kurs;
+                    sum = obj.sotilish2 * obj.summa / kurs.u;
                   } else {
-                    sum = obj.sotilish * obj.summa / kurs;
-                  }  
+                    sum = obj.sotilish * obj.summa / kurs.u;
+                  }
+                  olsh = obj.olinish * obj.summa / kurs.u;
                 }
               }
               this.Sotuvga_Olish_Action({
                 'id': obj.id,
                 'name': obj.name,
+                'olinish': olsh,
                 'soni': 1,
                 'soni2': obj.soni,
                 'chegirma': 0,
@@ -203,20 +210,35 @@
             }
           },
           toogler(u){
+            var id = '';
+            var name = '';
+            var summa = '';
+            if (u === 99999) {
+              id = 99999;
+              name = '';
+              summa = '1';
+            } else {
+              const data = this.valyudata.find(e => { return e.id == u });
+              id = data.id;
+              name = data.name;
+              summa = data.summa;
+            }
             this.Valyuta_Kurs({
-              'kurs1': u,
+              'kursid': id,
+              'kurs1': summa,
+              'kursname': name,
             });
           },
           toogler2(){
             var kur =JSON.parse(localStorage.getItem('Kurs'));
             if (kur) {
-              this.kurs = JSON.parse(localStorage.getItem('Kurs')).u;
+              this.kurs = JSON.parse(localStorage.getItem('Kurs')).uid;
             } else {
-              localStorage.setItem('Kurs',  JSON.stringify({'u': 1}));
-              this.kurs = 1;
+              localStorage.setItem('Kurs',  JSON.stringify({'u': 99999, 'uid': '',  'un': ''}));
+              this.kurs = 99999;
             }
           },
-          checkedTyp(foo){        
+          checkedTyp(foo){
             localStorage.setItem('Checked',  JSON.stringify({'chesked': foo}));          
             this.checkedTyp3();
           },     
@@ -266,7 +288,7 @@
             this.bank = this.JamiSumma2;
           },
           OplataStart(){
-            var kurs = JSON.parse(localStorage.getItem('Kurs')).u;
+            var kurs = JSON.parse(localStorage.getItem('Kurs'));
             var qarz = '';
             if (this.chesxbox == 1 && this.Kamentariya) {
               this.Oplata_Start_Action({
@@ -279,10 +301,10 @@
                 'local': JSON.parse(localStorage.getItem('sotuv'))
               }); 
             } else {
-              if (kurs == 1) {
+              if (kurs.uid == 99999) {
                 qarz = this.karz;
               } else {
-                qarz = this.karz * kurs;
+                qarz = this.karz * kurs.u;
               }
               this.Oplata_Start_Action({
                 'method': 'post',
@@ -296,6 +318,10 @@
                 'bank': this.bank,
                 'karz': qarz,
                 'srok': this.srok,
+                'sana': this.date,
+                'vid': kurs.uid,
+                'vname': kurs.un,
+                'vsumma': kurs.u,
                 'login': this.login,
                 'token': this.token,
                 'local': JSON.parse(localStorage.getItem('sotuv'))
@@ -439,8 +465,8 @@
         </div>
         <div class="row border-bottom mt-3 pb-3">
           <select class="form-control text-center" v-on:change="toogler(kurs)" v-model="kurs">
-            <option :value="1">--Tanlang--</option>
-            <option v-for="iteme in valyudata" :value="iteme.summa">{{ iteme.name }}</option>
+            <option :value="99999">--Tanlang--</option>
+            <option v-for="iteme in valyudata" :value="iteme.id">{{ iteme.name }}</option>
           </select>
         </div>
         <div v-if="checke == 1">

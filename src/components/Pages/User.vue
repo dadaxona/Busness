@@ -86,7 +86,7 @@
             this.firma = '',
             this.tel = '',
             this.telegram = '',
-            this.summa = '',
+            this.summa = 0,
             this.showModal = false,
             this.showModalDel = false
         }, 
@@ -216,7 +216,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title text-danger">Delete User</h5>
+              <h5 class="modal-title text-danger">Delete Mijoz</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" @click="showModalDel = false">&times;</span>
               </button>
