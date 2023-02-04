@@ -57,13 +57,17 @@
             this.FilterAuthAc();
           },
           Sqlad(){
-            this.Live_Search_Sqlad({
-              'method': 'post',
-              'url': 'live_search',
-              'login': this.login,
-              'token': this.token,
-              'status': this.statustyp
-            });
+            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
+            if (auth) {
+              this.Live_Search_Sqlad({
+                'method': 'post',
+                'url': 'live_search',
+                'login': this.login,
+                'token': this.token,
+                'magazinId': auth,
+                'status': this.statustyp,
+              });
+            } else {}
           },
           Deletsotuv(id, jami){
             this.Delete_Sotuv_Ac({
@@ -291,48 +295,53 @@
             this.bank = this.JamiSumma2;
           },
           OplataStart(){
-            var kurs = JSON.parse(localStorage.getItem('Kurs'));
-            var qarz = '';
-            if (this.chesxbox == 1 && this.Kamentariya) {
-              this.Oplata_Start_Action({
-                'method': 'post',
-                'url2': 'karzina',
-                'url': 'live_search',
-                'name': this.Kamentariya,
-                'login': this.login,
-                'token': this.token,
-                'status': this.statustyp,
-                'local': JSON.parse(localStorage.getItem('sotuv'))
-              }); 
-            } else {
-              if (kurs.uid == 99999) {
-                qarz = this.karz;
+            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
+            if (auth) {
+              var kurs = JSON.parse(localStorage.getItem('Kurs'));
+              var qarz = '';
+              if (this.chesxbox == 1 && this.Kamentariya) {
+                this.Oplata_Start_Action({
+                  'method': 'post',
+                  'url2': 'karzina',
+                  'url': 'live_search',
+                  'name': this.Kamentariya,
+                  'login': this.login,
+                  'token': this.token,
+                  'magazinId': auth,
+                  'status': this.statustyp,
+                  'local': JSON.parse(localStorage.getItem('sotuv'))
+                }); 
               } else {
-                qarz = this.karz * kurs.u;
+                if (kurs.uid == 99999) {
+                  qarz = this.karz;
+                } else {
+                  qarz = this.karz * kurs.u;
+                }
+                this.Oplata_Start_Action({
+                  'method': 'post',
+                  'url2': 'oplata',
+                  'url': 'live_search',
+                  'driver': this.drive,
+                  'jamisum': this.JamiSumma2,
+                  'mijozId': this.mijozs,
+                  'naqt': this.naqt,
+                  'plastik': this.plastik,
+                  'bank': this.bank,
+                  'karz': qarz,
+                  'srok': this.srok,
+                  'sana': this.date,
+                  'vid': kurs.uid,
+                  'vname': kurs.un,
+                  'vsumma': kurs.u,
+                  'login': this.login,
+                  'token': this.token,
+                  'magazinId': auth,
+                  'status': this.statustyp,
+                  'local': JSON.parse(localStorage.getItem('sotuv'))
+                });              
               }
-              this.Oplata_Start_Action({
-                'method': 'post',
-                'url2': 'oplata',
-                'url': 'live_search',
-                'driver': this.drive,
-                'jamisum': this.JamiSumma2,
-                'mijozId': this.mijozs,
-                'naqt': this.naqt,
-                'plastik': this.plastik,
-                'bank': this.bank,
-                'karz': qarz,
-                'srok': this.srok,
-                'sana': this.date,
-                'vid': kurs.uid,
-                'vname': kurs.un,
-                'vsumma': kurs.u,
-                'login': this.login,
-                'token': this.token,
-                'status': this.statustyp,
-                'local': JSON.parse(localStorage.getItem('sotuv'))
-              });              
-            }
-            this.Clears();
+              this.Clears();
+            } else {}
           },
           driverpMount(){
             var dri =JSON.parse(localStorage.getItem('Driver'));
@@ -353,14 +362,18 @@
         },
         watch: {
           search(row){
-            this.Live_Search_Sqlad({
-              'method': 'post',
-              'url': 'live_search',
-              'search': row,
-              'login': this.login,
-              'token': this.token,
-              'status': this.statustyp,
-            });
+            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
+            if (auth) {
+              this.Live_Search_Sqlad({
+                'method': 'post',
+                'url': 'live_search',
+                'search': row,
+                'login': this.login,
+                'token': this.token,
+                'status': this.statustyp,
+                'magazinId': auth,
+              });
+            }else {}
           },
           Kamentariya(r){
             if (r) {

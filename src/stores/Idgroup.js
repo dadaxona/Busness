@@ -19,6 +19,7 @@ const idgroup = {
             srok: [],
             karzina: [],
             tugl: [],
+            magazin: [],
             tug: true
         },
         foydaobj: {
@@ -46,7 +47,8 @@ const idgroup = {
         jami: '',
         togl: '',
         date: new Date().toLocaleDateString('en-CA'),
-        savdoobj: []
+        savdoobj: [],
+        ishchila: []
         
     },
     mutations: {
@@ -60,13 +62,14 @@ const idgroup = {
                         data: {
                             login: auth.login,
                             token: auth.token,
+                            status: auth.action,
                             date: state.date
                         }
                     }).then(data => {
                         if (data.data.code == 200) {
                             if (data.data) {
                                 if (data.data.user.login == auth.login && data.data.user.token == auth.token) {
-                                    state.auth = auth.login;
+                                    state.auth = auth;
                                     state.objectauth.mijoz = data.data.mijoz.length;
                                     state.objectauth.savdo = data.data.savdo.length;
                                     state.objectauth.savdo2 = data.data.savdo2.length;
@@ -82,7 +85,29 @@ const idgroup = {
                                     state.objectauth2.qarz = data.data.karz;
                                     state.objectauth2.srok = data.data.srok;
                                     state.objectauth2.karzina = data.data.karzina;
-                                    
+                                    state.objectauth2.magazin = data.data.magazin;
+
+                                    if (data.data.user.status == 'brend') {
+                                        localStorage.setItem('auth', JSON.stringify({
+                                            "auth": true,
+                                            "username": data.data.user.username ,
+                                            "login": data.data.user.login, 
+                                            "biznesty": data.data.user.biznes, 
+                                            "token": data.data.user.token,
+                                            'method_id': '',
+                                            'action': data.data.user.status
+                                        }));                                        
+                                    } else {
+                                        localStorage.setItem('auth', JSON.stringify({
+                                            "auth": true,
+                                            "username": data.data.user.username,
+                                            "login": data.data.user.login, 
+                                            "biznesty": data.data.user.biznes, 
+                                            "token": data.data.user.token,
+                                            'method_id': data.data.user.magazinId,
+                                            'action': data.data.user.status
+                                        }));  
+                                    }
                                 } else {
                                     localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": ''}));
                                     window.location.href = '/';
@@ -112,11 +137,28 @@ const idgroup = {
             }).then(data => {
                 if (data.data.code == 200) {
                     if (data.data.typ == 'brend') {
-                        localStorage.setItem('auth', JSON.stringify({"auth": true,"username": data.data.data.username , "login": data.data.data.login, "biznesty": data.data.data.biznes, "token": data.data.data.token, 'action': data.data.data.status}));
-                        window.location.href = 'dash';                        
+                        localStorage.setItem('auth', JSON.stringify({
+                            "auth": true,
+                            "username": data.data.data.username ,
+                            "login": data.data.data.login, 
+                            "biznesty": data.data.data.biznes, 
+                            "token": data.data.data.token,
+                            'method_id': '',
+                            'action': data.data.data.status
+                        }));
+                        window.location.href = 'dash';
                     } else {
-                        
+                        localStorage.setItem('auth', JSON.stringify({
+                            "auth": true,
+                            "username": data.data.data.username ,
+                            "login": data.data.data.login, 
+                            "biznesty": data.data.data.biznes, 
+                            "token": data.data.data.token,
+                            'method_id': data.data.data.magazinId,
+                            'action': data.data.data.status
+                        }));
                     }
+                    window.location.href = 'dash';
                 } else {
 
                 }
@@ -327,6 +369,15 @@ const idgroup = {
                 state.objects3 = state.objecfiltr;
             }
         },
+        Saqlas_Kassa_Mut: (state, request) => {
+            axios({
+                method: request.method,
+                url: 'http://localhost:1122/api/' + request.url,
+                data: request
+            }).then(data => {
+                state.ishchila = data.data;           
+            });  
+        }
     },
     actions: {
         FilterAuthAc (context) {
@@ -668,7 +719,33 @@ const idgroup = {
         Fil_Ac: (context, request) => {
             context.commit('Fil_Mut', request);
         },
-
+        Saqlas_Mag: (context, request) => {
+            axios({
+                method: request.method,
+                url: 'http://localhost:1122/api/' + request.url,
+                data: request,
+            }).then(data => {
+                if (data.data == 200) {
+                    context.commit('FilterAuthMut')
+                } else {
+                    
+                }
+            });
+        },
+        Saqlas_Kassa_Get: (context, request) => {
+            context.commit('Saqlas_Kassa_Mut', request)
+        },
+        Saqlas_Kassa_Ac: (context, request) => {
+            axios({
+                method: request.method,
+                url: 'http://localhost:1122/api/' + request.url2,
+                data: request,
+            }).then(data => {
+                if (data.data == 200) {
+                    context.commit('Saqlas_Kassa_Mut', request)
+                } else {}
+            });
+        }
     },
     getters: {
         authtenticat (state) {
@@ -682,6 +759,9 @@ const idgroup = {
         },
         objectauth2(state){
             return state.objectauth2;
+        },
+        ishchila(state){
+            return state.ishchila;
         },
         Items (state) {
             return state.Items;

@@ -31,13 +31,17 @@
             this.statustyp = auth.action
           },
           getTip(){
-            this.OriginalMethodUrlGet({
-              'method': 'post',
-              'url': 'gettip',
-              'login': this.login,
-              'token': this.token,
-              'status': this.statustyp,
-            });
+            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
+            if (auth) {
+              this.OriginalMethodUrlGet({
+                'method': 'post',
+                'url': 'gettip',
+                'login': this.login,
+                'token': this.token,
+                'magazinId': auth,
+                'status': this.statustyp,
+              });
+            } else {}
           },
           edittip(id, name){
             this.idtip = id,
@@ -45,17 +49,21 @@
             this.showModal = true
           },
           CreateTip(){
-            this.OriginalMethodUrlPost({
-              'method': 'post',
-              'url2': 'post_update',
-              'url': 'gettip',
-              'id': this.idtip,
-              'name': this.nametip,
-              'login': this.login,
-              'token': this.token,
-              'status': this.statustyp,
-            });
-            this.Clears();
+            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
+            if (auth) {
+              this.OriginalMethodUrlPost({
+                'method': 'post',
+                'url2': 'post_update',
+                'url': 'gettip',
+                'id': this.idtip,
+                'name': this.nametip,
+                'login': this.login,
+                'token': this.token,
+                'status': this.statustyp,
+                'magazinId': auth,
+              });
+              this.Clears();
+            } else {}
           },
           delettip(id, name){
             this.idtip = id,
@@ -83,14 +91,18 @@
         },
         watch: {
           tiptov(row){
-            this.OriginalMethodUrlGet({
-              'method': 'post',
-              'url': 'gettip',
-              'search': row,
-              'login': this.login,
-              'token': this.token,
-              'status': this.statustyp,
-            });
+            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
+              if (auth) {
+              this.OriginalMethodUrlGet({
+                'method': 'post',
+                'url': 'gettip',
+                'search': row,
+                'login': this.login,
+                'token': this.token,
+                'magazinId': auth,
+                'status': this.statustyp,
+              });
+            } else {}
           }
         },
         computed: {

@@ -8,7 +8,7 @@
                 login: '',
                 password: '',
                 filtor: '',
-                typ: 0,
+                typ: 'brend',
             }
         },
         methods: {
@@ -27,12 +27,11 @@
                 });
             },
             ishc(){
-                if (this.typ == 0) {
-                    this.typ = 1;
+                if (this.typ == 'brend') {
+                    this.typ = 'ish';
                 } else {
-                    this.typ = 0;
+                    this.typ = 'brend';
                 }
-                console.log(this.typ)
             },
             Sessiond(){
                 this.SessiondAc();

@@ -32,19 +32,23 @@
             this.statustyp = auth.action
           },
           CreateChiqim(){
-            this.OriginalMethodUrlPost({
-              'method': 'post',
-              'url2': 'chiqim_post_update',
-              'url': 'chiqim_get',
-              'id': this.id,
-              'qayerga': this.qayerga,
-              'sabap': this.sabap,
-              'summa': this.summa,
-              'login': this.login,
-              'token': this.token,
-              'status': this.statustyp,
-            });
-            this.Clears();
+            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
+            if (auth) {
+              this.OriginalMethodUrlPost({
+                'method': 'post',
+                'url2': 'chiqim_post_update',
+                'url': 'chiqim_get',
+                'id': this.id,
+                'qayerga': this.qayerga,
+                'sabap': this.sabap,
+                'summa': this.summa,
+                'login': this.login,
+                'token': this.token,
+                'magazinId': auth,
+                'status': this.statustyp,
+              });
+              this.Clears();
+            }else{}
           },
           ChiqimDelet(){
             this.OriginalMethodUrlPost({
@@ -59,13 +63,17 @@
             this.Clears();
           },
           getMethod(){
-            this.OriginalMethodUrlGet({
-              'method': 'post',
-              'url': 'chiqim_get',
-              'login': this.login,
-              'token': this.token,
-              'status': this.statustyp,
-            });
+            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
+            if (auth) {
+              this.OriginalMethodUrlGet({
+                'method': 'post',
+                'url': 'chiqim_get',
+                'login': this.login,
+                'token': this.token,
+                'magazinId': auth,
+                'status': this.statustyp,
+              });
+            }else{}
           },
           editchiqim(id, qayerga, sabap, summa){
             this.id = id;
@@ -89,14 +97,18 @@
         },
         watch: {
           chiqimse(row){
-            this.OriginalMethodUrlGet({
-              'method': 'post',
-              'url': 'chiqim_get',
-              'search': row,
-              'login': this.login,
-              'token': this.token,
-              'status': this.statustyp,
-            });
+            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
+            if (auth) {
+              this.OriginalMethodUrlGet({
+                'method': 'post',
+                'url': 'chiqim_get',
+                'search': row,
+                'login': this.login,
+                'token': this.token,
+                'magazinId': auth,
+                'status': this.statustyp,
+              });
+            }else{}
           }
         },
         computed: {

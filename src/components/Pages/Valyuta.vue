@@ -12,6 +12,7 @@
               valy: '',
               login:'',
               token:'',
+              statustyp: '',
             }
         },
         methods: {
@@ -26,20 +27,28 @@
           Localstor(){
             const auth = JSON.parse(localStorage.getItem('auth'));
             this.login = auth.login,
-            this.token = auth.token
+            this.token = auth.token,
+            this.statustyp = auth.action
           },
           CreateYetkazuvchi(){
-            this.OriginalMethodUrlPost({
-              'method': 'post',
-              'url2': 'post_update_valyuta',
-              'url': 'getvalyuta',
-              'id': this.id,
-              'name': this.name,
-              'summa': this.summa,
-              'login': this.login,
-              'token': this.token,
-            });
-            this.Clears();
+            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
+            if (auth) {
+              this.OriginalMethodUrlPost({
+                'method': 'post',
+                'url2': 'post_update_valyuta',
+                'url': 'getvalyuta',
+                'id': this.id,
+                'name': this.name,
+                'summa': this.summa,
+                'login': this.login,
+                'token': this.token,
+                'magazinId': auth,
+                'status': this.statustyp,
+              });
+              this.Clears();              
+            } else {
+              
+            }
           },
           edittip(id, name, summa){
             this.id = id;
@@ -48,12 +57,17 @@
             this.showModal = true;
           },
           getTip(){
-            this.OriginalMethodUrlGet({
-              'method': 'post',
-              'url': 'getvalyuta',
-              'login': this.login,
-              'token': this.token
-            });
+            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
+            if (auth) {
+              this.OriginalMethodUrlGet({
+                'method': 'post',
+                'url': 'getvalyuta',
+                'login': this.login,
+                'token': this.token,
+                'magazinId': auth,
+                'status': this.statustyp,
+              });
+            } else {}
           },
           delettip(id, name){
             this.id = id;
@@ -68,6 +82,7 @@
               'id': this.id,
               'login': this.login,
               'token': this.token,
+              'status': this.statustyp,
             });
             this.Clears();
           },
@@ -81,13 +96,18 @@
         },
         watch: {
           valy(row){
-            this.OriginalMethodUrlGet({
-              'method': 'post',
-              'url': 'getvalyuta',
-              'search': row,
-              'login': this.login,
-              'token': this.token
-            });
+            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
+            if (auth) {
+              this.OriginalMethodUrlGet({
+                'method': 'post',
+                'url': 'getvalyuta',
+                'search': row,
+                'login': this.login,
+                'token': this.token,
+                'magazinId': auth,
+                'status': this.statustyp,
+              });
+            }else{}
           }
         },
         computed: {

@@ -13,6 +13,7 @@
                 muddatdate: '',
                 tolov: '',
                 dinamik: '',
+                maga: '',
                 filtretr: false,
                 oknamod: false,
                 oknamodzaqaz: false,
@@ -133,6 +134,14 @@
                 this.oknaSavdo2 = true;
             }
         },
+        watch: {
+            maga(){
+                const auth = JSON.parse(localStorage.getItem('auth'))
+                auth.method_id = this.maga;
+                localStorage.setItem('auth', JSON.stringify(auth));
+                this.FilterAuth();
+            }
+        },
         computed: {
           ...mapGetters({
             auth:'authtenticat',
@@ -143,7 +152,7 @@
           }),
         },
         mounted() {
-            this.FilterAuth()
+            this.FilterAuth();
         }
     }
 </script>
@@ -152,9 +161,15 @@
     <div class="app-admin-wrap layout-horizontal-bar">
         <div class="main-header">
             <div class="logo"><img src="../../dist-assets/images/logo.png" alt="" /></div>         
-                <div style="margin: auto"></div>
+                <div style="margin: auto"></div>                    
                     <div class="header-part-right">
-                        <i class="i-Full-Screen header-icon d-none d-sm-inline-block" data-fullscreen=""></i>
+                    <div v-if="auth.action == brend">
+                        <select name="" id="" v-model="maga">
+                            <option value="">--Tanlang--</option>
+                            <option v-for="itema in objectauth2.magazin" :value="itema.id">{{ itema.name }}</option>
+                        </select>
+                    </div>
+                    <i class="i-Full-Screen header-icon d-none d-sm-inline-block" data-fullscreen=""></i>
                     <div class="dropdown" v-on:click="modalsokna(true)">
                         <div class="badge-top-container">
                             <span v-if="objectauth.srok" class="badge badge-primary alre">{{ objectauth.srok }}</span>
@@ -166,7 +181,7 @@
                         <div class="user col align-self-end"><img id="userDropdown" src="../../dist-assets/images/faces/1.jpg" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                 <div class="dropdown-header">
-                                    <i class="i-Lock-User mr-1"></i> {{auth}}
+                                    <i class="i-Lock-User mr-1"></i> {{ auth.login }}
                                 </div>
                                 <RouterLink class="dropdown-item" to="/setting">Account settings</RouterLink>
                                 <a class="dropdown-item">Billing history</a>

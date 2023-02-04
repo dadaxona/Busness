@@ -22,6 +22,7 @@
               filad: '',
               login:'',
               token:'',
+              statustyp: '',
             }
         },
         methods: {
@@ -37,28 +38,34 @@
           Localstor(){
             const auth = JSON.parse(localStorage.getItem('auth'));
             this.login = auth.login,
-            this.token = auth.token
+            this.token = auth.token,
+            this.statustyp = auth.action
           },
           CreateSqlad(){
-            this.SqladMethodUrlPost({
-              'method': 'post',
-              'url2': 'sqlad_post_update',
-              'url': 'getdb',
-              'id': this.id,
-              'tip': this.tip,
-              'adress': this.adress,
-              'name': this.name,
-              'ogoh': this.ogoh,
-              'soni': this.soni,
-              'olinish': this.olinish,
-              'sotilish': this.sotilish,
-              'sotilish2': this.sotilish2,
-              'valyuta': this.valyuta,
-              'kod': this.shtrix,
-              'login': this.login,
-              'token': this.token
-            });
-            this.Clears();
+            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
+            if (auth) {
+              this.SqladMethodUrlPost({
+                'method': 'post',
+                'url2': 'sqlad_post_update',
+                'url': 'getdb',
+                'id': this.id,
+                'tip': this.tip,
+                'adress': this.adress,
+                'name': this.name,
+                'ogoh': this.ogoh,
+                'soni': this.soni,
+                'olinish': this.olinish,
+                'sotilish': this.sotilish,
+                'sotilish2': this.sotilish2,
+                'valyuta': this.valyuta,
+                'kod': this.shtrix,
+                'login': this.login,
+                'token': this.token,
+                'status': this.statustyp,
+                'magazinId': auth,
+              });
+              this.Clears();
+            } else {}
           },
           edittip(item){
             this.id=item.id;
@@ -79,7 +86,8 @@
               'method': 'post',
               'url': 'getdb',
               'login': this.login,
-              'token': this.token
+              'token': this.token,
+              'status': this.statustyp,
             });
           },
           delettip(id, name){
@@ -94,7 +102,8 @@
               'url': 'getdb',
               'id': this.id,
               'login': this.login,
-              'token': this.token
+              'token': this.token,
+              'status': this.statustyp,              
             });
             this.Clears();
           },
@@ -116,33 +125,51 @@
         },
         watch: {
           tovarsqlad(row){
-            this.SqladDB({
-              'method': 'post',
-              'url': 'getdb',
-              'search': row,
-              'login': this.login,
-              'token': this.token
-            });
+            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
+            if (auth) {
+              this.SqladDB({
+                'method': 'post',
+                'url': 'getdb',
+                'search': row,
+                'login': this.login,
+                'token': this.token,
+                'magazinId': auth,
+                'status': this.statustyp,
+              });
+            }else{}
           },
           filtip(){
-            this.Fil_Ac({
-              'method': 'post',
-              'url': 'filt',
-              'resul': this.filtip,
-              'typ': 1,
-              'login': this.login,
-              'token': this.token
-            });
+            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
+              if (auth) {
+                this.Fil_Ac({
+                  'method': 'post',
+                  'url': 'filt',
+                  'resul': this.filtip,
+                  'typ': 1,
+                  'login': this.login,
+                  'token': this.token,
+                  'magazinId': auth,
+                  'status': this.statustyp,
+                });
+              } else {}
           },
           filad(){
-            this.Fil_Ac({
-              'method': 'post',
-              'url': 'filt',
-              'resul': this.filad,
-              'typ': 2,
-              'login': this.login,
-              'token': this.token
-            });
+            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
+              if (auth) {
+              this.Fil_Ac({
+                'method': 'post',
+                'url': 'filt',
+                'resul': this.filad,
+                'typ': 2,
+                'login': this.login,
+                'token': this.token,
+                'magazinId': auth,
+                'status': this.statustyp,
+              });
+            }else{}
+          },
+          handleSubmit(fsdfsdf){
+            console.log(fsdfsdf)
           }
         },
         computed: {

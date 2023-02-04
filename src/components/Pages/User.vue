@@ -6,6 +6,7 @@
             return {
               login:'',
               token:'',
+              statustyp: '',
               id: '',
               name: '',
               firma: '',
@@ -29,7 +30,8 @@
           Localstor(){
             const auth = JSON.parse(localStorage.getItem('auth'));
             this.login = auth.login,
-            this.token = auth.token
+            this.token = auth.token,
+            this.statustyp = auth.action
           },
           deletmij(id, name){
             this.id = id,
@@ -44,32 +46,45 @@
               'id': this.id,
               'login': this.login,
               'token': this.token,
+              'status': this.statustyp,
             });
             this.Clears();
           },
           SaveUser(){
-            this.OriginalMethodUrlPost({
-              'method': 'post',
-              'url2': 'mijozcreate',
-              'url': 'mijozget',
-              'id': this.id,
-              'login': this.login,
-              'token': this.token,
-              'name': this.name,
-              'firma': this.firma,
-              'tel': this.tel,
-              'telegram': this.telegram,
-              'summa': this.summa,
-            });
-            this.Clears();
+            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
+            if (auth) {
+              this.OriginalMethodUrlPost({
+                'method': 'post',
+                'url2': 'mijozcreate',
+                'url': 'mijozget',
+                'id': this.id,
+                'login': this.login,
+                'token': this.token,
+                'magazinId': auth,
+                'status': this.statustyp,
+                'name': this.name,
+                'firma': this.firma,
+                'tel': this.tel,
+                'telegram': this.telegram,
+                'summa': this.summa,
+              });
+              this.Clears();              
+            } else {
+              
+            }
           },
           OriginalGet(){
-            this.OriginalMethodUrlGet({
-              'method': 'post',
-              'url': 'mijozget',
-              'login': this.login,
-              'token': this.token,
-            });
+            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
+            if (auth) {
+              this.OriginalMethodUrlGet({
+                'method': 'post',
+                'url': 'mijozget',
+                'login': this.login,
+                'token': this.token,
+                'magazinId': auth,
+                'status': this.statustyp,
+              });
+            }else{}
           },
           editmij(item){
             this.id = item.id,
@@ -99,7 +114,8 @@
             'url': 'mijozget',
             'search': row,
             'login': this.login,
-            'token': this.token
+            'token': this.token,
+            'status': this.statustyp,
           });
         }
       },
