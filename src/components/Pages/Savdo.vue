@@ -6,6 +6,7 @@
             return {
               login:'',
               token:'',
+              statustyp: '', 
               search: '',
               id: '',
               name: '',
@@ -29,7 +30,7 @@
               Kamentariya: '',
               Kamentariya2: '',
               showModalEditor: false,
-              ModalOplate: false
+              ModalOplate: false,
             }
         },
         methods: {
@@ -49,7 +50,8 @@
           Localstor(){
             const auth = JSON.parse(localStorage.getItem('auth'));
             this.login = auth.login,
-            this.token = auth.token
+            this.token = auth.token,
+            this.statustyp = auth.action
           },
           FilterAuth(){
             this.FilterAuthAc();
@@ -59,7 +61,8 @@
               'method': 'post',
               'url': 'live_search',
               'login': this.login,
-              'token': this.token
+              'token': this.token,
+              'status': this.statustyp
             });
           },
           Deletsotuv(id, jami){
@@ -298,6 +301,7 @@
                 'name': this.Kamentariya,
                 'login': this.login,
                 'token': this.token,
+                'status': this.statustyp,
                 'local': JSON.parse(localStorage.getItem('sotuv'))
               }); 
             } else {
@@ -324,6 +328,7 @@
                 'vsumma': kurs.u,
                 'login': this.login,
                 'token': this.token,
+                'status': this.statustyp,
                 'local': JSON.parse(localStorage.getItem('sotuv'))
               });              
             }
@@ -353,7 +358,8 @@
               'url': 'live_search',
               'search': row,
               'login': this.login,
-              'token': this.token
+              'token': this.token,
+              'status': this.statustyp,
             });
           },
           Kamentariya(r){

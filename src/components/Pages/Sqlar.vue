@@ -22,6 +22,7 @@
               filad: '',
               login:'',
               token:'',
+              statustyp: '',
             }
         },
         methods: {
@@ -37,7 +38,8 @@
           Localstor(){
             const auth = JSON.parse(localStorage.getItem('auth'));
             this.login = auth.login,
-            this.token = auth.token
+            this.token = auth.token,
+            this.statustyp = auth.action
           },
           CreateSqlad(){
             this.SqladMethodUrlPost({
@@ -56,7 +58,8 @@
               'valyuta': this.valyuta,
               'kod': this.shtrix,
               'login': this.login,
-              'token': this.token
+              'token': this.token,
+              'status': this.statustyp,
             });
             this.Clears();
           },
@@ -79,7 +82,8 @@
               'method': 'post',
               'url': 'getdb',
               'login': this.login,
-              'token': this.token
+              'token': this.token,
+              'status': this.statustyp,
             });
           },
           delettip(id, name){
@@ -94,7 +98,8 @@
               'url': 'getdb',
               'id': this.id,
               'login': this.login,
-              'token': this.token
+              'token': this.token,
+              'status': this.statustyp,              
             });
             this.Clears();
           },
@@ -121,7 +126,8 @@
               'url': 'getdb',
               'search': row,
               'login': this.login,
-              'token': this.token
+              'token': this.token,
+              'status': this.statustyp,
             });
           },
           filtip(){
@@ -131,7 +137,8 @@
               'resul': this.filtip,
               'typ': 1,
               'login': this.login,
-              'token': this.token
+              'token': this.token,
+              'status': this.statustyp,
             });
           },
           filad(){
@@ -141,7 +148,8 @@
               'resul': this.filad,
               'typ': 2,
               'login': this.login,
-              'token': this.token
+              'token': this.token,
+              'status': this.statustyp,
             });
           },
           handleSubmit(fsdfsdf){

@@ -8,6 +8,7 @@
                 login: '',
                 password: '',
                 filtor: '',
+                typ: 0,
             }
         },
         methods: {
@@ -15,29 +16,24 @@
                 'SignUpAc',
                 'SessiondAc'
             ]),
-            Autend(){
-            this.SignUpAc({
-                'method': 'post',
-                'url': 'loginauth',
-                'login': this.login,
-                'password': this.password
-            });
-            
-                // const url = "http://26.20.205.206/api/test";
-                // const data = {
-                //     name: "KFC", 
-                //     address: "Bagat", 
-                //     phoneNumber: "+9998995909555",
-                // };
-                // const headers = new Headers();
-                // headers.append('Content-Type', 'application/json');
-                // headers.append('Accept', 'application/json');
-                // headers.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZXN0YXVyYW50Iiwicm9sZXMiOlt7Im5hbWUiOiJST0xFX1JFU1RBVVJBTlQifV0sImlhdCI6MTY3MzYyNzg1NCwiZXhwIjoxNjczNjQ5NDU0fQ.Uppc9cdgaHnWXQDkl5CHyhJ5WxWw_1t8P1jdYhAJtJc")
-                // axios.post(url, data, headers).then(data => {
-                //     console.log(data.data)
-                // })
-            },
 
+            Autend(){
+                this.SignUpAc({
+                    'method': 'post',
+                    'url': 'loginauth',
+                    'login': this.login,
+                    'password': this.password,
+                    'status': this.typ
+                });
+            },
+            ishc(){
+                if (this.typ == 0) {
+                    this.typ = 1;
+                } else {
+                    this.typ = 0;
+                }
+                console.log(this.typ)
+            },
             Sessiond(){
                 this.SessiondAc();
             }
@@ -64,6 +60,9 @@
                                 <div class="form-group">
                                     <label for="password">Password</label>
                                     <input class="form-control form-control-rounded" v-model="password" id="password"  type="password">
+                                </div>
+                                <div>
+                                    <input class="form-check-input mx-1" type="checkbox" v-on:click="ishc"> <label class="mx-4 pt-1">Ishchimisiz</label>
                                 </div>
                                 <p v-if="filtor === true" style="color: green;"></p>
                                 <p v-if="filtor === false" style="color: red;">Login yoki Parol xato</p>

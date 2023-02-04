@@ -13,7 +13,8 @@
               biznes: '',
               password: '',
               login: '', 
-              token: ''
+              token: '',
+              statustyp: '',
             }
         },
         methods: {
@@ -29,7 +30,8 @@
           Localstor(){
             const auth = JSON.parse(localStorage.getItem('auth'));
             this.login = auth.login,
-            this.token = auth.token
+            this.token = auth.token,
+            this.statustyp = auth.action
           },
           Origin(){
             this.Origi_Ac({
@@ -37,6 +39,7 @@
               'url': 'userget',
               'login': this.login,
               'token': this.token,
+              'status': this.statustyp,
             });
           },
           edirer(result){
@@ -59,6 +62,7 @@
               'password': this.password,
               'login': this.login,
               'token': this.token,
+              'status': this.statustyp,
             });
             this.cleare();
           },
@@ -74,7 +78,7 @@
                 'method': 'post',
                 'url': 'user_del_clear',
                 'id': this.id,
-              })              
+              })
             } else {
               
             }

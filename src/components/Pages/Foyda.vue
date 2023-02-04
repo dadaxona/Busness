@@ -5,7 +5,8 @@
         data() {
             return {
               login: '',
-              token: ''
+              token: '',
+              statustyp: '',
             }
         },
         methods: {
@@ -21,7 +22,8 @@
           Localstor(){
             const auth = JSON.parse(localStorage.getItem('auth'));
             this.login = auth.login,
-            this.token = auth.token
+            this.token = auth.token,
+            this.statustyp = auth.action
           },
           OriginalGet(){
             this.Foyda_Act({
@@ -29,6 +31,7 @@
               'url': 'foyda_post',
               'login': this.login,
               'token': this.token,
+              'status': this.statustyp,
             });
           },
         },

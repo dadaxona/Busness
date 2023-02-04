@@ -31,8 +31,9 @@
                         'login': this.login,
                         'biznes': this.biznesty,
                         'password': this.password,
-                        'token': this.token
-                    });                    
+                        'token': this.token,
+                        'status': 'brend'
+                    });
                     this.Cl()
                 } else {
                     this.answer = false
@@ -68,7 +69,7 @@
                         <div class="pl-3 auth-right">
                             <div class="auth-logo text-center mt-4"><img src="../../dist-assets/images/logo.png" alt=""></div>
                             <div class="flex-grow-1"></div>
-                            <div class="w-100 mb-4"><RouterLink class="btn btn-outline-primary btn-block btn-icon-text btn-rounded" to="/login"><i class="i-Mail-with-At-Sign"></i> Sign in with login</RouterLink><a class="btn btn-outline-google btn-block btn-icon-text btn-rounded"><i class="i-Google-Plus"></i> Sign in with Google</a><a class="btn btn-outline-facebook btn-block btn-icon-text btn-rounded"><i class="i-Facebook-2"></i> Sign in with Facebook</a></div>
+                            <div class="w-100 mb-4"><RouterLink class="btn btn-outline-primary btn-block btn-icon-text btn-rounded" to="/"><i class="i-Mail-with-At-Sign"></i> Sign in with login</RouterLink><a class="btn btn-outline-google btn-block btn-icon-text btn-rounded"><i class="i-Google-Plus"></i> Sign in with Google</a><a class="btn btn-outline-facebook btn-block btn-icon-text btn-rounded"><i class="i-Facebook-2"></i> Sign in with Facebook</a></div>
                             <div class="flex-grow-1"></div>
                         </div>
                     </div>
@@ -102,7 +103,7 @@
                             <p v-if="answer === true" style="color: green;"></p>
                             <p v-if="answer === false" style="color: red;">Parol xato</p>
                             <button class="btn btn-primary btn-block btn-rounded mt-3" v-on:click="SignUp">Sign Up</button>                    
-                            <div class="mt-3 text-center"><RouterLink class="text-muted" to="/login">
+                            <div class="mt-3 text-center"><RouterLink class="text-muted" to="/">
                                 <u>Sign In</u></RouterLink></div>
                         </div>
                     </div>

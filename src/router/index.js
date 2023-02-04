@@ -6,7 +6,6 @@ import Dash from '../components/Dashboard/Dash.vue'
 import Savdo from '../components/Pages/Savdo.vue'
 import Chiqim from '../components/Pages/Chiqim.vue'
 import Foyda from '../components/Pages/Foyda.vue'
-import Korsatma from '../components/Pages/Korsatma.vue'
 import Sqlar from '../components/Pages/Sqlar.vue'
 import Tovartip from '../components/Pages/Tovartip.vue'
 import User from '../components/Pages/User.vue'
@@ -23,11 +22,13 @@ const router = createRouter({
       component: Register
     },
     {
-      path: '/login',
-      name: 'login',
+      path: '/',
+      name: '/',
       component: Login
     },
     {
+      path: '/notpag',
+      name: 'notpag',
       component: Dash,
       children: [
         {
@@ -79,11 +80,6 @@ const router = createRouter({
           path: '/foyda',
           name: 'foyda',
           component: Foyda
-        },
-        {
-          path: '/korsatma',
-          name: 'korsatma',
-          component: Korsatma
         },
       ],
     },

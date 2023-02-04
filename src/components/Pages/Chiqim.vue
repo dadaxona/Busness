@@ -13,6 +13,7 @@
               chiqimse: '',
               login:'',
               token:'',
+              statustyp: '',
             }
         },
         methods: {
@@ -28,6 +29,7 @@
             const auth = JSON.parse(localStorage.getItem('auth'));
             this.login = auth.login,
             this.token = auth.token
+            this.statustyp = auth.action
           },
           CreateChiqim(){
             this.OriginalMethodUrlPost({
@@ -40,6 +42,7 @@
               'summa': this.summa,
               'login': this.login,
               'token': this.token,
+              'status': this.statustyp,
             });
             this.Clears();
           },
@@ -51,6 +54,7 @@
               'id': this.id,
               'login': this.login,
               'token': this.token,
+              'status': this.statustyp,
             });
             this.Clears();
           },
@@ -59,7 +63,8 @@
               'method': 'post',
               'url': 'chiqim_get',
               'login': this.login,
-              'token': this.token
+              'token': this.token,
+              'status': this.statustyp,
             });
           },
           editchiqim(id, qayerga, sabap, summa){
@@ -89,7 +94,8 @@
               'url': 'chiqim_get',
               'search': row,
               'login': this.login,
-              'token': this.token
+              'token': this.token,
+              'status': this.statustyp,
             });
           }
         },
