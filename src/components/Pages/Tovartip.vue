@@ -6,6 +6,7 @@
             return {
               login:'',
               token:'',
+              statustyp: '',
               userdatatip: '',
               idtip: '',
               nametip: '',
@@ -26,14 +27,16 @@
           Localstor(){
             const auth = JSON.parse(localStorage.getItem('auth'));
             this.login = auth.login,
-            this.token = auth.token
+            this.token = auth.token,
+            this.statustyp = auth.action
           },
           getTip(){
             this.OriginalMethodUrlGet({
               'method': 'post',
               'url': 'gettip',
               'login': this.login,
-              'token': this.token
+              'token': this.token,
+              'status': this.statustyp,
             });
           },
           edittip(id, name){
@@ -50,6 +53,7 @@
               'name': this.nametip,
               'login': this.login,
               'token': this.token,
+              'status': this.statustyp,
             });
             this.Clears();
           },
@@ -66,6 +70,7 @@
               'id': this.idtip,
               'login': this.login,
               'token': this.token,
+              'status': this.statustyp,
             });
             this.Clears();
           },
@@ -83,7 +88,8 @@
               'url': 'gettip',
               'search': row,
               'login': this.login,
-              'token': this.token
+              'token': this.token,
+              'status': this.statustyp,
             });
           }
         },
