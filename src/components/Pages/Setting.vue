@@ -110,7 +110,7 @@
               <h4>User Profil</h4>
                 <div class="table-responsive">
                   <div class="scroltab3">
-                    <table class="table scroltab">
+                    <table class="tabl scroltab">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -121,7 +121,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="item in userdata" :key="item.id">
+                          <tr v-for="item in userdata" :key="item.id" class="tir">
                             <td>{{ item.name }}</td>
                             <td>{{ item.login }}</td>
                             <td>{{ item.biznes }}</td>

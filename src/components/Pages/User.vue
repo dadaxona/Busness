@@ -125,7 +125,7 @@
                 <input type='text' id="usersearch" class="usersearch" v-model="Searvh"/>
                 <div class="table-responsive">
                   <div class="scroltab3">
-                    <table class="table scroltab">
+                    <table class="tabl scroltab">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -138,7 +138,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="item in Itemobjects" :key="item.id">
+                          <tr v-for="item in Itemobjects" :key="item.id" class="tir">
                             <td>{{ item.name }}</td>
                             <td>{{ item.firma }}</td>
                             <td>{{ item.tel }}</td>

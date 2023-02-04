@@ -115,7 +115,7 @@
                 <input type='text' id="chiqim" class="chiqim" v-model="chiqimse" />
                 <div class="table-responsive">
                   <div class="scroltab3">
-                    <table class="table scroltab">
+                    <table class="tabl scroltab">
                         <thead>
                             <tr>
                                 <th>Qayerga</th>
@@ -125,7 +125,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="item in Itemobjects" :key="item.id">
+                          <tr v-for="item in Itemobjects" :key="item.id" class="tir">
                             <td>{{ item.qayerga }}</td>
                             <td>{{ item.sabap }}</td>
                             <td>{{ item.summa }}</td>

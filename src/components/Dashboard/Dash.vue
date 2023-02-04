@@ -326,7 +326,7 @@
             </div>
             <div class="table-responsive">
                 <div class="scro">
-                    <table class="table scroltab">
+                    <table class="tabl scroltab">
                         <thead v-if="objectauth2.tug">
                             <tr>
                                 <th>Mijoz</th>
@@ -342,7 +342,7 @@
                             </tr>
                         </thead>
                         <tbody v-if="objectauth2.tug">
-                            <tr v-for="item in objectauth2.tugl" :key="item.id" v-on:click="SavdoBut(item)">
+                            <tr class="tir" v-for="item in objectauth2.tugl" :key="item.id" v-on:click="SavdoBut(item)">
                                 <td> 
                                     <span style="color: #2b64e2;">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
@@ -359,7 +359,7 @@
                                             <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
                                         </svg>
                                     </span>
-                                    {{ item.jamisumma }}
+                                    {{ item.jamisumma | formatNumber }}
                                 </td>
                                 <td>
                                     <span style="color:green">
@@ -377,13 +377,13 @@
                                         </svg>-
                                     </span>
                                     <span class="text-danger">
-                                        {{ item.karz }}
+                                        {{ item.karz | formatNumber }}
                                     </span>
                                 </td>
                             </tr>
                         </tbody>
                         <tbody v-else>
-                            <tr v-for="item in objectauth2.tugl" :key="item.id" v-on:click="SavdoBut222(item)">
+                            <tr class="tir" v-for="item in objectauth2.tugl" :key="item.id" v-on:click="SavdoBut222(item)">
                                 <td> 
                                     <span style="color:green">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-calendar-date-fill" viewBox="0 0 16 16">
@@ -401,7 +401,7 @@
                                             <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
                                         </svg>
                                     </span>
-                                    {{ item.jamisumma }}
+                                    {{ item.jamisumma | formatNumber }} {{ item.valy }}
                                 </td>
                             </tr>
                         </tbody>
@@ -419,7 +419,7 @@
             <h4 class="mx-2 mt-3">Jami Summa: $ +{{ JamisummaSotuv }}</h4>
             <div class="table-responsive">
                 <div class="scro">
-                    <table class="table scroltab">
+                    <table class="tabl scroltab">
                         <thead>
                             <tr>
                                 <th>Tovar</th>
@@ -430,7 +430,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="item in savdoobj" :key="item.id">
+                        <tr class="tir" v-for="item in savdoobj" :key="item.id">
                             <td>
                                 {{ item.name }}
                             </td>
@@ -438,13 +438,13 @@
                                 {{ item.soni }}
                             </td>
                             <td>
-                                {{ item.sotilish }}
+                                {{ item.sotilish | formatNumber }}
                             </td>
                             <td>
                                 {{ item.chegrma }}
                             </td>
                             <td>
-                                {{ item.jami }}
+                                {{ item.jami | formatNumber }} {{ item.valy }}
                             </td>
                         </tr>
                         </tbody>
@@ -461,7 +461,7 @@
             </button>
             <div class="table-responsive">
                 <div class="scro">
-                    <table class="table scroltab">
+                    <table class="tabl scroltab">
                         <thead>
                             <tr>
                                 <th>Mijoz</th>
@@ -472,7 +472,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="item in objectauth2.srok" :key="item.id">
+                        <tr class="tir" v-for="item in objectauth2.srok" :key="item.id">
                             <td> 
                                 <span style="color: #2b64e2;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
@@ -489,7 +489,7 @@
                                         <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
                                     </svg>
                                 </span>
-                                {{ item.jamisumma }}
+                                {{ item.jamisumma | formatNumber }}
                             </td>
                             <td>
                                 <span style="color:green">
@@ -507,7 +507,7 @@
                                     </svg>-
                                 </span>
                                 <span class="text-danger">
-                                    {{ item.karz }}
+                                    {{ item.karz | formatNumber }}
                                 </span>
                             </td>
                             <td>
@@ -533,7 +533,7 @@
             </button>
             <div class="table-responsive">
                 <div class="scro">
-                    <table class="table scroltab">
+                    <table class="tabl scroltab">
                         <thead>
                             <tr>
                                 <th>Mijoz</th>
@@ -544,7 +544,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="item in objectauth2.qarz" :key="item.id">
+                        <tr class="tir" v-for="item in objectauth2.qarz" :key="item.id">
                             <td> 
                                 <span style="color: #2b64e2;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
@@ -561,7 +561,7 @@
                                         <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
                                     </svg>
                                 </span>
-                                {{ item.jamisumma }}
+                                {{ item.jamisumma | formatNumber }}
                             </td>
                             <td>
                                 <span style="color:green">
@@ -579,7 +579,7 @@
                                     </svg>-
                                 </span>
                                 <span class="text-danger">
-                                    {{ item.karz }}
+                                    {{ item.karz | formatNumber }}
                                 </span>
                             </td>
                             <td>
@@ -605,7 +605,7 @@
             </button>
             <div class="table-responsive">
                 <div class="scro">
-                    <table class="table scroltab">
+                    <table class="tabl scroltab">
                         <thead>
                             <tr>
                                 <th>Zaqaz nomi</th>
@@ -613,7 +613,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="item in objectauth2.zaqaz" :key="item.id">                        
+                        <tr class="tir" v-for="item in objectauth2.zaqaz" :key="item.id">                        
                             <td> 
                                 <span style="color: #2b64e2;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">

@@ -143,7 +143,7 @@
                 <input type='text' id="tovarsq" class="tovarsq" v-model="tovarsqlad" />
                 <div class="table-responsive">
                   <div class="scroltab3">
-                    <table class="table scroltab">
+                    <table class="tabl scroltab">
                         <thead>
                             <tr>
                                 <th>Tip</th>
@@ -159,7 +159,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="item in objects3" :key="item.id">
+                          <tr v-for="item in objects3" :key="item.id" class="tir">
                             <td>{{ item.tip }}</td>
                             <td>{{ item.adress }}</td>
                             <td>{{ item.name }}</td>

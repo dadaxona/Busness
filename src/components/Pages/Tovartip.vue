@@ -109,7 +109,7 @@
                 <input type='text' id="tiptov" class="tiptov" v-model="tiptov" />
                 <div class="table-responsive">
                   <div class="scroltab3">
-                    <table class="table scroltab">
+                    <table class="tabl scroltab">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -117,7 +117,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="item in Itemobjects" :key="item.id">
+                          <tr v-for="item in Itemobjects" :key="item.id" class="tir">
                             <td>{{ item.name }}</td>
                             <td>
                               <a class="text-success mr-2" v-on:click="edittip(item.id, item.name)">
