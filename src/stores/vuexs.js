@@ -18,7 +18,9 @@ const store = createStore({
             zaqaz: [],
             qarz: [],
             srok: [],
-            karzina: []
+            karzina: [],
+            tugl: [],
+            tug: true
         },
         foydaobj: {
             savdo: 0,
@@ -73,6 +75,7 @@ const store = createStore({
                         
                                     state.objectauth2.mijoz = data.data.mijoz;
                                     state.objectauth2.savdo = data.data.savdo;
+                                    state.objectauth2.tugl = data.data.savdo;
                                     state.objectauth2.savdo2 = data.data.savdo2;
                                     state.objectauth2.zaqaz = data.data.zaqaz;
                                     state.objectauth2.qarz = data.data.karz;
@@ -297,6 +300,15 @@ const store = createStore({
                     
                 }
             });
+        },
+        Savdo2_Mut: (state, request) => {
+            if (request.typ == 1) {
+                state.objectauth2.tugl = state.objectauth2.savdo;
+                state.objectauth2.tug = true;
+            } else {
+                state.objectauth2.tugl = state.objectauth2.savdo2;
+                state.objectauth2.tug = false;
+            }
         }
     },
     actions: {
@@ -632,6 +644,9 @@ const store = createStore({
         },
         Foyda_Act: (context, request) => {
             context.commit('Foyda_Mut', request);
+        },
+        Savdo2_ac: (context, request) => {
+            context.commit('Savdo2_Mut', request)
         }
     },
     getters: {

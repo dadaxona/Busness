@@ -26,7 +26,8 @@
                 'FilterAuthAc',
                 'Tolov_Avt',
                 'Zaqaz_Olish_Ac',
-                'SavdoBut_Ac'
+                'SavdoBut_Ac',
+                'Savdo2_ac'
             ]),   
             FilterAuth(){
                 this.FilterAuthAc();
@@ -113,9 +114,24 @@
                     'method': 'post',
                     'url': 'sotuv_post_id',
                     'id': item.id,
+                    'savdoId': 1
                 });
                 this.oknaSavdo2 = true;
             },
+            objecta2(typ){
+                this.Savdo2_ac({
+                    'typ': typ
+                });
+            },
+            SavdoBut222(item){
+                this.SavdoBut_Ac({
+                    'method': 'post',
+                    'url': 'sotuv_post_id',
+                    'id': item.id,
+                    'savdoId': 2
+                });
+                this.oknaSavdo2 = true;
+            }
         },
         computed: {
           ...mapGetters({
@@ -140,7 +156,11 @@
                     <div class="header-part-right">
                         <i class="i-Full-Screen header-icon d-none d-sm-inline-block" data-fullscreen=""></i>
                     <div class="dropdown" v-on:click="modalsokna(true)">
-                        <div class="badge-top-container"><span class="badge badge-primary">{{ objectauth.srok }}</span><i class="i-Bell text-muted header-icon"></i></div>
+                        <div class="badge-top-container">
+                            <span v-if="objectauth.srok" class="badge badge-primary alre">{{ objectauth.srok }}</span>
+                            <span v-else></span>
+                            <i class="i-Bell text-muted header-icon"></i>
+                        </div>
                     </div>
                     <div class="dropdown">
                         <div class="user col align-self-end"><img id="userDropdown" src="../../dist-assets/images/faces/1.jpg" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
@@ -259,7 +279,7 @@
                                 <div class="card-body text-center"><i class="i-Financial"></i>
                                     <div class="content">
                                         <p class="text-muted mt-2 mb-0">Savdo</p>
-                                        <p class="text-primary text-24 line-height-1 mb-2">$ {{ objectauth.savdo }}</p>
+                                        <p class="text-primary text-24 line-height-1 mb-2">$ {{ objectauth.savdo + objectauth.savdo2 }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -295,10 +315,19 @@
             <button type="button" class="close mb-3 mt-3 mr-3" v-on:click="oknaSavdobut(false)">
                 <span aria-hidden="true" v-on:click="showModalEditor = false">&times;</span>
             </button>
+            <br>
+            <div class="row">
+                <a class="col-6 text-center bor_but" v-on:click="objecta2(1)">
+                    Doyimiy
+                </a>
+                <a class="col-6 text-center bor_but2" v-on:click="objecta2(2)">
+                    Burlamchi
+                </a>
+            </div>
             <div class="table-responsive">
                 <div class="scro">
                     <table class="table scroltab">
-                        <thead>
+                        <thead v-if="objectauth2.tug">
                             <tr>
                                 <th>Mijoz</th>
                                 <th>Savdo</th>
@@ -306,46 +335,75 @@
                                 <th>Karz</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        <tr v-for="item in objectauth2.savdo" :key="item.id" v-on:click="SavdoBut(item)">
-                            <td> 
-                                <span style="color: #2b64e2;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-                                    </svg>
-                                </span>
-                                {{ item.mijoz }}
-                            </td>
-                            <td>
-                                <span style="color: #6363ff;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
-                                        <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
-                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                        <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
-                                    </svg>
-                                </span>
-                                {{ item.jamisumma }}
-                            </td>
-                            <td>
-                                <span style="color:green">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-calendar-date-fill" viewBox="0 0 16 16">
-                                        <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zm5.402 9.746c.625 0 1.184-.484 1.184-1.18 0-.832-.527-1.23-1.16-1.23-.586 0-1.168.387-1.168 1.21 0 .817.543 1.2 1.144 1.2z"/>
-                                        <path d="M16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-6.664-1.21c-1.11 0-1.656-.767-1.703-1.407h.683c.043.37.387.82 1.051.82.844 0 1.301-.848 1.305-2.164h-.027c-.153.414-.637.79-1.383.79-.852 0-1.676-.61-1.676-1.77 0-1.137.871-1.809 1.797-1.809 1.172 0 1.953.734 1.953 2.668 0 1.805-.742 2.871-2 2.871zm-2.89-5.435v5.332H5.77V8.079h-.012c-.29.156-.883.52-1.258.777V8.16a12.6 12.6 0 0 1 1.313-.805h.632z"/>
-                                    </svg>
-                                </span>
-                                {{ item.srok }}
-                            </td>
-                            <td>
-                                <span style="color: #d34e15;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-currency-dollar" viewBox="0 0 16 16">
-                                        <path d="M4 10.781c.148 1.667 1.513 2.85 3.591 3.003V15h1.043v-1.216c2.27-.179 3.678-1.438 3.678-3.3 0-1.59-.947-2.51-2.956-3.028l-.722-.187V3.467c1.122.11 1.879.714 2.07 1.616h1.47c-.166-1.6-1.54-2.748-3.54-2.875V1H7.591v1.233c-1.939.23-3.27 1.472-3.27 3.156 0 1.454.966 2.483 2.661 2.917l.61.162v4.031c-1.149-.17-1.94-.8-2.131-1.718H4zm3.391-3.836c-1.043-.263-1.6-.825-1.6-1.616 0-.944.704-1.641 1.8-1.828v3.495l-.2-.05zm1.591 1.872c1.287.323 1.852.859 1.852 1.769 0 1.097-.826 1.828-2.2 1.939V8.73l.348.086z"/>
-                                    </svg>-
-                                </span>
-                                <span class="text-danger">
-                                    {{ item.karz }}
-                                </span>
-                            </td>
-                        </tr>
+                        <thead v-else>
+                            <tr>
+                                <th>Sana</th>
+                                <th>Savdo</th>
+                            </tr>
+                        </thead>
+                        <tbody v-if="objectauth2.tug">
+                            <tr v-for="item in objectauth2.tugl" :key="item.id" v-on:click="SavdoBut(item)">
+                                <td> 
+                                    <span style="color: #2b64e2;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                                        </svg>
+                                    </span>
+                                    {{ item.mijoz }}
+                                </td>
+                                <td>
+                                    <span style="color: #6363ff;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
+                                            <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                            <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
+                                        </svg>
+                                    </span>
+                                    {{ item.jamisumma }}
+                                </td>
+                                <td>
+                                    <span style="color:green">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-calendar-date-fill" viewBox="0 0 16 16">
+                                            <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zm5.402 9.746c.625 0 1.184-.484 1.184-1.18 0-.832-.527-1.23-1.16-1.23-.586 0-1.168.387-1.168 1.21 0 .817.543 1.2 1.144 1.2z"/>
+                                            <path d="M16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-6.664-1.21c-1.11 0-1.656-.767-1.703-1.407h.683c.043.37.387.82 1.051.82.844 0 1.301-.848 1.305-2.164h-.027c-.153.414-.637.79-1.383.79-.852 0-1.676-.61-1.676-1.77 0-1.137.871-1.809 1.797-1.809 1.172 0 1.953.734 1.953 2.668 0 1.805-.742 2.871-2 2.871zm-2.89-5.435v5.332H5.77V8.079h-.012c-.29.156-.883.52-1.258.777V8.16a12.6 12.6 0 0 1 1.313-.805h.632z"/>
+                                        </svg>
+                                    </span>
+                                    {{ item.srok }}
+                                </td>
+                                <td>
+                                    <span style="color: #d34e15;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-currency-dollar" viewBox="0 0 16 16">
+                                            <path d="M4 10.781c.148 1.667 1.513 2.85 3.591 3.003V15h1.043v-1.216c2.27-.179 3.678-1.438 3.678-3.3 0-1.59-.947-2.51-2.956-3.028l-.722-.187V3.467c1.122.11 1.879.714 2.07 1.616h1.47c-.166-1.6-1.54-2.748-3.54-2.875V1H7.591v1.233c-1.939.23-3.27 1.472-3.27 3.156 0 1.454.966 2.483 2.661 2.917l.61.162v4.031c-1.149-.17-1.94-.8-2.131-1.718H4zm3.391-3.836c-1.043-.263-1.6-.825-1.6-1.616 0-.944.704-1.641 1.8-1.828v3.495l-.2-.05zm1.591 1.872c1.287.323 1.852.859 1.852 1.769 0 1.097-.826 1.828-2.2 1.939V8.73l.348.086z"/>
+                                        </svg>-
+                                    </span>
+                                    <span class="text-danger">
+                                        {{ item.karz }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody v-else>
+                            <tr v-for="item in objectauth2.tugl" :key="item.id" v-on:click="SavdoBut222(item)">
+                                <td> 
+                                    <span style="color:green">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-calendar-date-fill" viewBox="0 0 16 16">
+                                            <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zm5.402 9.746c.625 0 1.184-.484 1.184-1.18 0-.832-.527-1.23-1.16-1.23-.586 0-1.168.387-1.168 1.21 0 .817.543 1.2 1.144 1.2z"/>
+                                            <path d="M16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-6.664-1.21c-1.11 0-1.656-.767-1.703-1.407h.683c.043.37.387.82 1.051.82.844 0 1.301-.848 1.305-2.164h-.027c-.153.414-.637.79-1.383.79-.852 0-1.676-.61-1.676-1.77 0-1.137.871-1.809 1.797-1.809 1.172 0 1.953.734 1.953 2.668 0 1.805-.742 2.871-2 2.871zm-2.89-5.435v5.332H5.77V8.079h-.012c-.29.156-.883.52-1.258.777V8.16a12.6 12.6 0 0 1 1.313-.805h.632z"/>
+                                        </svg>
+                                    </span>
+                                    {{ item.sana }}
+                                </td>
+                                <td>
+                                    <span style="color: #6363ff;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
+                                            <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                            <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
+                                        </svg>
+                                    </span>
+                                    {{ item.jamisumma }}
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
