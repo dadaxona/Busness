@@ -41,6 +41,8 @@ const store = createStore({
         objects4: [],
         objects5: [],
         objects6: [],
+        objecfiltr: [],
+        itoga: 0,
         status: '',
         jami: '',
         togl: '',
@@ -145,6 +147,7 @@ const store = createStore({
                 state.objects1 = data.data.data;
                 state.objects2 = data.data.data2;
                 state.objects3 = data.data.data3;
+                state.objecfiltr = data.data.data3;
                 state.objects4 = data.data.data4;
             });
         },
@@ -309,7 +312,18 @@ const store = createStore({
                 state.objectauth2.tugl = state.objectauth2.savdo2;
                 state.objectauth2.tug = false;
             }
-        }
+        },
+        Fil_Mut: (state, request) => {
+            if (request.resul) {
+                if (request.typ == 1) {            
+                    state.objects3 = state.objecfiltr.filter((e) => { if (e.tip == request.resul) return e; });
+                } else {
+                    state.objects3 = state.objecfiltr.filter((e) => { if (e.adress == request.resul) return e; });
+                }                
+            } else {
+                state.objects3 = state.objecfiltr;
+            }
+        },
     },
     actions: {
         FilterAuthAc (context) {
@@ -428,7 +442,7 @@ const store = createStore({
             const local = JSON.parse(localStorage.getItem('sotuv'));
             for (let i = 0; i < state.objectauth2.karzina.length; i++) {
                 if (state.objectauth2.karzina[i].zaqazId == request.id) {
-                    var sq = state.Items.find(e => { if (e.id === state.objectauth2.karzina[i].tovar) return e; })
+                    var sq = state.Items.find(e => { if (e.id === state.objectauth2.karzina[i].tovar) return e; });
                     var cheg = '';
                     var son = '';
                     if (state.objectauth2.karzina[i].chegrma) {
@@ -647,7 +661,11 @@ const store = createStore({
         },
         Savdo2_ac: (context, request) => {
             context.commit('Savdo2_Mut', request)
-        }
+        },
+        Fil_Ac: (context, request) => {
+            context.commit('Fil_Mut', request);
+        },
+
     },
     getters: {
         authtenticat (state) {
@@ -688,6 +706,17 @@ const store = createStore({
         },
         objects3(state){
             return state.objects3;
+        },
+        itoga(state){
+            state.itoga = 0;
+            for (let i = 0; i <  state.objects3.length; i++) {
+                if (state.objects3[i].valyuta) {
+                    state.itoga += parseFloat(state.objects3[i].olinish) * parseFloat(state.objects3[i].summa) * parseFloat(state.objects3[i].soni);   
+                } else {
+                    state.itoga += parseFloat(state.objects3[i].olinish) * parseFloat(state.objects3[i].soni);                    
+                }            
+            }
+            return state.itoga;
         },
         valyudata(state){
             return state.objects4;

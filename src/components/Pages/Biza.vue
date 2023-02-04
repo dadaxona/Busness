@@ -143,9 +143,6 @@
               'login': this.login,
               'token': this.token
             });
-          },
-          handleSubmit(fsdfsdf){
-            console.log(fsdfsdf)
           }
         },
         computed: {
@@ -205,60 +202,20 @@
                         </thead>
                         <tbody>
                           <tr v-for="item in objects3" :key="item.id" class="tir">
+                            <td>{{ item.tip }}</td>
+                            <td>{{ item.adress }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.ogoh }}</td>
+                            <td>{{ item.kod }}</td>
+                            <td>{{ item.soni }}</td>
+                            <td>{{ item.olinish }}</td>
+                            <td>{{ item.sotilish }}</td>
+                            <td>{{ item.sotilish2 }}</td>
+                            <td>{{ item.valyuta }}</td>
                             <td>
-                              <form @submit.prevent="handleSubmit(fsdfsdf)">
-                                <input type="text" name="" id="" :value="item.tip">
-                              </form>
-                            </td>
-                            <td>
-                              <form @submit.prevent="handleSubmit(fsdfsdf)">
-                                <input type="text" name="" id="" :value="item.adress">
-                              </form>
-                            </td>
-                            <td>
-                              <form @submit.prevent="handleSubmit(fsdfsdf)">
-                                <input type="text" name="" id="" :value="item.name">
-                              </form>
-                            </td>
-                            <td>
-                              <form @submit.prevent="handleSubmit(fsdfsdf)">
-                                <input type="text" name="" id="" :value="item.ogoh">
-                              </form>
-                            </td>
-                            <td>
-                              <form @submit.prevent="handleSubmit(fsdfsdf)">
-                                <input type="text" name="" id="" :value="item.kod">
-                              </form>
-                            </td>
-                            <td>
-                              <form @submit.prevent="handleSubmit(fsdfsdf)">
-                                <input type="text" name="" id="" :value="item.soni">
-                                </form>
-                            </td>
-                            <td>
-                            <form @submit.prevent="handleSubmit(fsdfsdf)">
-                              <input type="text" name="" id="" :value="item.olinish">
-                              </form>
-                            </td>
-                            <td>
-                              <form @submit.prevent="handleSubmit(fsdfsdf)">
-                                <input type="text" name="" id="" :value="item.sotilish">
-                              </form>
-                            </td>
-                            <td>
-                              <form @submit.prevent="handleSubmit(fsdfsdf)">
-                                <input type="text" name="" id="" :value="item.sotilish2">
-                              </form>
-                            </td>
-                            <td>
-                              <form @submit.prevent="handleSubmit(fsdfsdf)">
-                                <input type="text" name="" id="" :value="item.valyuta">
-                              </form>
-                            </td>
-                            <td>
-                              <!-- <a class="text-success mr-2" v-on:click="edittip(item)">
+                              <a class="text-success mr-2" v-on:click="edittip(item)">
                                 <i class="nav-icon i-Pen-2 font-weight-bold"></i>
-                              </a> -->
+                              </a>
                               <a class="text-danger mr-2" v-on:click="delettip(item.id, item.name)">
                                 <i class="nav-icon i-Close-Window font-weight-bold"></i>
                               </a>

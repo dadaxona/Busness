@@ -54,6 +54,18 @@
 .tir{
     border-bottom: 1px solid rgb(227, 227, 227);
 }
+.tipse{
+    width: 15%;
+    padding: 7px;
+    position: absolute;
+    right: 39%;
+}
+.adrese{
+    width: 15%;
+    padding: 7px;
+    position: absolute;
+    right: 22%;
+}
 .div1{
     position: fixed;
     height: 100vh;
