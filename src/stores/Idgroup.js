@@ -94,7 +94,7 @@ const idgroup = {
                                             "login": data.data.user.login, 
                                             "biznesty": data.data.user.biznes, 
                                             "token": data.data.user.token,
-                                            'method_id': '',
+                                            'method_id': data.data.user.magazinId,
                                             'action': data.data.user.status
                                         }));                                        
                                     } else {
@@ -109,15 +109,15 @@ const idgroup = {
                                         }));  
                                     }
                                 } else {
-                                    localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": ''}));
+                                    localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'action': ''}));
                                     window.location.href = '/';
                                 }
                             } else {
-                                localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": ''}));
+                                localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'action': ''}));
                                 window.location.href = '/';
                             }
                         } else {
-                            localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": ''}));
+                            localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'action': ''}));
                             window.location.href = '/';
                         }
                     })
@@ -157,8 +157,8 @@ const idgroup = {
                             'method_id': data.data.data.magazinId,
                             'action': data.data.data.status
                         }));
+                        window.location.href = 'dash';
                     }
-                    window.location.href = 'dash';
                 } else {
 
                 }
@@ -342,7 +342,7 @@ const idgroup = {
                 data: request
             }).then(data => {
                 if (data.data == 200) {
-                    localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": ''}));
+                    localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'action': ''}));
                     window.location.href = '/';
                 } else {
                     
@@ -736,6 +736,17 @@ const idgroup = {
             context.commit('Saqlas_Kassa_Mut', request)
         },
         Saqlas_Kassa_Ac: (context, request) => {
+            axios({
+                method: request.method,
+                url: 'http://localhost:1122/api/' + request.url2,
+                data: request,
+            }).then(data => {
+                if (data.data == 200) {
+                    context.commit('Saqlas_Kassa_Mut', request)
+                } else {}
+            });
+        },
+        Role_Ac: (context, request) => {
             axios({
                 method: request.method,
                 url: 'http://localhost:1122/api/' + request.url2,

@@ -7,6 +7,11 @@
 .scroltab2{
     height: 211px;
 }
+.ffdd{
+    border: none;
+    color: #47404f;
+    cursor: pointer;
+}
 .suari{
     position: fixed;
     width: 100%;
@@ -72,15 +77,30 @@
     width: 100%;
     background-color: rgba(0, 0, 0, .5);
     top: 0;
+    left: 0;
     z-index: 100;
 }
 .div2{
     position: absolute;
-    background-color: white;
-    width: 50%;
+    background-color: #ffffff;
+    width: 25%;
     height: 100vh;
     right: 0;
     top: 0%;
+}
+.tdp{
+    position: relative;
+    left: 68%;
+
+}
+.div145{
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    top: 0;
+    left: 0;
+    z-index: 103;
 }
 .div25457{
     position: absolute;
@@ -228,5 +248,5 @@
     100%{
         opacity:1;
     }
-     
  }
+ 

@@ -34,7 +34,7 @@
                 this.FilterAuthAc();
             },
             Logaut_user(){
-                localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": ''}));
+                localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '','method_id': '', 'action': ''}));
                 this.FilterAuth();
             },
             modalsokna(typ){
@@ -163,9 +163,9 @@
             <div class="logo"><img src="../../dist-assets/images/logo.png" alt="" /></div>         
                 <div style="margin: auto"></div>                    
                     <div class="header-part-right">
-                    <div v-if="auth.action == brend">
-                        <select name="" id="" v-model="maga">
-                            <option value="">--Tanlang--</option>
+                    <div v-if="auth.status == brend">
+                        <select name="" id="" v-model="maga" class="ffdd">
+                            <option value="">Magazin</option>
                             <option v-for="itema in objectauth2.magazin" :value="itema.id">{{ itema.name }}</option>
                         </select>
                     </div>
