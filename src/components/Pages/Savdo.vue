@@ -57,14 +57,15 @@
             this.FilterAuthAc();
           },
           Sqlad(){
-            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
-            if (auth) {
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
               this.Live_Search_Sqlad({
                 'method': 'post',
                 'url': 'live_search',
                 'login': this.login,
                 'token': this.token,
-                'magazinId': auth,
+                'magazinId': auth.method_id,
+                'magazin': auth.method_name,
                 'status': this.statustyp,
               });
             } else {}
@@ -295,8 +296,8 @@
             this.bank = this.JamiSumma2;
           },
           OplataStart(){
-            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
-            if (auth) {
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
               var kurs = JSON.parse(localStorage.getItem('Kurs'));
               var qarz = '';
               if (this.chesxbox == 1 && this.Kamentariya) {
@@ -307,7 +308,8 @@
                   'name': this.Kamentariya,
                   'login': this.login,
                   'token': this.token,
-                  'magazinId': auth,
+                  'magazinId': auth.method_id,
+                  'magazin': auth.method_name,
                   'status': this.statustyp,
                   'local': JSON.parse(localStorage.getItem('sotuv'))
                 }); 
@@ -335,7 +337,8 @@
                   'vsumma': kurs.u,
                   'login': this.login,
                   'token': this.token,
-                  'magazinId': auth,
+                  'magazinId': auth.method_id,
+                  'magazin': auth.method_name,
                   'status': this.statustyp,
                   'local': JSON.parse(localStorage.getItem('sotuv'))
                 });              
@@ -362,8 +365,8 @@
         },
         watch: {
           search(row){
-            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
-            if (auth) {
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
               this.Live_Search_Sqlad({
                 'method': 'post',
                 'url': 'live_search',
@@ -371,7 +374,8 @@
                 'login': this.login,
                 'token': this.token,
                 'status': this.statustyp,
-                'magazinId': auth,
+                'magazinId': auth.method_id,
+                'magazin': auth.method_name,
               });
             }else {}
           },

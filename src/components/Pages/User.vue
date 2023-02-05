@@ -51,8 +51,8 @@
             this.Clears();
           },
           SaveUser(){
-            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
-            if (auth) {
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
               this.OriginalMethodUrlPost({
                 'method': 'post',
                 'url2': 'mijozcreate',
@@ -60,7 +60,8 @@
                 'id': this.id,
                 'login': this.login,
                 'token': this.token,
-                'magazinId': auth,
+                'magazinId': auth.method_id,
+                'magazin': auth.method_name,
                 'status': this.statustyp,
                 'name': this.name,
                 'firma': this.firma,
@@ -74,14 +75,15 @@
             }
           },
           OriginalGet(){
-            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
-            if (auth) {
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
               this.OriginalMethodUrlGet({
                 'method': 'post',
                 'url': 'mijozget',
                 'login': this.login,
                 'token': this.token,
-                'magazinId': auth,
+                'magazinId': auth.method_id,
+                'magazin': auth.method_name,
                 'status': this.statustyp,
               });
             }else{}

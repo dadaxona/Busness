@@ -1,6 +1,7 @@
 <script>
     import { RouterLink } from 'vue-router'
     import { mapState, mapGetters, mapMutations, mapActions} from 'vuex'
+    const auth = JSON.parse(localStorage.getItem('auth'));
     export default {
         data() {
             return {
@@ -132,15 +133,25 @@
                     'savdoId': 2
                 });
                 this.oknaSavdo2 = true;
+            },
+            autherMethod(){
+                this.maga = auth.method_id;
+            },
+            magarew(maga){
+                var mid = this.objectauth2.magazin.find(e => { return e.id == maga });
+                if (mid) {
+                    auth.method_id = mid.id;
+                    auth.method_name = mid.name;                  
+                } else {
+                    auth.method_id = '';
+                    auth.method_name = '';  
+                }
+                localStorage.setItem('auth', JSON.stringify(auth));
+                this.FilterAuth();  
             }
         },
         watch: {
-            maga(){
-                const auth = JSON.parse(localStorage.getItem('auth'))
-                auth.method_id = this.maga;
-                localStorage.setItem('auth', JSON.stringify(auth));
-                this.FilterAuth();
-            }
+      
         },
         computed: {
           ...mapGetters({
@@ -153,6 +164,7 @@
         },
         mounted() {
             this.FilterAuth();
+            this.autherMethod();
         }
     }
 </script>
@@ -164,10 +176,13 @@
                 <div style="margin: auto"></div>                    
                     <div class="header-part-right">
                     <div v-if="auth.status == brend">
-                        <select name="" id="" v-model="maga" class="ffdd">
+                        <select name="" id="" v-on:change="magarew(maga)" v-model="maga" class="ffdd">
                             <option value="">Magazin</option>
                             <option v-for="itema in objectauth2.magazin" :value="itema.id">{{ itema.name }}</option>
                         </select>
+                    </div>
+                    <div v-else>
+
                     </div>
                     <i class="i-Full-Screen header-icon d-none d-sm-inline-block" data-fullscreen=""></i>
                     <div class="dropdown" v-on:click="modalsokna(true)">

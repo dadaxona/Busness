@@ -31,14 +31,15 @@
             this.statustyp = auth.action
           },
           getTip(){
-            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
-            if (auth) {
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
               this.OriginalMethodUrlGet({
                 'method': 'post',
                 'url': 'gettip',
                 'login': this.login,
                 'token': this.token,
-                'magazinId': auth,
+                'magazinId': auth.method_id,
+                'magazin': auth.method_name,
                 'status': this.statustyp,
               });
             } else {}
@@ -49,8 +50,8 @@
             this.showModal = true
           },
           CreateTip(){
-            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
-            if (auth) {
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
               this.OriginalMethodUrlPost({
                 'method': 'post',
                 'url2': 'post_update',
@@ -60,7 +61,8 @@
                 'login': this.login,
                 'token': this.token,
                 'status': this.statustyp,
-                'magazinId': auth,
+                'magazinId': auth.method_id,
+                'magazin': auth.method_name,
               });
               this.Clears();
             } else {}
@@ -91,15 +93,16 @@
         },
         watch: {
           tiptov(row){
-            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
-              if (auth) {
+            const auth = JSON.parse(localStorage.getItem('auth'));
+              if (auth.method_id) {
               this.OriginalMethodUrlGet({
                 'method': 'post',
                 'url': 'gettip',
                 'search': row,
                 'login': this.login,
                 'token': this.token,
-                'magazinId': auth,
+                'magazinId': auth.method_id,
+                'magazin': auth.method_name,
                 'status': this.statustyp,
               });
             } else {}
@@ -134,6 +137,7 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
+                        {{Itemobjects}}
                         <tbody>
                           <tr v-for="item in Itemobjects" :key="item.id" class="tir">
                             <td>{{ item.name }}</td>

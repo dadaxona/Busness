@@ -88,36 +88,50 @@ const idgroup = {
                                     state.objectauth2.magazin = data.data.magazin;
 
                                     if (data.data.user.status == 'brend') {
-                                        localStorage.setItem('auth', JSON.stringify({
-                                            "auth": true,
-                                            "username": data.data.user.username ,
-                                            "login": data.data.user.login, 
-                                            "biznesty": data.data.user.biznes, 
-                                            "token": data.data.user.token,
-                                            'method_id': data.data.user.magazinId,
-                                            'action': data.data.user.status
-                                        }));                                        
+                                        const auth = JSON.parse(localStorage.getItem('auth'));
+                                        if (auth.method_id) {
+                                            localStorage.setItem('auth', JSON.stringify({
+                                                'auth': true,
+                                                'username': data.data.user.username ,
+                                                'login': data.data.user.login, 
+                                                'biznesty': data.data.user.biznes, 
+                                                'token': data.data.user.token,
+                                                'method_id': auth.method_id,
+                                                'method_name': auth.method_name,
+                                                'action': data.data.user.status
+                                            }));  
+                                        } else {
+                                            localStorage.setItem('auth', JSON.stringify({
+                                                'auth': true,
+                                                'username': data.data.user.username ,
+                                                'login': data.data.user.login, 
+                                                'biznesty': data.data.user.biznes, 
+                                                'token': data.data.user.token,
+                                                'action': data.data.user.status
+                                            }));                                            
+                                        }
                                     } else {
                                         localStorage.setItem('auth', JSON.stringify({
-                                            "auth": true,
-                                            "username": data.data.user.username,
-                                            "login": data.data.user.login, 
-                                            "biznesty": data.data.user.biznes, 
-                                            "token": data.data.user.token,
+                                            'auth': true,
+                                            'username': data.data.user.username,
+                                            'login': data.data.user.login, 
+                                            'biznesty': data.data.user.biznes, 
+                                            'token': data.data.user.token,
                                             'method_id': data.data.user.magazinId,
+                                            'method_name': data.data.user.magazin,
                                             'action': data.data.user.status
                                         }));  
                                     }
                                 } else {
-                                    localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'action': ''}));
+                                    localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'method_name': '', 'action': ''}));
                                     window.location.href = '/';
                                 }
                             } else {
-                                localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'action': ''}));
+                                localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'method_name': '', 'action': ''}));
                                 window.location.href = '/';
                             }
                         } else {
-                            localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'action': ''}));
+                            localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'method_name': '', 'action': ''}));
                             window.location.href = '/';
                         }
                     })
@@ -143,7 +157,6 @@ const idgroup = {
                             "login": data.data.data.login, 
                             "biznesty": data.data.data.biznes, 
                             "token": data.data.data.token,
-                            'method_id': '',
                             'action': data.data.data.status
                         }));
                         window.location.href = 'dash';
@@ -155,6 +168,7 @@ const idgroup = {
                             "biznesty": data.data.data.biznes, 
                             "token": data.data.data.token,
                             'method_id': data.data.data.magazinId,
+                            'method_name': data.data.data.magazin,
                             'action': data.data.data.status
                         }));
                         window.location.href = 'dash';
@@ -342,7 +356,7 @@ const idgroup = {
                 data: request
             }).then(data => {
                 if (data.data == 200) {
-                    localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'action': ''}));
+                    localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'method_name': '', 'action': ''}));
                     window.location.href = '/';
                 } else {
                     
@@ -399,7 +413,7 @@ const idgroup = {
                 data: request
             }).then(data => {
                 if (data.data == 200){
-                    localStorage.setItem('auth', JSON.stringify({"auth": true,"username": request.name , "login": request.login2, "biznesty": request.biznes, "token": request.token}));
+                    localStorage.setItem('auth', JSON.stringify({"auth": true,"username": request.name , "login": request.login2, "biznesty": request.biznes, "token": request.token,"method_id": request.method_id}));
                     context.commit('OrigiPost_Mut', request)                    
                 }
             });

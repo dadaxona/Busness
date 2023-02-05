@@ -31,8 +31,8 @@
             this.statustyp = auth.action
           },
           CreateYetkazuvchi(){
-            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
-            if (auth) {
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
               this.OriginalMethodUrlPost({
                 'method': 'post',
                 'url2': 'post_update_yetkaz',
@@ -42,7 +42,7 @@
                 'summa': this.summa,
                 'login': this.login,
                 'token': this.token,
-                'magazinId': auth,
+                'magazinId': auth.method_name,
                 'status': this.statustyp,
               });
               this.Clears();              
@@ -57,14 +57,14 @@
             this.showModal = true;
           },
           getTip(){
-            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
-            if (auth) {
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
               this.OriginalMethodUrlGet({
                 'method': 'post',
                 'url': 'getyetkaz',
                 'login': this.login,
                 'token': this.token,
-                'magazinId': auth,
+                'magazinId': auth.method_name,
                 'status': this.statustyp,
               });
             } else {}
@@ -96,15 +96,15 @@
         },
         watch: {
           yerkazse(row){
-            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
-            if (auth) {
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
               this.OriginalMethodUrlGet({
                 'method': 'post',
                 'url': 'getyetkaz',
                 'search': row,
                 'login': this.login,
                 'token': this.token,
-                'magazinId': auth,
+                'magazinId': auth.method_name,
                 'status': this.statustyp,
               });
             }else{}

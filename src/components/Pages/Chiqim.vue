@@ -32,8 +32,8 @@
             this.statustyp = auth.action
           },
           CreateChiqim(){
-            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
-            if (auth) {
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
               this.OriginalMethodUrlPost({
                 'method': 'post',
                 'url2': 'chiqim_post_update',
@@ -44,7 +44,8 @@
                 'summa': this.summa,
                 'login': this.login,
                 'token': this.token,
-                'magazinId': auth,
+                'magazinId': auth.method_id,
+                'magazin': auth.method_name,
                 'status': this.statustyp,
               });
               this.Clears();
@@ -63,14 +64,15 @@
             this.Clears();
           },
           getMethod(){
-            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
-            if (auth) {
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
               this.OriginalMethodUrlGet({
                 'method': 'post',
                 'url': 'chiqim_get',
                 'login': this.login,
                 'token': this.token,
-                'magazinId': auth,
+                'magazinId': auth.method_id,
+                'magazin': auth.method_name,
                 'status': this.statustyp,
               });
             }else{}
@@ -97,15 +99,16 @@
         },
         watch: {
           chiqimse(row){
-            const auth = JSON.parse(localStorage.getItem('auth')).method_id;
-            if (auth) {
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
               this.OriginalMethodUrlGet({
                 'method': 'post',
                 'url': 'chiqim_get',
                 'search': row,
                 'login': this.login,
                 'token': this.token,
-                'magazinId': auth,
+                'magazinId': auth.method_id,
+                'magazin': auth.method_name,
                 'status': this.statustyp,
               });
             }else{}
