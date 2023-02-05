@@ -155,7 +155,7 @@
         },
         computed: {
           ...mapGetters({
-            auth:'authtenticat',
+            authtenticat:'authtenticat',
             objectauth: 'objectauth',
             objectauth2: 'objectauth2',
             savdoobj: 'savdoobj',
@@ -175,7 +175,7 @@
             <div class="logo"><img src="../../dist-assets/images/logo.png" alt="" /></div>         
                 <div style="margin: auto"></div>                    
                     <div class="header-part-right">
-                    <div v-if="auth.status == brend">
+                    <div v-if="authtenticat.status == 'brend'">
                         <select name="" id="" v-on:change="magarew(maga)" v-model="maga" class="ffdd">
                             <option value="">Magazin</option>
                             <option v-for="itema in objectauth2.magazin" :value="itema.id">{{ itema.name }}</option>
@@ -196,9 +196,9 @@
                         <div class="user col align-self-end"><img id="userDropdown" src="../../dist-assets/images/faces/1.jpg" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                 <div class="dropdown-header">
-                                    <i class="i-Lock-User mr-1"></i> {{ auth.login }}
+                                    <i class="i-Lock-User mr-1"></i> {{ authtenticat.login }}
                                 </div>
-                                <RouterLink v-if="auth.status == brend" class="dropdown-item" to="/setting">Account settings</RouterLink>
+                                <RouterLink v-if="authtenticat.status == 'brend'" class="dropdown-item" to="/setting">Account settings</RouterLink>
                                 <a class="dropdown-item" v-on:click="Logaut_user">Sign out</a>
                             </div>
                         </div>
@@ -210,7 +210,7 @@
                 <div class="header-topnav">
                     <div class="container-fluid">
                         <div class="topnav rtl-ps-none" id="" data-perfect-scrollbar="" data-suppress-scroll-x="true">
-                            <ul class="menu float-left">                            
+                            <ul v-if="authtenticat.status == 'brend'" class="menu float-left">
                                 <li>
                                     <div>
                                         <div>
@@ -280,6 +280,79 @@
                                     </div>
                                 </li>
                                 <!--end-doc  -->
+                            </ul>
+                            <ul v-else class="menu float-left">
+                                <li>
+                                    <div>
+                                        <div>
+                                            <label class="toggle" for="drop-2">Bosh sahifa</label><RouterLink to="dash"><i class="nav-icon mr-2 i-Bar-Chart"></i> Bosh sahifa</RouterLink>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <div>
+                                            <label class="toggle" for="drop-2">Savdo</label><RouterLink to="treding"><i class="nav-icon mr-2 i-Suitcase"></i>Savdo</RouterLink>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- end ui kits-->
+                                <li v-if="authtenticat.valyuta == 1">
+                                    <div>
+                                        <div>
+                                            <label class="toggle" for="drop-2">Valyuta</label><RouterLink to="valyuta"><i class="nav-icon i-Library mr-2"></i> Valyuta </RouterLink>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- end extra uikits-->
+                                <li v-if="authtenticat.mijoz == 1">
+                                    <div>
+                                        <div>
+                                            <label class="toggle" for="drop-2">Mijoz</label><RouterLink to="user"><i class="nav-icon mr-2 i-Computer-Secure"></i> Mijoz</RouterLink>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- end apps-->
+                                <li v-if="authtenticat.tip == 1">
+                                    <div>
+                                        <div>
+                                            <label class="toggle" for="drop-2">Tovar tip</label><RouterLink to="tovartip"><i class="nav-icon mr-2 i-File-Clipboard-File--Text"></i> Tovar tip</RouterLink>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- end Forms-->
+                                <li v-if="authtenticat.yetkazu == 1">
+                                    <div>
+                                        <div>
+                                            <label class="toggle" for="drop-2">Yetkazuvchi</label><RouterLink to="yetkazuvchi"><i class="nav-icon mr-2 i-Bar-Chart-5"></i> Yetkazuvchi</RouterLink>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li v-if="authtenticat.sqlad == 1">
+                                    <div>
+                                        <div>
+                                            <label class="toggle" for="drop-2">Sqlad</label><RouterLink to="sqlad"><i class="nav-icon mr-2 i-Windows-2"></i> Sqlad</RouterLink>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!--end-datatables-->
+                                <li v-if="authtenticat.chiqim == 1">
+                                    <div>
+                                        <div>
+                                            <label class="toggle" for="drop-2">Chiqim</label><RouterLink to="chiqim"><i class="nav-icon mr-2 i-Administrator"></i> Chiqim</RouterLink>
+                                        </div>
+                                    </div>
+                                </li>                  
+                                <li v-if="authtenticat.foyda == 1">
+                                    <div>
+                                        <div>
+                                            <label class="toggle" for="drop-2">Foyda</label><RouterLink to="foyda"><i class="nav-icon mr-2 i-File-Horizontal-Text"></i> Foyda</RouterLink>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li v-else>
+
+                                </li>
                             </ul>
                         </div>
                     </div>

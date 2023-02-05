@@ -68,7 +68,7 @@ const idgroup = {
                     }).then(data => {
                         if (data.data.code == 200) {
                             if (data.data.user.login == auth.login && data.data.user.token == auth.token) {
-                                state.auth = auth;
+                                state.auth = data.data.user;
                                 state.objectauth.mijoz = data.data.mijoz.length;
                                 state.objectauth.savdo = data.data.savdo.length;
                                 state.objectauth.savdo2 = data.data.savdo2.length;
