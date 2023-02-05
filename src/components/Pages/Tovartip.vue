@@ -137,7 +137,6 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        {{Itemobjects}}
                         <tbody>
                           <tr v-for="item in Itemobjects" :key="item.id" class="tir">
                             <td>{{ item.name }}</td>
