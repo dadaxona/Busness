@@ -42,7 +42,8 @@
                 'summa': this.summa,
                 'login': this.login,
                 'token': this.token,
-                'magazinId': auth.method_name,
+                'magazinId': auth.method_id,
+                'magazin': auth.method_name,
                 'status': this.statustyp,
               });
               this.Clears();              
@@ -64,7 +65,8 @@
                 'url': 'getyetkaz',
                 'login': this.login,
                 'token': this.token,
-                'magazinId': auth.method_name,
+                'magazinId': auth.method_id,
+                'magazin': auth.method_name,
                 'status': this.statustyp,
               });
             } else {}
@@ -104,7 +106,8 @@
                 'search': row,
                 'login': this.login,
                 'token': this.token,
-                'magazinId': auth.method_name,
+                'magazinId': auth.method_id,
+                'magazin': auth.method_name,
                 'status': this.statustyp,
               });
             }else{}

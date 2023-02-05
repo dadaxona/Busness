@@ -85,8 +85,6 @@ const idgroup = {
                                 state.objectauth2.srok = data.data.srok;
                                 state.objectauth2.karzina = data.data.karzina;
                                 state.objectauth2.magazin = data.data.magazin;
-                                console.log(data.data)
-
                                 if (data.data.user.status == 'brend') {
                                     const auth = JSON.parse(localStorage.getItem('auth'));
                                     if (auth.method_id) {
@@ -765,6 +763,13 @@ const idgroup = {
                 if (data.data == 200) {
                     context.commit('Saqlas_Kassa_Mut', request)
                 } else {}
+            });
+        },
+        Update_Ky: (context, request) => {
+            axios({
+                method: request.method,
+                url: 'http://localhost:1122/api/' + request.url,
+                data: request.item,
             });
         }
     },

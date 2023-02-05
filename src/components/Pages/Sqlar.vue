@@ -30,7 +30,8 @@
             'FilterAuthAc',
             'SqladMethodUrlPost',
             'SqladDB',
-            'Fil_Ac'
+            'Fil_Ac',
+            'Update_Ky'
           ]),
           FilterAuth(){
             this.FilterAuthAc();
@@ -123,6 +124,37 @@
             this.showModal = false,
             this.showModalDel = false
           },
+          updatekeyup(item){
+            this.Update_Ky({
+              'method': 'post',
+              'url': 'update_key',
+              'item': item
+            });
+          },
+          updatechangeTip(item){
+            this.Update_Ky({
+              'method': 'post',
+              'url': 'update_key',
+              'item': item
+            });
+          },
+          updatechangeAdr(item){
+            this.Update_Ky({
+              'method': 'post',
+              'url': 'update_key',
+              'item': item
+            });
+          },
+          updatechangeVal(valy){
+            this.Update_Ky({
+              'method': 'post',
+              'url': 'update_chang_val',
+              'item': valy
+            });
+          },
+          obnovit(){
+            this.getSqlad();
+          }
         },
         watch: {
           tovarsqlad(row){
@@ -172,9 +204,6 @@
               });
             }else{}
           },
-          handleSubmit(fsdfsdf){
-            console.log(fsdfsdf)
-          }
         },
         computed: {
           ...mapGetters({
@@ -200,6 +229,9 @@
             <div class="card-body">
                 <button class="btn btn-success mb-2" @click="showModal = true">Tovar qo`shish</button>
                 <span class="mx-4">JamiSumma: $ +{{ itoga }}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" v-on:click="obnovit" class="bi bi-funnel filtddd" viewBox="0 0 16 16">
+                  <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
+                </svg>
                 <select class="tipse text-center" v-model="filtip" name="tip" id="tip">
                   <option value="">--Filter Tip--</option>
                   <option v-for="item in tipdata">
@@ -233,60 +265,45 @@
                         </thead>
                         <tbody>
                           <tr v-for="item in objects3" :key="item.id" class="tir">
+                            <!-- {{item}}  -->
                             <td>
-                              <form @submit.prevent="handleSubmit(fsdfsdf)">
-                                <input type="text" name="" id="" :value="item.tip">
-                              </form>
+                              <select class="keyinp2" v-on:change="updatechangeTip(item)" v-model="item.tip">
+                                <option  v-for="itema in tipdata" :value="itema.name">{{itema.name}}</option>
+                              </select>
                             </td>
                             <td>
-                              <form @submit.prevent="handleSubmit(fsdfsdf)">
-                                <input type="text" name="" id="" :value="item.adress">
-                              </form>
+                              <select class="keyinp2" v-on:change="updatechangeAdr(item)" v-model="item.adress">
+                                <option  v-for="itema in adressdata" :value="itema.name">{{itema.name}}</option>
+                              </select>
                             </td>
                             <td>
-                              <form @submit.prevent="handleSubmit(fsdfsdf)">
-                                <input type="text" name="" id="" :value="item.name">
-                              </form>
+                              <input type="text" class="keyinp" v-on:keyup="updatekeyup(item)" v-model="item.name">
                             </td>
                             <td>
-                              <form @submit.prevent="handleSubmit(fsdfsdf)">
-                                <input type="text" name="" id="" :value="item.ogoh">
-                              </form>
+                              <input type="text" class="keyinp" v-on:keyup="updatekeyup(item)" v-model="item.ogoh">
                             </td>
                             <td>
-                              <form @submit.prevent="handleSubmit(fsdfsdf)">
-                                <input type="text" name="" id="" :value="item.kod">
-                              </form>
+                              <input type="text" class="keyinp" v-on:keyup="updatekeyup(item)" v-model="item.kod">
                             </td>
                             <td>
-                              <form @submit.prevent="handleSubmit(fsdfsdf)">
-                                <input type="text" name="" id="" :value="item.soni">
-                                </form>
+                              <input type="text" class="keyinp" v-on:keyup="updatekeyup(item)" v-model="item.soni">
                             </td>
                             <td>
-                            <form @submit.prevent="handleSubmit(fsdfsdf)">
-                              <input type="text" name="" id="" :value="item.olinish">
-                              </form>
+                              <input type="text" class="keyinp" v-on:keyup="updatekeyup(item)" v-model="item.olinish">
                             </td>
                             <td>
-                              <form @submit.prevent="handleSubmit(fsdfsdf)">
-                                <input type="text" name="" id="" :value="item.sotilish">
-                              </form>
+                              <input type="text" class="keyinp" v-on:keyup="updatekeyup(item)" v-model="item.sotilish">
                             </td>
                             <td>
-                              <form @submit.prevent="handleSubmit(fsdfsdf)">
-                                <input type="text" name="" id="" :value="item.sotilish2">
-                              </form>
+                              <input type="text" class="keyinp" v-on:keyup="updatekeyup(item)" v-model="item.sotilish2">
                             </td>
                             <td>
-                              <form @submit.prevent="handleSubmit(fsdfsdf)">
-                                <input type="text" name="" id="" :value="item.valyuta">
-                              </form>
+                              <select class="keyinp2" v-on:change="updatechangeVal(item)" v-model="item.valyuta">
+                                <option value="">----</option>
+                                <option  v-for="itema in valyudata" :value="itema.name">{{itema.name}}</option>
+                              </select>
                             </td>
                             <td>
-                              <!-- <a class="text-success mr-2" v-on:click="edittip(item)">
-                                <i class="nav-icon i-Pen-2 font-weight-bold"></i>
-                              </a> -->
                               <a class="text-danger mr-2" v-on:click="delettip(item.id, item.name)">
                                 <i class="nav-icon i-Close-Window font-weight-bold"></i>
                               </a>
