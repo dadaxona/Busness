@@ -67,64 +67,60 @@ const idgroup = {
                         }
                     }).then(data => {
                         if (data.data.code == 200) {
-                            if (data.data) {
-                                if (data.data.user.login == auth.login && data.data.user.token == auth.token) {
-                                    state.auth = auth;
-                                    state.objectauth.mijoz = data.data.mijoz.length;
-                                    state.objectauth.savdo = data.data.savdo.length;
-                                    state.objectauth.savdo2 = data.data.savdo2.length;
-                                    state.objectauth.zaqaz = data.data.zaqaz.length;
-                                    state.objectauth.qarz = data.data.karz.length;
-                                    state.objectauth.srok = data.data.srok.length;
-                        
-                                    state.objectauth2.mijoz = data.data.mijoz;
-                                    state.objectauth2.savdo = data.data.savdo;
-                                    state.objectauth2.tugl = data.data.savdo;
-                                    state.objectauth2.savdo2 = data.data.savdo2;
-                                    state.objectauth2.zaqaz = data.data.zaqaz;
-                                    state.objectauth2.qarz = data.data.karz;
-                                    state.objectauth2.srok = data.data.srok;
-                                    state.objectauth2.karzina = data.data.karzina;
-                                    state.objectauth2.magazin = data.data.magazin;
+                            if (data.data.user.login == auth.login && data.data.user.token == auth.token) {
+                                state.auth = auth;
+                                state.objectauth.mijoz = data.data.mijoz.length;
+                                state.objectauth.savdo = data.data.savdo.length;
+                                state.objectauth.savdo2 = data.data.savdo2.length;
+                                state.objectauth.zaqaz = data.data.zaqaz.length;
+                                state.objectauth.qarz = data.data.karz.length;
+                                state.objectauth.srok = data.data.srok.length;
+                    
+                                state.objectauth2.mijoz = data.data.mijoz;
+                                state.objectauth2.savdo = data.data.savdo;
+                                state.objectauth2.tugl = data.data.savdo;
+                                state.objectauth2.savdo2 = data.data.savdo2;
+                                state.objectauth2.zaqaz = data.data.zaqaz;
+                                state.objectauth2.qarz = data.data.karz;
+                                state.objectauth2.srok = data.data.srok;
+                                state.objectauth2.karzina = data.data.karzina;
+                                state.objectauth2.magazin = data.data.magazin;
+                                console.log(data.data)
 
-                                    if (data.data.user.status == 'brend') {
-                                        const auth = JSON.parse(localStorage.getItem('auth'));
-                                        if (auth.method_id) {
-                                            localStorage.setItem('auth', JSON.stringify({
-                                                'auth': true,
-                                                'username': data.data.user.username ,
-                                                'login': data.data.user.login, 
-                                                'biznesty': data.data.user.biznes, 
-                                                'token': data.data.user.token,
-                                                'method_id': auth.method_id,
-                                                'method_name': auth.method_name,
-                                                'action': data.data.user.status
-                                            }));  
-                                        } else {
-                                            localStorage.setItem('auth', JSON.stringify({
-                                                'auth': true,
-                                                'username': data.data.user.username ,
-                                                'login': data.data.user.login, 
-                                                'biznesty': data.data.user.biznes, 
-                                                'token': data.data.user.token,
-                                                'action': data.data.user.status
-                                            }));                                            
-                                        }
-                                    } else {
+                                if (data.data.user.status == 'brend') {
+                                    const auth = JSON.parse(localStorage.getItem('auth'));
+                                    if (auth.method_id) {
                                         localStorage.setItem('auth', JSON.stringify({
                                             'auth': true,
-                                            'username': data.data.user.username,
+                                            'username': data.data.user.username ,
                                             'login': data.data.user.login, 
                                             'biznesty': data.data.user.biznes, 
                                             'token': data.data.user.token,
-                                            'method_id': data.data.user.magazinId,
-                                            'method_name': data.data.user.magazin,
+                                            'method_id': auth.method_id,
+                                            'method_name': auth.method_name,
                                             'action': data.data.user.status
                                         }));  
+                                    } else {
+                                        localStorage.setItem('auth', JSON.stringify({
+                                            'auth': true,
+                                            'username': data.data.user.username ,
+                                            'login': data.data.user.login, 
+                                            'biznesty': data.data.user.biznes, 
+                                            'token': data.data.user.token,
+                                            'action': data.data.user.status
+                                        }));                                            
                                     }
                                 } else {
-                                    localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'method_name': '', 'action': ''}));
-                                    window.location.href = '/';
+                                    localStorage.setItem('auth', JSON.stringify({
+                                        'auth': true,
+                                        'username': data.data.user.username,
+                                        'login': data.data.user.login, 
+                                        'biznesty': data.data.user.biznes, 
+                                        'token': data.data.user.token,
+                                        'method_id': data.data.user.magazinId,
+                                        'method_name': data.data.user.magazin,
+                                        'action': data.data.user.status
+                                    }));  
                                 }
                             } else {
                                 localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'method_name': '', 'action': ''}));

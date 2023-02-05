@@ -264,7 +264,7 @@
 <template>
 
   <div v-if="setnastr" class="div145">
-    <div class="div2">
+    <div class="divdf2">
         <button type="button" class="close mb-3 mt-3 mr-3" v-on:click="settings22(false)">
             <span aria-hidden="true">&times;</span>
         </button>

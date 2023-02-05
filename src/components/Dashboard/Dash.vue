@@ -198,8 +198,7 @@
                                 <div class="dropdown-header">
                                     <i class="i-Lock-User mr-1"></i> {{ auth.login }}
                                 </div>
-                                <RouterLink class="dropdown-item" to="/setting">Account settings</RouterLink>
-                                <a class="dropdown-item">Billing history</a>
+                                <RouterLink v-if="auth.status == brend" class="dropdown-item" to="/setting">Account settings</RouterLink>
                                 <a class="dropdown-item" v-on:click="Logaut_user">Sign out</a>
                             </div>
                         </div>

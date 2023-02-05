@@ -83,6 +83,14 @@
 .div2{
     position: absolute;
     background-color: #ffffff;
+    width: 50%;
+    height: 100vh;
+    right: 0;
+    top: 0%;
+}
+.divdf2{
+    position: absolute;
+    background-color: #ffffff;
     width: 25%;
     height: 100vh;
     right: 0;
