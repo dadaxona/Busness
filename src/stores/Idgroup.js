@@ -48,7 +48,8 @@ const idgroup = {
         togl: '',
         date: new Date().toLocaleDateString('en-CA'),
         savdoobj: [],
-        ishchila: []
+        ishchila: [],
+        code: true,
         
     },
     mutations: {
@@ -210,22 +211,6 @@ const idgroup = {
                 url: 'http://localhost:1122/api/' + request.url,
                 data: request
             });
-        },
-        Live_Search_Sqlad_Mut: (state, request) => {
-            if (request.search) {
-                state.Items = state.Itemsfiltr.filter((item) => item.name.toLowerCase().includes(request.search));
-            } else {
-                axios({
-                    method: request.method,
-                    url: 'http://localhost:1122/api/' + request.url,
-                    data: request
-                }).then(data => {
-                    state.Items = data.data.data2;
-                    state.Itemsfiltr = data.data.data2;
-                    state.objects4 = data.data.data4;
-                    state.objects6 = data.data.data5;
-                });                
-            }
         },
         Live_Telegram_Chet: (state ,request) => {
             var formatter = new Intl.NumberFormat();
@@ -443,8 +428,110 @@ const idgroup = {
                 }
             });
         },
-        Live_Search_Sqlad: (context, request) => {
-            context.commit('Live_Search_Sqlad_Mut', request)
+        Live_Search_Sqlad: ({state, commit}, request) => {
+            var fild = [];
+            var pryamoy = [];
+            if (request.search) {
+                fild = state.Itemsfiltr.filter((item) => item.name.toLowerCase().includes(request.search));
+                if (fild.length > 0) {
+                    state.Items = fild;
+                    state.code = true;
+                } else {
+                    const praduct = [];
+                    var che = JSON.parse(localStorage.getItem('Checked'));
+                    pryamoy = state.Itemsfiltr.find(iteme => { if (iteme.kod == request.search) return iteme; });
+                    if (pryamoy) {
+                        var sum = '';
+                        var olsh = '';
+                        var kurs = JSON.parse(localStorage.getItem('Kurs'));
+                        if (pryamoy.soni > 0) {
+                          if (kurs.uid == 99999) {
+                            if (pryamoy.summa == '') {
+                              if (che.checke === 1) {
+                                sum = pryamoy.sotilish2;
+                              } else {
+                                sum = pryamoy.sotilish;
+                              }
+                              olsh = pryamoy.olinish;
+                            } else {
+                              if (che.checke === 1) {
+                                sum = pryamoy.sotilish2 * pryamoy.summa;
+                              } else {
+                                sum = pryamoy.sotilish * pryamoy.summa;
+                              }
+                              olsh = pryamoy.olinish * pryamoy.summa;
+                            }
+                          } else {
+                            if (pryamoy.summa == '') {
+                              if (che.checke === 1) {
+                                sum = pryamoy.sotilish2 / kurs.u;
+                              } else {
+                                sum = pryamoy.sotilish / kurs.u;
+                              }
+                              olsh = pryamoy.olinish / kurs.u;
+                            } else {
+                              if (che.checke === 1) {
+                                sum = pryamoy.sotilish2 * pryamoy.summa / kurs.u;
+                              } else {
+                                sum = pryamoy.sotilish * pryamoy.summa / kurs.u;
+                              }
+                              olsh = pryamoy.olinish * pryamoy.summa / kurs.u;
+                            }
+                          }
+                        } else {
+                          
+                        }
+                        const local = JSON.parse(localStorage.getItem('sotuv'));
+                        if (local) {
+                            var fin = local.find(e => { if (e.id === pryamoy.id) return e; })
+                            if (fin) {
+            
+                            } else {         
+                                local.push({
+                                    'id': pryamoy.id,
+                                    'name': pryamoy.name,
+                                    'olinish': olsh,
+                                    'soni': 1,
+                                    'soni2': pryamoy.soni,
+                                    'chegirma': 0,
+                                    'sotilish': sum,
+                                    'jami': sum,
+                                    'summa': pryamoy.summa,
+                                    'valyuta': pryamoy.valyuta,
+                                });
+                                localStorage.setItem('sotuv', JSON.stringify(local));                  
+                            }
+                        } else {
+                            praduct.push({
+                                'id': pryamoy.id,
+                                'name': pryamoy.name,
+                                'olinish': olsh,
+                                'soni': 1,
+                                'soni2': pryamoy.soni,
+                                'chegirma': 0,
+                                'sotilish': sum,
+                                'jami': sum,
+                                'summa': pryamoy.summa,
+                                'valyuta': pryamoy.valyuta,
+                            })
+                            localStorage.setItem('sotuv', JSON.stringify(praduct));
+                        }
+                        state.code = false;
+                    } else { }
+                }
+            } else {
+                axios({
+                    method: request.method,
+                    url: 'http://localhost:1122/api/' + request.url,
+                    data: request
+                }).then(data => {
+                    state.Items = data.data.data2;
+                    state.Itemsfiltr = data.data.data2;
+                    state.objects4 = data.data.data4;
+                    state.objects6 = data.data.data5;
+                });                
+            }
+            commit('Live_Search_Sotuv_Mut');
         },
         Live_Search_Sotuv: (context) => {
             context.commit('Live_Search_Sotuv_Mut')
@@ -848,6 +935,9 @@ const idgroup = {
         },
         foyda(state){
             return state.foydaobj;
+        },
+        code(state){
+            return state.code;
         }
     },
 };

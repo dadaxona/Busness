@@ -361,6 +361,14 @@
           },
           deletStor(){
             this.Delet_Stor_act();
+          },
+        
+          cadasd(){
+            if (this.codecler == false) {
+              this.search = '';
+            } else {
+              this.search;
+            }
           }
         },
         watch: {
@@ -377,6 +385,7 @@
                 'magazinId': auth.method_id,
                 'magazin': auth.method_name,
               });
+              this.cadasd();
             }else {}
           },
           Kamentariya(r){
@@ -397,7 +406,8 @@
             MijozSelect: 'MijozSelect',
             tog: 'tog',
             drive: 'drive',
-            objectauth2: 'objectauth2'
+            objectauth2: 'objectauth2',
+            codecler: 'code'
           }),
         },
         mounted() {
@@ -422,7 +432,7 @@
               <button class="btn btn-danger btn-sm m-1" type="button" v-on:click="deletStor">Delete</button>
             </div>
             <div v-else>
-              <button class="btn btn-light btn-sm m-1" type="button">Excel</button>
+              <button class="btn btn-light btn-sm m-1" @click="cadasd" type="button">Excel</button>
               <button class="btn btn-light btn-sm m-1" type="button">Pdf</button>
               <button class="btn btn-light btn-sm m-1" type="button">Delete</button>
             </div>
