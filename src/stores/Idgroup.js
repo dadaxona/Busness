@@ -170,7 +170,7 @@ const idgroup = {
                         window.location.href = 'dash';
                     }
                 } else {
-
+                    alert(data.data.msg)
                 }
             });
         },
@@ -277,17 +277,13 @@ const idgroup = {
         },
         Live_Search_Sotuv_Mut: (state) => {
             var summa = 0;
-            var foiz = 0;
-            var jav = 0;
             const local = JSON.parse(localStorage.getItem('sotuv'));
             if (local) {
                 state.objects5 = local;
                 for (let i = 0; i < local.length; i++) {
                    summa = parseFloat(summa) + parseFloat(local[i]['jami']);
-                   foiz = parseFloat(foiz) + parseFloat(local[i]['chegirma'])
                 }
-                jav = summa - foiz;
-                localStorage.setItem('Jami', JSON.stringify({'summa': jav}));
+                localStorage.setItem('Jami', JSON.stringify({'summa': summa}));
                 const jami = JSON.parse(localStorage.getItem('Jami'));
                 state.jami = jami.summa;
                 if (local.length > 0) state.togl = 1;
@@ -534,9 +530,6 @@ const idgroup = {
             }
             commit('Live_Search_Sotuv_Mut');
         },
-        Live_Search_Sotuv: (context) => {
-            context.commit('Live_Search_Sotuv_Mut')
-        },
         Sotuvga_Olish_Action: (context, request) => {
             const praduct = [];
             const local = JSON.parse(localStorage.getItem('sotuv'));
@@ -655,6 +648,7 @@ const idgroup = {
                         for (let i = 0; i < local.length; i++) {
                             local[i].olinish = local[i].olinish / request.kurs1;
                             local[i].sotilish = local[i].sotilish / request.kurs1;
+                            local[i].chegirma = local[i].chegirma / request.kurs1;
                             local[i].jami = local[i].jami / request.kurs1;
                             localStorage.setItem('sotuv', JSON.stringify(local));
                         }
@@ -670,6 +664,7 @@ const idgroup = {
                         for (let i = 0; i < local.length; i++) {
                             local[i].olinish = local[i].olinish * kurs / request.kurs1;
                             local[i].sotilish = local[i].sotilish * kurs / request.kurs1;
+                            local[i].chegirma = local[i].chegirma * kurs / request.kurs1;
                             local[i].jami = local[i].jami * kurs / request.kurs1;
                             localStorage.setItem('sotuv', JSON.stringify(local));
                         }
@@ -821,10 +816,10 @@ const idgroup = {
                 url: 'http://localhost:1122/api/' + request.url,
                 data: request,
             }).then(data => {
-                if (data.data == 200) {
+                if (data.data.code == 200) {
                     context.commit('FilterAuthMut')
                 } else {
-                    
+                    alert(data.data.msg)
                 }
             });
         },
@@ -837,9 +832,11 @@ const idgroup = {
                 url: 'http://localhost:1122/api/' + request.url2,
                 data: request,
             }).then(data => {
-                if (data.data == 200) {
+                if (data.data.code == 200) {
                     context.commit('Saqlas_Kassa_Mut', request)
-                } else {}
+                } else {
+                    alert(data.data.msg)
+                }
             });
         },
         Role_Ac: (context, request) => {
@@ -850,7 +847,7 @@ const idgroup = {
             }).then(data => {
                 if (data.data == 200) {
                     context.commit('Saqlas_Kassa_Mut', request)
-                } else {}
+                } else { }
             });
         },
         Update_Ky: (context, request) => {

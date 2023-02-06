@@ -1,6 +1,9 @@
 <script>
   import { RouterLink } from 'vue-router'
-  import { mapState, mapGetters, mapActions} from 'vuex'
+  import { mapState, mapGetters, mapActions, mapMutations} from 'vuex'
+  const local = JSON.parse(localStorage.getItem('sotuv'))
+  const auth = JSON.parse(localStorage.getItem('auth'));
+  const kurs = JSON.parse(localStorage.getItem('Kurs'));
   export default {
     data() {
             return {
@@ -25,6 +28,7 @@
               karz: '',
               srok: '',
               drive: '',
+              mijozsumma: '',
               date: new Date().toLocaleDateString('en-CA'),
               chesxbox: '',
               Kamentariya: '',
@@ -34,6 +38,9 @@
             }
         },
         methods: {
+          ...mapMutations([
+            'Live_Search_Sotuv_Mut'
+          ]),
           ...mapActions([
             'FilterAuthAc',
             'Live_Search_Sqlad',
@@ -48,7 +55,6 @@
             'Delet_Stor_act'
           ]),
           Localstor(){
-            const auth = JSON.parse(localStorage.getItem('auth'));
             this.login = auth.login,
             this.token = auth.token,
             this.statustyp = auth.action
@@ -57,7 +63,6 @@
             this.FilterAuthAc();
           },
           Sqlad(){
-            const auth = JSON.parse(localStorage.getItem('auth'));
             if (auth.method_id) {
               this.Live_Search_Sqlad({
                 'method': 'post',
@@ -76,13 +81,9 @@
               'jami': jami
             });
           },
-          NSotuv(){
-            this.Live_Search_Sotuv();
-          },
           Sotuvga_Olish(obj){
             var sum = '';
             var olsh = '';
-            var kurs = JSON.parse(localStorage.getItem('Kurs'));
             if (obj.soni > 0) {
               if (kurs.uid == 99999) {
                 if (obj.summa == '') {
@@ -296,9 +297,7 @@
             this.bank = this.JamiSumma2;
           },
           OplataStart(){
-            const auth = JSON.parse(localStorage.getItem('auth'));
             if (auth.method_id) {
-              var kurs = JSON.parse(localStorage.getItem('Kurs'));
               var qarz = '';
               if (this.chesxbox == 1 && this.Kamentariya) {
                 this.Oplata_Start_Action({
@@ -369,11 +368,90 @@
             } else {
               this.search;
             }
-          }
+          },
+          UpdateSotilish(item){
+            const local1 = JSON.parse(localStorage.getItem('sotuv'));
+            local1.find(e => {
+              if (e.id === item.id) {
+                  e.sotilish = item.sotilish;
+                  e.jami = e.soni * e.sotilish - e.chegirma;
+                }else{}
+            });
+            localStorage.setItem('sotuv', JSON.stringify(local1));
+            this.Live_Search_Sotuv_Mut();
+          },
+          UpdateSon(item){
+            const local2 = JSON.parse(localStorage.getItem('sotuv'));
+            local2.find(e => {
+              if (e.id === item.id) {
+                if (e.soni2 > item.soni) {
+                  e.soni = item.soni;
+                } else {
+                  e.soni = e.soni2;
+                }
+                e.jami = e.soni * e.sotilish - e.chegirma;
+              }else{}
+            });
+            localStorage.setItem('sotuv', JSON.stringify(local2));
+            this.Live_Search_Sotuv_Mut();
+          },
+          UpdateChgirma(item){
+            const local3 = JSON.parse(localStorage.getItem('sotuv'));
+            local3.find(e => {
+              if (e.id === item.id) {
+                  e.chegirma = item.chegirma;
+                  e.jami = e.soni * e.sotilish - e.chegirma;
+                }else{}
+              });
+            localStorage.setItem('sotuv', JSON.stringify(local3));
+            this.Live_Search_Sotuv_Mut();
+          },
+          UpdateJami(item){
+            const local4 = JSON.parse(localStorage.getItem('sotuv'));
+            local4.find(e => {
+              if (e.id === item.id) {
+                  e.jami = item.jami;
+                  e.chegirma = e.soni * item.sotilish - e.jami;               
+                }else{}
+              });
+            localStorage.setItem('sotuv', JSON.stringify(local4));
+            this.Live_Search_Sotuv_Mut();
+          },
+          // mijozChange(val){
+          //  const datamm = this.MijozSelect.find(e => { if(e.id == val) return e; });
+          //  const kurs2 = JSON.parse(localStorage.getItem('Kurs'));
+          //  var mijoz = '';
+          //  var karz2 = '';
+          //  if (datamm) {
+          //    if (kurs2.uid == 99999) {
+          //     if (mijoz) {
+          //       this.mijozsumma = mijoz;
+          //     } else {                
+          //       mijoz = datamm.summa;
+          //       this.mijozsumma = datamm.summa;
+          //     }
+          //    } else {
+          //     if (mijoz) {
+          //       this.mijozsumma = mijoz / kurs2.u;
+          //     } else {                
+          //       mijoz = datamm.summa / kurs2.u;
+          //       this.mijozsumma = datamm.summa / kurs2.u;
+          //     }
+          //    }
+          //  } else {
+          //   this.mijozsumma = 0;
+          //   this.karz = karz2;
+          //  }
+          // if (karz2) {
+          //    this.karz = karz2 - this.mijozsumma;
+          // } else {
+          //   karz2 = this.mijozsumma;
+          //   this.karz = this.karz - this.mijozsumma;            
+          //  }
+          // }
         },
         watch: {
           search(row){
-            const auth = JSON.parse(localStorage.getItem('auth'));
             if (auth.method_id) {
               this.Live_Search_Sqlad({
                 'method': 'post',
@@ -414,7 +492,6 @@
           this.FilterAuth();
           this.Localstor();
           this.Sqlad();
-          this.NSotuv();
           this.toogler2();
           this.driverpMount();
           this.checkedTyp3();
@@ -451,29 +528,22 @@
                     </thead>
                     <tbody>
                       <tr v-for="(item, index) in Sotish" :key="item.id" class="tir">
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.sotilish | formatNumber}}</td>
                         <td>
-                          <span class="mx-2 text-danger bord" v-on:click="Minus(item.id, index, 'minus')">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
-                              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                              <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
-                            </svg>
-                          </span>
-                            {{ item.soni }}
-                          <span class="mx-2 text-success bord2" v-on:click="Plus(item.id, index, 'plus')">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                            </svg>
-                          </span>
+                          <input type="text" class="keyinp_son" v-model="item.name" disabled>
                         </td>
-                        <td>{{ item.chegirma | formatNumber }} %</td>
-                        <td>{{ item.jami | formatNumber }}</td>
                         <td>
-                          <a class="text-success mr-4" v-on:click="editr(item)">
-                            <i class="nav-icon i-Pen-2 font-weight-bold"></i>
-                          </a>
+                          <input type="text" class="keyinp_son" v-on:keyup="UpdateSotilish(item)" v-model="item.sotilish">
+                        </td>
+                        <td>
+                          <input type="number" class="keyinp_son" v-on:keyup="UpdateSon(item)" v-model="item.soni">
+                        </td>
+                        <td>
+                          <input type="text" class="keyinp_son" v-on:keyup="UpdateChgirma(item)" v-model="item.chegirma">
+                        </td>
+                        <td>
+                          <input type="text" class="keyinp_son" v-on:keyup="UpdateJami(item)" v-model="item.jami">
+                        </td>
+                        <td>
                           <a class="text-danger" v-on:click="Deletsotuv(index, item.jami)">
                             <i class="nav-icon i-Close-Window font-weight-bold"></i>
                           </a>
@@ -661,6 +731,7 @@
     <div class="modal_okna">
       <div class="modal-header">
         <h5 class="modal-title mt-0">Sotish Oynasi</h5>
+        {{mijozsumma}}
         <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true" v-on:click="ModalOplate = false">&times;</span>
         </button>
