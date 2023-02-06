@@ -4,6 +4,7 @@
   const local = JSON.parse(localStorage.getItem('sotuv'))
   const auth = JSON.parse(localStorage.getItem('auth'));
   const kurs = JSON.parse(localStorage.getItem('Kurs'));
+  import { saveExcel } from '@progress/kendo-vue-excel-export';
   export default {
     data() {
             return {
@@ -35,9 +36,22 @@
               Kamentariya2: '',
               showModalEditor: false,
               ModalOplate: false,
+
+              itemserty: [
+                { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
+                { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
+                { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
+                { age: 38, first_name: 'Jami', last_name: 'Carney' }
+              ]
             }
         },
         methods: {
+          download : function() {
+            const data = XLSX.utils.json_to_sheet(this.itemserty)
+            const wb = XLSX.utils.book_new()
+            XLSX.utils.book_append_sheet(wb, data, 'data')
+            XLSX.writeFile(wb,'demo.xlsx')
+          },
           ...mapMutations([
             'Live_Search_Sotuv_Mut'
           ]),
@@ -417,38 +431,27 @@
             localStorage.setItem('sotuv', JSON.stringify(local4));
             this.Live_Search_Sotuv_Mut();
           },
-          // mijozChange(val){
-          //  const datamm = this.MijozSelect.find(e => { if(e.id == val) return e; });
-          //  const kurs2 = JSON.parse(localStorage.getItem('Kurs'));
-          //  var mijoz = '';
-          //  var karz2 = '';
-          //  if (datamm) {
-          //    if (kurs2.uid == 99999) {
-          //     if (mijoz) {
-          //       this.mijozsumma = mijoz;
-          //     } else {                
-          //       mijoz = datamm.summa;
-          //       this.mijozsumma = datamm.summa;
-          //     }
-          //    } else {
-          //     if (mijoz) {
-          //       this.mijozsumma = mijoz / kurs2.u;
-          //     } else {                
-          //       mijoz = datamm.summa / kurs2.u;
-          //       this.mijozsumma = datamm.summa / kurs2.u;
-          //     }
-          //    }
-          //  } else {
-          //   this.mijozsumma = 0;
-          //   this.karz = karz2;
-          //  }
-          // if (karz2) {
-          //    this.karz = karz2 - this.mijozsumma;
-          // } else {
-          //   karz2 = this.mijozsumma;
-          //   this.karz = this.karz - this.mijozsumma;            
-          //  }
-          // }
+
+
+          exportExcel () {
+            saveExcel({
+                data: JSON.parse(localStorage.getItem('sotuv')),
+                fileName: "Export",
+                columns: [
+                  {field: 'id'},
+                  {field: 'name'},
+                  {field: 'olinish'},
+                  {field: 'soni'},
+                  {field: 'soni2'},
+                  {field: 'chegirma'},
+                  {field: 'sotilish'},
+                  {field: 'jami'},
+                  {field: 'summa'},
+                  {field: 'valyuta'}
+                  ]
+                });
+            },
+
         },
         watch: {
           search(row){
@@ -504,12 +507,12 @@
       <div class="card text-left">
           <div class="card-body">
             <div v-if="tog">
-              <button class="btn btn-success btn-sm m-1" type="button">Excel</button>
-              <button class="btn btn-primary btn-sm m-1" type="button">Pdf</button>
+              <button class="btn btn-success btn-sm m-1" v-on:click="exportExcel" type="button">Excel</button>
+              <button class="btn btn-primary btn-sm m-1" v-on:click="download" type="button">Pdf</button>
               <button class="btn btn-danger btn-sm m-1" type="button" v-on:click="deletStor">Delete</button>
             </div>
             <div v-else>
-              <button class="btn btn-light btn-sm m-1" @click="cadasd" type="button">Excel</button>
+              <button class="btn btn-light btn-sm m-1" type="button">Excel</button>
               <button class="btn btn-light btn-sm m-1" type="button">Pdf</button>
               <button class="btn btn-light btn-sm m-1" type="button">Delete</button>
             </div>
