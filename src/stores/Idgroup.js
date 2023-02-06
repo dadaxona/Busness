@@ -64,6 +64,7 @@ const idgroup = {
                             login: auth.login,
                             token: auth.token,
                             status: auth.action,
+                            magazinId: auth.method_id,
                             date: state.date
                         }
                     }).then(data => {

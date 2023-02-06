@@ -1,6 +1,7 @@
 <script>
   import { RouterLink } from 'vue-router'
   import { mapState, mapGetters, mapActions} from 'vuex'
+  const auth = JSON.parse(localStorage.getItem('auth'));
   export default {
         data() {
             return {
@@ -20,7 +21,6 @@
             this.FilterAuthAc();
           },
           Localstor(){
-            const auth = JSON.parse(localStorage.getItem('auth'));
             this.login = auth.login,
             this.token = auth.token,
             this.statustyp = auth.action
@@ -31,6 +31,7 @@
               'url': 'foyda_post',
               'login': this.login,
               'token': this.token,
+              'magazinId': auth.method_id,
               'status': this.statustyp,
             });
           },
