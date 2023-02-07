@@ -148,10 +148,10 @@
                 }
                 localStorage.setItem('auth', JSON.stringify(auth));
                 this.FilterAuth();  
+            },
+            kabinet2(typ){
+                this.kabinet1 = typ;
             }
-        },
-        watch: {
-      
         },
         computed: {
           ...mapGetters({
@@ -816,4 +816,5 @@
             </div>
         </div>
     </div>
+
 </template>

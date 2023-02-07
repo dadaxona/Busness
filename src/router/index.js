@@ -12,6 +12,9 @@ import User from '../components/Pages/User.vue'
 import Yetkazuvchi from '../components/Pages/Yetkazuvchi.vue'
 import Setting from '../components/Pages/Setting.vue'
 import Valyuta from '../components/Pages/Valyuta.vue'
+import Ensydash from '../components/Ensy/Ensydash.vue'
+import Torgosoft from '../components/Torgo/Torgosoft.vue'
+import Gbc from '../components/Gbc/Gbc.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -83,7 +86,21 @@ const router = createRouter({
         },
       ],
     },
-
+    {
+      path: '/ensy',
+      name: 'ensy',
+      component: Ensydash
+    },
+    {
+      path: '/torgo',
+      name: 'torgo',
+      component: Torgosoft
+    },
+    {
+      path: '/gbc',
+      name: 'gbc',
+      component: Gbc
+    },
   ]
 })
 

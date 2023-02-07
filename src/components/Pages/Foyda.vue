@@ -57,27 +57,27 @@
             <div class="row">
               <div class="col-4 alert alert-primary text-center">
                 <h4>Savdo</h4>
-                {{ foyda.savdo }}
+                {{ foyda.savdo | formatNumber }}
               </div>
               <div class="col-4 alert alert-danger text-center">
                 <h4>Rasxod</h4>
-                {{ foyda.rasxod }}
+                {{ foyda.rasxod | formatNumber }}
               </div>
               <div class="col-4 alert alert-danger text-center">
                 <h4>Chiqim qarz</h4>
-                {{ foyda.chiqishqarz }}
+                {{ foyda.chiqishqarz | formatNumber }}
               </div>
               <div class="col-4 alert alert-danger text-center">
                 <h4>Qarz</h4>
-                {{ foyda.kirishqarz }}
+                {{ foyda.kirishqarz | formatNumber }}
               </div>
               <div class="col-4 alert alert-success text-center">
                 <h4>Foyda</h4>
-                {{ foyda.foyda }}
+                {{ foyda.foyda | formatNumber }}
               </div>
               <div class="col-4 alert alert-success text-center">
                 <h4>Sqlad Summa</h4>
-                {{ foyda.sqlad }}
+                {{ foyda.sqlad | formatNumber }}
               </div>
             </div>
           </div>
