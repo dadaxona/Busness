@@ -50,7 +50,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="p-4">
-                            <div class="auth-logo text-center mb-4"><img src="../../dist-assets/images/logo.png" alt=""></div>
+                            <div class="auth-logo text-center mb-4"><img src="../../distassets/images/logo.png" alt=""></div>
                             <h1 class="mb-3 text-18">Sign In</h1>
                                 <div class="form-group">
                                     <label for="login">Login</label>

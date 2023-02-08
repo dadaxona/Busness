@@ -1,9 +1,10 @@
 .impimag{
-    background-image: url(../dist-assets/images/photo-wide-4.jpg);
+    background-image: url(../distassets/images/photo-wide-4.jpg);
 }
 .impimag2{
-    background-image: url(../dist-assets/images/photo-wide-4.jpg);
+    background-image: url(../distassets/images/photo-wide-4.jpg);
 }
+
 .scroltab2{
     height: 211px;
 }
@@ -123,7 +124,7 @@
     background-color: rgba(0, 0, 0, .5);
     top: 0;
     left: 0;
-    z-index: 103;
+    z-index: 107;
 }
 .div25457{
     position: absolute;
@@ -137,7 +138,7 @@
     position: fixed;
     top: 0;
     right: 0;
-    z-index: 102;
+    z-index: 107;
     width: 25%;
     background-color: #dcdcdc;
 }
