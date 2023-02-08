@@ -1,4 +1,5 @@
 import axios from 'axios';
+import router from '../router/index'
 const idgroup = {
     state: {
         objectauth: {
@@ -58,7 +59,7 @@ const idgroup = {
                 if (auth.auth === true) {
                     axios({
                         method: 'post',
-                        url: 'http://localhost:1122/api/virfiy',
+                        url: 'https://biznes.5858.uz/api/virfiy',
                         data: {
                             login: auth.login,
                             token: auth.token,
@@ -123,25 +124,25 @@ const idgroup = {
                                 }
                             } else {
                                 localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'method_name': '', 'action': ''}));
-                                window.location.href = '/';
+                                router.push('/');
                             }
                         } else {
                             localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'method_name': '', 'action': ''}));
-                            window.location.href = '/';
+                            router.push('/');
                         }
                     })
                 } else {
-                    window.location.href = '/';
+                    router.push('/');
                 }
             } else {
-                window.location.href = '/';
+                router.push('/');
             }
         },
 
         SignUpMut: (state, datar) => {
             axios({
                 method: datar.method,
-                url: 'http://localhost:1122/api/' + datar.url,
+                url: 'https://biznes.5858.uz/api/' + datar.url,
                 data: datar
             }).then(data => {
                 if (data.data.code == 200) {
@@ -154,7 +155,7 @@ const idgroup = {
                             "token": data.data.data.token,
                             'action': data.data.data.status
                         }));
-                        window.location.href = 'dash';
+                        router.push('/treding');
                     } else {
                         localStorage.setItem('auth', JSON.stringify({
                             "auth": true,
@@ -166,7 +167,7 @@ const idgroup = {
                             'method_name': data.data.data.magazin,
                             'action': data.data.data.status
                         }));
-                        window.location.href = 'dash';
+                        router.push('/treding');
                     }
                 } else {
                     alert(data.data.msg)
@@ -178,7 +179,7 @@ const idgroup = {
             var auth = JSON.parse(localStorage.getItem('auth'));
             if (auth) {
                 if (auth.auth === true) {
-                    window.location.href = 'dash';
+                    router.push('/treding');
                 } else {}                    
             } else {}
         },
@@ -186,7 +187,7 @@ const idgroup = {
         OriginalMethodUrlMutGet: (state, request) => {
             axios({
                 method: request.method,
-                url: 'http://localhost:1122/api/' + request.url,
+                url: 'https://biznes.5858.uz/api/' + request.url,
                 data: request
             }).then(data => {
                 state.objects = data.data;
@@ -195,7 +196,7 @@ const idgroup = {
         SqladDBMut: (state, request) => {
             axios({
                 method: request.method,
-                url: 'http://localhost:1122/api/' + request.url,
+                url: 'https://biznes.5858.uz/api/' + request.url,
                 data: request
             }).then(data => {
                 state.objects1 = data.data.data;
@@ -208,7 +209,7 @@ const idgroup = {
         Zaqaz_Olish_Mut: (state, request) => {
             axios({
                 method: request.method,
-                url: 'http://localhost:1122/api/' + request.url,
+                url: 'https://biznes.5858.uz/api/' + request.url,
                 data: request
             });
         },
@@ -295,7 +296,7 @@ const idgroup = {
         SavdoBut_Mut: (state, request) => {
             axios({
                 method: request.method,
-                url: 'http://localhost:1122/api/' + request.url,
+                url: 'https://biznes.5858.uz/api/' + request.url,
                 data: request
             }).then(data => {
                 state.savdoobj = data.data;
@@ -304,7 +305,7 @@ const idgroup = {
         Foyda_Mut: (state, request) => {
             axios({
                 method: request.method,
-                url: 'http://localhost:1122/api/' + request.url,
+                url: 'https://biznes.5858.uz/api/' + request.url,
                 data: request
             }).then(data => {
                 state.foydaobj.savdo = data.data.sav;
@@ -318,7 +319,7 @@ const idgroup = {
         OrigiPost_Mut: (state, request) => {
             axios({
                 method: request.method,
-                url: 'http://localhost:1122/api/' + request.url,
+                url: 'https://biznes.5858.uz/api/' + request.url,
                 data: request
             }).then(data => {
                 state.userdata = data.data;
@@ -327,12 +328,12 @@ const idgroup = {
         UserProfilDel_Mut: (state, request) => {
             axios({
                 method: request.method,
-                url: 'http://localhost:1122/api/' + request.url,
+                url: 'https://biznes.5858.uz/api/' + request.url,
                 data: request
             }).then(data => {
                 if (data.data == 200) {
                     localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'method_name': '', 'action': ''}));
-                    window.location.href = '/';
+                    router.push('/');
                 } else {
                     
                 }
@@ -361,7 +362,7 @@ const idgroup = {
         Saqlas_Kassa_Mut: (state, request) => {
             axios({
                 method: request.method,
-                url: 'http://localhost:1122/api/' + request.url,
+                url: 'https://biznes.5858.uz/api/' + request.url,
                 data: request
             }).then(data => {
                 state.ishchila = data.data;           
@@ -384,7 +385,7 @@ const idgroup = {
         OrigiPost_Ac: (context, request) => {
             axios({
                 method: request.method,
-                url: 'http://localhost:1122/api/' + request.url2,
+                url: 'https://biznes.5858.uz/api/' + request.url2,
                 data: request
             }).then(data => {
                 if (data.data == 200){
@@ -402,7 +403,7 @@ const idgroup = {
         OriginalMethodUrlPost: (context, request) => {
             axios({
                 method: request.method,
-                url: 'http://localhost:1122/api/' + request.url2,
+                url: 'https://biznes.5858.uz/api/' + request.url2,
                 data: request
             }).then(data => {
                 if (data.data == 200){
@@ -416,7 +417,7 @@ const idgroup = {
         SqladMethodUrlPost: (context, request) => {
             axios({
                 method: request.method,
-                url: 'http://localhost:1122/api/' + request.url2,
+                url: 'https://biznes.5858.uz/api/' + request.url2,
                 data: request
             }).then(data => {
                 if (data.data == 200){
@@ -518,7 +519,7 @@ const idgroup = {
             } else {
                 axios({
                     method: request.method,
-                    url: 'http://localhost:1122/api/' + request.url,
+                    url: 'https://biznes.5858.uz/api/' + request.url,
                     data: request
                 }).then(data => {
                     state.Items = data.data.data2;
@@ -686,7 +687,7 @@ const idgroup = {
             var formatter = new Intl.NumberFormat();
             axios({
                 method: request.method,
-                url: 'http://localhost:1122/api/' + request.url2,
+                url: 'https://biznes.5858.uz/api/' + request.url2,
                 data: request
             }).then(data => {
                 if (data.data == 200) {
@@ -787,7 +788,7 @@ const idgroup = {
         Tolov_Avt: (context, request) => {
             axios({
                 method: request.method,
-                url: 'http://localhost:1122/api/' + request.url,
+                url: 'https://biznes.5858.uz/api/' + request.url,
                 data: request,
             }).then(data => {
                 if (data.data == 200) {
@@ -812,7 +813,7 @@ const idgroup = {
         Saqlas_Mag: (context, request) => {
             axios({
                 method: request.method,
-                url: 'http://localhost:1122/api/' + request.url,
+                url: 'https://biznes.5858.uz/api/' + request.url,
                 data: request,
             }).then(data => {
                 if (data.data.code == 200) {
@@ -828,7 +829,7 @@ const idgroup = {
         Saqlas_Kassa_Ac: (context, request) => {
             axios({
                 method: request.method,
-                url: 'http://localhost:1122/api/' + request.url2,
+                url: 'https://biznes.5858.uz/api/' + request.url2,
                 data: request,
             }).then(data => {
                 if (data.data.code == 200) {
@@ -841,7 +842,7 @@ const idgroup = {
         Role_Ac: (context, request) => {
             axios({
                 method: request.method,
-                url: 'http://localhost:1122/api/' + request.url2,
+                url: 'https://biznes.5858.uz/api/' + request.url2,
                 data: request,
             }).then(data => {
                 if (data.data == 200) {
@@ -852,7 +853,7 @@ const idgroup = {
         Update_Ky: (context, request) => {
             axios({
                 method: request.method,
-                url: 'http://localhost:1122/api/' + request.url,
+                url: 'https://biznes.5858.uz/api/' + request.url,
                 data: request.item,
             });
         }
