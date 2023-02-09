@@ -1,6 +1,6 @@
 import axios from 'axios';
 import router from '../router/index'
-// const http_url = 'https://biznes.5858.uz/api/';
+// const http_url = http_url;
 const http_url = 'http://localhost:1122/api/';
 const idgroup = {
     state: {
@@ -126,18 +126,19 @@ const idgroup = {
                                 }
                             } else {
                                 localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'method_name': '', 'action': ''}));
-                                router.push('/');
+                                // window.location.href="/";
+                                window.location.href="/";
                             }
                         } else {
                             localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'method_name': '', 'action': ''}));
-                            router.push('/');
+                            window.location.href="/";
                         }
                     })
                 } else {
-                    router.push('/');
+                    window.location.href="/";
                 }
             } else {
-                router.push('/');
+                window.location.href="/";
             }
         },
 
@@ -157,7 +158,8 @@ const idgroup = {
                             "token": data.data.data.token,
                             'action': data.data.data.status
                         }));
-                        router.push('/treding');
+                        // router.push('/treding');
+                        window.location.href="/treding";
                     } else {
                         localStorage.setItem('auth', JSON.stringify({
                             "auth": true,
@@ -169,7 +171,8 @@ const idgroup = {
                             'method_name': data.data.data.magazin,
                             'action': data.data.data.status
                         }));
-                        router.push('/treding');
+                        // router.push('/treding');
+                        window.location.href="/treding";
                     }
                 } else {
                     alert(data.data.msg)
@@ -181,7 +184,8 @@ const idgroup = {
             var auth = JSON.parse(localStorage.getItem('auth'));
             if (auth) {
                 if (auth.auth === true) {
-                    router.push('/treding');
+                    // router.push('/treding');
+                    window.location.href="/treding";
                 } else {}                    
             } else {}
         },
@@ -335,7 +339,7 @@ const idgroup = {
             }).then(data => {
                 if (data.data == 200) {
                     localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'method_name': '', 'action': ''}));
-                    router.push('/');
+                    window.location.href="/";
                 } else {
                     
                 }
