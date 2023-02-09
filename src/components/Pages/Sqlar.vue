@@ -1,6 +1,8 @@
 <script>
   import { RouterLink } from 'vue-router'
   import { mapState, mapGetters, mapActions} from 'vuex'
+  import readXisFile from "read-excel-file"
+  import { saveExcel } from '@progress/kendo-vue-excel-export';
   const auth = JSON.parse(localStorage.getItem('auth'));
   export default {
         data() {
@@ -24,6 +26,7 @@
               login:'',
               token:'',
               statustyp: '',
+              excel: []
             }
         },
         methods: {
@@ -41,6 +44,68 @@
             this.login = auth.login,
             this.token = auth.token,
             this.statustyp = auth.action
+          },
+          exp(){
+            saveExcel({
+              data: this.objects3,
+              fileName: "Export",
+              columns: [
+                {field: 'id'},
+                {field: 'userId'},
+                {field: 'magazinId'},
+                {field: 'magazin'},
+                {field: 'tip'},
+                {field: 'adress'},
+                {field: 'name'},
+                {field: 'ogoh'},
+                {field: 'soni'},
+                {field: 'olinish'},
+                {field: 'sotilish'},
+                {field: 'sotilish2'},
+                {field: 'valyuta'},
+                {field: 'summa'},
+                {field: 'kod'},
+              ]
+            });
+          },
+          clik(){
+            document.getElementById("archiveExcel").click();
+          },
+          subirExcel(){
+            const input = document.getElementById("archiveExcel");
+            readXisFile(input.files[0]).then((rows)=>{
+              for (let i = 1; i < rows.length; i++) {
+                this.excel.push({
+                  'userId': rows[i][1],
+                  'magazinId': rows[i][2],
+                  'magazin': rows[i][3],
+                  'tip': rows[i][4],
+                  'adress': rows[i][5],
+                  'name': rows[i][6],
+                  'ogoh': rows[i][7],
+                  'soni': rows[i][8],
+                  'olinish': rows[i][9],
+                  'sotilish': rows[i][10],
+                  'sotilish2': rows[i][11],
+                  'valyuta': rows[i][12],
+                  'summa': rows[i][13],
+                  'kod': rows[i][14],
+                });
+              }
+              this.SqladMethodUrlPost({
+                  'method': 'post',
+                  'url2': 'post_update_sqlad_exsel',
+                  'url': 'getdb',
+                  'massivname': this.excel,
+                  'login': this.login,
+                  'token': this.token,
+                  'magazinId': auth.method_id,
+                  'magazin': auth.method_name,
+                  'status': this.statustyp,
+              });
+            });
+            this.excel = [];
+            input.value = '';
           },
           CreateSqlad(){
             if (auth.method_id) {
@@ -105,6 +170,8 @@
               'id': this.id,
               'login': this.login,
               'token': this.token,
+              'magazinId': auth.method_id,
+              'magazin': auth.method_name,
               'status': this.statustyp,              
             });
             this.Clears();
@@ -228,6 +295,19 @@
         <div class="card text-left">
             <div class="card-body">
                 <button class="btn btn-success mb-2" @click="showModal = true">Tovar qo`shish</button>
+                <input type="file" id="archiveExcel" v-on:change="subirExcel()">
+                <button class="btn btn-success mb-2 mx-3" v-on:click="clik">                  
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                  </svg>
+                </button>
+                <button class="btn btn-primary mb-2" v-on:click="exp">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                    <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                  </svg>
+                </button>
                 <span class="mx-4">JamiSumma: $ +{{ itoga }}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" v-on:click="obnovit" class="bi bi-funnel filtddd" viewBox="0 0 16 16">
                   <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>

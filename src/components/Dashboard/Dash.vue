@@ -147,7 +147,8 @@
                     auth.method_name = '';  
                 }
                 localStorage.setItem('auth', JSON.stringify(auth));
-                this.FilterAuth();  
+                // this.FilterAuth();
+                window.location.reload(true)
             },
             kabinet2(typ){
                 this.kabinet1 = typ;

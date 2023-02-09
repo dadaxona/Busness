@@ -1,5 +1,4 @@
 import axios from 'axios';
-import router from '../router/index'
 // const http_url = 'https://biznes.5858.uz/api/';
 const http_url = 'http://localhost:1122/api/';
 const idgroup = {

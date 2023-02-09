@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { createStore } from 'vuex'
 import idgroup from './Idgroup'
 import tortsoft from './Tortsoft'

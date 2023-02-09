@@ -1,6 +1,9 @@
 <script>
   import { RouterLink } from 'vue-router'
   import { mapState, mapGetters, mapActions} from 'vuex'
+  import readXisFile from "read-excel-file"
+  import { saveExcel } from '@progress/kendo-vue-excel-export'
+  const auth = JSON.parse(localStorage.getItem('auth'));
   export default {
         data() {
             return {
@@ -14,6 +17,7 @@
               login:'',
               token:'',
               statustyp: '',
+              excel: []
             }
         },
         methods: {
@@ -26,13 +30,58 @@
             this.FilterAuthAc();
           },
           Localstor(){
-            const auth = JSON.parse(localStorage.getItem('auth'));
             this.login = auth.login,
             this.token = auth.token
             this.statustyp = auth.action
           },
+          exp(){
+            saveExcel({
+              data: this.Itemobjects,
+              fileName: "Export",
+              columns: [
+                {field: 'id'},
+                {field: 'userId'},
+                {field: 'magazinId'},
+                {field: 'magazin'},
+                {field: 'qayerga'},
+                {field: 'sabap'},
+                {field: 'summa'},
+              ]
+            });
+          },
+          clik(){
+            document.getElementById("archiveExcel").click();
+          },
+          subirExcel(){
+            const input = document.getElementById("archiveExcel");
+            readXisFile(input.files[0]).then((rows)=>{
+              for (let i = 1; i < rows.length; i++) {
+                this.excel.push({
+                  'userId': rows[i][1],
+                  'magazinId': rows[i][2],
+                  'magazin': rows[i][3],
+                  'qayerga': rows[i][4],
+                  'sabap': rows[i][5],
+                  'summa': rows[i][6],
+                });
+              }
+              this.OriginalMethodUrlPost({
+                  'method': 'post',
+                  'url2': 'post_update_chiqim_exsel',
+                  'url': 'chiqim_get',
+                  'massivname': this.excel,
+                  'login': this.login,
+                  'token': this.token,
+                  'magazinId': auth.method_id,
+                  'magazin': auth.method_name,
+                  'status': this.statustyp,
+              });
+            });
+            this.excel = [];
+            input.value = '';
+          },
           CreateChiqim(){
-            const auth = JSON.parse(localStorage.getItem('auth'));
+            // const auth = JSON.parse(localStorage.getItem('auth'));
             if (auth.method_id) {
               this.OriginalMethodUrlPost({
                 'method': 'post',
@@ -59,12 +108,14 @@
               'id': this.id,
               'login': this.login,
               'token': this.token,
+              'magazinId': auth.method_id,
+              'magazin': auth.method_name,
               'status': this.statustyp,
             });
             this.Clears();
           },
           getMethod(){
-            const auth = JSON.parse(localStorage.getItem('auth'));
+            // const auth = JSON.parse(localStorage.getItem('auth'));
             if (auth.method_id) {
               this.OriginalMethodUrlGet({
                 'method': 'post',
@@ -133,6 +184,19 @@
         <div class="card text-left">
             <div class="card-body">
                 <button class="btn btn-success mb-2" @click="showModal = true">Chiqim qo`shish</button>
+                <input type="file" id="archiveExcel" v-on:change="subirExcel()">
+                <button class="btn btn-success mb-2 mx-3" v-on:click="clik">                  
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                  </svg>
+                </button>
+                <button class="btn btn-primary mb-2" v-on:click="exp">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                    <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                  </svg>
+                </button>
                 <input type='text' id="chiqim" class="chiqim" v-model="chiqimse" />
                 <div class="table-responsive">
                   <div class="scroltab3">
