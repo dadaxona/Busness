@@ -4,8 +4,8 @@ import idgroup from './Idgroup'
 import tortsoft from './Tortsoft'
 const store = createStore({
     modules: {
-        a: idgroup,
-        b: tortsoft
+        idgroup,
+        tortsoft
     }
 });
 export default store

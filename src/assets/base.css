@@ -445,6 +445,9 @@
 .fotr{
     background-color: #dbdcdd;
     box-shadow: 1px -1px;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
 }
 .ggt5{
     width: 10px;
