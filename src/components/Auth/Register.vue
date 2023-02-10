@@ -67,7 +67,7 @@
                 <div class="row">
                     <div class="col-md-6 text-center">
                         <div class="pl-3 auth-right">
-                            <div class="auth-logo text-center mt-4"><img src="../../distassets/images/logo.png" alt=""></div>
+                            <div class="auth-logo text-center mt-4"><img src="../../assets/logo.png" alt=""></div>
                             <div class="flex-grow-1"></div>
                             <div class="w-100 mb-4"><RouterLink class="btn btn-outline-primary btn-block btn-icon-text btn-rounded" to="/"><i class="i-Mail-with-At-Sign"></i> Sign in with login</RouterLink><a class="btn btn-outline-google btn-block btn-icon-text btn-rounded"><i class="i-Google-Plus"></i> Sign in with Google</a><a class="btn btn-outline-facebook btn-block btn-icon-text btn-rounded"><i class="i-Facebook-2"></i> Sign in with Facebook</a></div>
                             <div class="flex-grow-1"></div>

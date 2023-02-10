@@ -34,25 +34,25 @@
                     <a href="/treding">
                         <div class="mt-2 mb-4 border">
                             <h5 class="text-center">ID Group</h5>
-                            <img src="../src/images/id.png" alt="">
+                            <img src="../src/assets/id.png" alt="">
                         </div>
                     </a>
                     <a href="/ensy">
                         <div class="mt-2 mb-4 border">
                             <h5 class="text-center">Ensy Trade</h5>
-                            <img src="../src/images/ensy.jpg" alt="">
+                            <img src="../src/assets/ensy.jpg" alt="">
                         </div>
                     </a>
                     <a href="/torgo">
                         <div class="mt-2 mb-4 border">
                             <h5 class="text-center">Torgo Soft</h5>
-                            <img src="../src/images/torgo.png" alt="">
+                            <img src="../src/assets/torgo.png" alt="">
                         </div>
                     </a>
                     <a href="/gbc">
                         <div class="mt-2 mb-4 border">
                             <h5 class="text-center">GBC</h5>
-                            <img src="../src/images/gbc.jpg" alt="">
+                            <img src="../src/assets/gbc.jpg" alt="">
                         </div>
                     </a>
                 </div>

@@ -173,7 +173,7 @@
 <template>
     <div class="app-admin-wrap layout-horizontal-bar">
         <div class="main-header">
-            <div class="logo"><img src="../../distassets/images/logo.png" alt="" /></div>         
+            <div class="logo"><img src="../../assets/logo.png" alt="" /></div>         
                 <div style="margin: auto"></div>                    
                     <div class="header-part-right">
                     <div v-if="authtenticat.status == 'brend'">
@@ -194,7 +194,7 @@
                         </div>
                     </div>
                     <div class="dropdown">
-                        <div class="user col align-self-end"><img id="userDropdown" src="../../distassets/images/faces/1.jpg" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+                        <div class="user col align-self-end"><img id="userDropdown" src="../../assets/1.jpg" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                 <div class="dropdown-header">
                                     <i class="i-Lock-User mr-1"></i> {{ authtenticat.login }}
