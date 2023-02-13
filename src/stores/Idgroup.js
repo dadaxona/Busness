@@ -44,7 +44,6 @@ const idgroup = {
         objects5: [],
         objects6: [],
         objecfiltr: [],
-        itoga: 0,
         status: '',
         jami: '',
         togl: '',
@@ -489,15 +488,18 @@ const idgroup = {
                             var fin = local.find(e => { if (e.id === pryamoy.id) return e; })
                             if (fin) {
             
-                            } else {         
+                            } else {
                                 local.push({
                                     'id': pryamoy.id,
                                     'name': pryamoy.name,
+                                    'shtrix': pryamoy.kod,
                                     'olinish': olsh,
                                     'soni': 1,
                                     'soni2': pryamoy.soni,
                                     'chegirma': 0,
                                     'sotilish': sum,
+                                    'sotilish_prise': sum,
+                                    'skidka': 0 + ' %',
                                     'jami': sum,
                                     'summa': pryamoy.summa,
                                     'valyuta': pryamoy.valyuta,
@@ -508,11 +510,14 @@ const idgroup = {
                             praduct.push({
                                 'id': pryamoy.id,
                                 'name': pryamoy.name,
+                                'shtrix': pryamoy.kod,
                                 'olinish': olsh,
                                 'soni': 1,
                                 'soni2': pryamoy.soni,
                                 'chegirma': 0,
                                 'sotilish': sum,
+                                'sotilish_prise': sum,
+                                'skidka': 0 + ' %',
                                 'jami': sum,
                                 'summa': pryamoy.summa,
                                 'valyuta': pryamoy.valyuta,
@@ -520,7 +525,10 @@ const idgroup = {
                             localStorage.setItem('sotuv', JSON.stringify(praduct));
                         }
                         state.code = false;
-                    } else { }
+                    } else { 
+                        state.code = false;
+                    }
+                    state.Items = [];
                 }
             } else {
                 axios({
@@ -889,6 +897,34 @@ const idgroup = {
         JamiSumma(state){
             return new Intl.NumberFormat().format(state.jami);
         },
+        JamiSummaTorgo(state){
+            state.jami;
+            var sotilish_prise2 = 0;
+            var jami2 = 0;
+            var chegirma2 = 0;
+            var ddd = 0;
+            var jamisdd = 0;
+            var natija = 0;
+            const local = JSON.parse(localStorage.getItem('sotuv'));
+            if (local) {
+                for (let i = 0; i < local.length; i++) {
+                    sotilish_prise2 +=  parseFloat(local[i].soni) * parseFloat(local[i].sotilish_prise);
+                    jami2 += parseFloat(local[i].jami);
+                    chegirma2 += parseFloat(local[i].chegirma);
+                }
+                jamisdd = sotilish_prise2 - jami2;
+                natija = sotilish_prise2 / 100;
+                ddd = jamisdd / natija;
+            } else {
+                
+            }
+            return {
+                prise: new Intl.NumberFormat().format(sotilish_prise2),
+                jami: new Intl.NumberFormat().format(jami2),
+                skidka: new Intl.NumberFormat().format(ddd) + ' %',
+                chegir: new Intl.NumberFormat().format(chegirma2),
+            }
+        },
         JamiSumma2(state){
             return state.jami;
         },
@@ -907,16 +943,25 @@ const idgroup = {
         objects3(state){
             return state.objects3;
         },
-        itoga(state){
-            state.itoga = 0;
+        itogaTorgo(state){
+            var summa = 0;
+            var sht = 0;
+            var koli = state.objects3.length;
             for (let i = 0; i <  state.objects3.length; i++) {
-                if (state.objects3[i].valyuta) {
-                    state.itoga += parseFloat(state.objects3[i].olinish) * parseFloat(state.objects3[i].summa) * parseFloat(state.objects3[i].soni);   
+                if (state.objects3[i].summa > 0) {
+                    summa += parseFloat(state.objects3[i].olinish) * parseFloat(state.objects3[i].summa) * parseFloat(state.objects3[i].soni);
                 } else {
-                    state.itoga += parseFloat(state.objects3[i].olinish) * parseFloat(state.objects3[i].soni);                    
-                }            
+                    summa += parseFloat(state.objects3[i].olinish) * parseFloat(state.objects3[i].soni);
+                }
             }
-            return state.itoga;
+            for (let i = 0; i <  state.objects3.length; i++) {
+                sht += parseFloat(state.objects3[i].soni);
+            }
+            return {
+                summa,
+                sht,
+                koli
+            };
         },
         valyudata(state){
             return state.objects4;

@@ -225,7 +225,7 @@
     font-size: 17px;
 }
 .scroltab3{
-    height: 500px;
+    height: 80vh;
 }
 .modal-mask {
     position: fixed;
@@ -426,9 +426,14 @@
     background-color: #dbdcdd;
     box-shadow: 1px -1px;
 }
-
+.ggggjkkk{
+    background: #bdbdbd;
+    margin-left: 12px;
+}
 .hed5{
     box-shadow: 1px -1px;
+    box-shadow: 1px -1px;
+    height: 68vh;
 }
 .tablets{
     width: 100%;
@@ -442,12 +447,37 @@
     height: 19px;
     box-shadow: -1px 1px;
 }
+.tuggg4{
+    width: 482px;
+    box-shadow: 1px 0px;
+}
+.parptf{
+    background-color: #a3a1a3;
+    color: white;
+    font-weight: 800;
+    font-size: 15px;
+}
+.sdfd{
+    font-weight: 900;
+    font-size: 20px;
+}
+
 .fotr{
     background-color: #dbdcdd;
     box-shadow: 1px -1px;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
 }
 .ggt5{
     width: 10px;
+}
+
+.diseg2{
+    background-color: #00cb65;
+    box-shadow: 0px 1px 5px -1px;
+    border: none;
+    width: 120px;
 }
 .diseg{
     background-color: #dbdcdd;
@@ -465,17 +495,66 @@
     font-size: 14px;
     margin-left: 4px;
 }
-
 .tuggg{
     width: 187px;
     background-color: #a3a1a3;
     color: white;
     box-shadow: inset 1px 0px;
 }
-
 .tuggg3{
     width: 187px;
     background-color: #eae9ea;
     box-shadow: inset 2px 2px 4px;
+}
+.torgosqlad{
+    background-color: #d9d9d9;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+.inp45454{
+    height: 22px;
+    width: 80%;
+    margin: 5px 10px;
+    height: 19px;
+    box-shadow: inset 2px 1px #878787;
+    background: #ebe9eb;
+    border: none;
+}
+.basg{
+    background-color: #9e9e9e;
+    color: white;
+}
+.torgosqlad2{
+    background-color: #eae9ea;
+    position: fixed;
+    padding-left: 10px;
+    width: 70%;
+    height: 100%;
+    right: 0;
+    background: #dbdcdd;
+    border-left: 1px solid;
+}
 
+.scroltabter{
+    overflow-y: scroll;
+    background: #eae9ea;
+}
+
+.fc{
+    box-shadow: inset 2px 1px #878787;
+    background: #dddddd;
+    border: none;
+}
+.scroltabtorgo{
+    height: 80vh;
+    background: #eae9ea;
+}
+.scroltab_sotuv{
+    height: 55vh;
+    background: #eae9ea;
+}
+.keyinp_sontor{
+    border: none;
+    background: #f1f1f1;
 }

@@ -1,6 +1,6 @@
 <script>
   import { RouterLink } from 'vue-router'
-  import { mapState, mapGetters, mapActions, mapMutations} from 'vuex'
+  import { mapState, mapGetters, mapActions, mapMutations } from 'vuex'
   const local = JSON.parse(localStorage.getItem('sotuv'))
   const auth = JSON.parse(localStorage.getItem('auth'));
   const kurs = JSON.parse(localStorage.getItem('Kurs'));
@@ -36,22 +36,9 @@
               Kamentariya2: '',
               showModalEditor: false,
               ModalOplate: false,
-
-              itemserty: [
-                { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-                { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-                { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
-                { age: 38, first_name: 'Jami', last_name: 'Carney' }
-              ]
             }
         },
         methods: {
-          download : function() {
-            const data = XLSX.utils.json_to_sheet(this.itemserty)
-            const wb = XLSX.utils.book_new()
-            XLSX.utils.book_append_sheet(wb, data, 'data')
-            XLSX.writeFile(wb,'demo.xlsx')
-          },
           ...mapMutations([
             'Live_Search_Sotuv_Mut'
           ]),
@@ -375,7 +362,6 @@
           deletStor(){
             this.Delet_Stor_act();
           },
-        
           cadasd(){
             if (this.codecler == false) {
               this.search = '';
@@ -431,8 +417,6 @@
             localStorage.setItem('sotuv', JSON.stringify(local4));
             this.Live_Search_Sotuv_Mut();
           },
-
-
           exportExcel () {
             saveExcel({
                 data: JSON.parse(localStorage.getItem('sotuv')),
@@ -508,7 +492,7 @@
           <div class="card-body">
             <div v-if="tog">
               <button class="btn btn-success btn-sm m-1" v-on:click="exportExcel" type="button">Excel</button>
-              <button class="btn btn-primary btn-sm m-1" v-on:click="download" type="button">Pdf</button>
+              <button class="btn btn-primary btn-sm m-1" type="button">Pdf</button>
               <button class="btn btn-danger btn-sm m-1" type="button" v-on:click="deletStor">Delete</button>
             </div>
             <div v-else>
