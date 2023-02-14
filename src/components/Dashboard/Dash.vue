@@ -20,7 +20,6 @@
                 oknamodzaqaz: false,
                 oknaSavdo: false,
                 oknaSavdo2: false,
-
                 kabinet1: false
             }
         },
@@ -162,7 +161,6 @@
         computed: {
           ...mapGetters({
             authtenticat:'authtenticat',
-            objectauth: 'objectauth',
             objectauth2: 'objectauth2',
             savdoobj: 'savdoobj',
             JamisummaSotuv: 'JamisummaSotuv'
@@ -235,7 +233,7 @@
                     <i class="i-Full-Screen header-icon d-none d-sm-inline-block" data-fullscreen=""></i>
                     <div class="dropdown" v-on:click="modalsokna(true)">
                         <div class="badge-top-container">
-                            <span v-if="objectauth.srok" class="badge badge-primary alre">{{ objectauth.srok }}</span>
+                            <span v-if="objectauth2.srok.length" class="badge badge-primary alre">{{ objectauth2.srok.length }}</span>
                             <span v-else></span>
                             <i class="i-Bell text-muted header-icon"></i>
                         </div>
@@ -418,7 +416,7 @@
                                     <div class="card-body text-center"><i class="i-Add-User"></i>
                                         <div class="content">
                                             <p class="text-muted mt-2 mb-0">Clent</p>
-                                            <p class="text-primary text-24 line-height-1 mb-2">{{ objectauth.mijoz }}</p>
+                                            <p class="text-primary text-24 line-height-1 mb-2">{{ objectauth2.mijoz.length }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -429,7 +427,7 @@
                                 <div class="card-body text-center"><i class="i-Financial"></i>
                                     <div class="content">
                                         <p class="text-muted mt-2 mb-0">Savdo</p>
-                                        <p class="text-primary text-24 line-height-1 mb-2">$ {{ objectauth.savdo + objectauth.savdo2 }}</p>
+                                        <p class="text-primary text-24 line-height-1 mb-2">$ {{ objectauth2.savdo.length }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -439,7 +437,7 @@
                                 <div class="card-body text-center"><i class="i-Checkout-Basket"></i>
                                     <div class="content">
                                         <p class="text-muted mt-2 mb-0">Zaqaz</p>
-                                        <p class="text-primary text-24 line-height-1 mb-2">{{ objectauth.zaqaz }}</p>
+                                        <p class="text-primary text-24 line-height-1 mb-2">{{ objectauth2.zaqaz.length }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -449,7 +447,7 @@
                                 <div class="card-body text-center"><i class="i-Money-2"></i>
                                     <div class="content">
                                         <p class="text-muted mt-2 mb-0">Qardorlar</p>
-                                        <p class="text-primary text-24 line-height-1 mb-2">$ {{ objectauth.qarz }}</p>
+                                        <p class="text-primary text-24 line-height-1 mb-2">$ {{ objectauth2.qarz.length }}</p>
                                     </div>
                                 </div>
                             </div>

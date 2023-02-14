@@ -4,18 +4,9 @@ import axios from 'axios';
 const http_url = 'http://localhost:1122/api/';
 const idgroup = {
     state: {
-        objectauth: {
-            mijoz: 0,
-            savdo: 0,
-            savdo2: 0,
-            zaqaz: 0,
-            qarz: 0,
-            srok: 0,
-        },
         objectauth2: {
             mijoz: [],
             savdo: [],
-            savdo2: [],
             zaqaz: [],
             qarz: [],
             srok: [],
@@ -71,18 +62,10 @@ const idgroup = {
                     }).then(data => {
                         if (data.data.code == 200) {
                             if (data.data.user.login == auth.login && data.data.user.token == auth.token) {
-                                state.auth = data.data.user;
-                                state.objectauth.mijoz = data.data.mijoz.length;
-                                state.objectauth.savdo = data.data.savdo.length;
-                                state.objectauth.savdo2 = data.data.savdo2.length;
-                                state.objectauth.zaqaz = data.data.zaqaz.length;
-                                state.objectauth.qarz = data.data.karz.length;
-                                state.objectauth.srok = data.data.srok.length;
-                    
+                                state.auth = data.data.user;                    
                                 state.objectauth2.mijoz = data.data.mijoz;
                                 state.objectauth2.savdo = data.data.savdo;
                                 state.objectauth2.tugl = data.data.savdo;
-                                state.objectauth2.savdo2 = data.data.savdo2;
                                 state.objectauth2.zaqaz = data.data.zaqaz;
                                 state.objectauth2.qarz = data.data.karz;
                                 state.objectauth2.srok = data.data.srok;
@@ -157,7 +140,6 @@ const idgroup = {
                             "token": data.data.data.token,
                             'action': data.data.data.status
                         }));
-                        // router.push('/treding');
                         window.location.href="/treding";
                     } else {
                         localStorage.setItem('auth', JSON.stringify({
@@ -170,7 +152,6 @@ const idgroup = {
                             'method_name': data.data.data.magazin,
                             'action': data.data.data.status
                         }));
-                        // router.push('/treding');
                         window.location.href="/treding";
                     }
                 } else {
@@ -183,7 +164,6 @@ const idgroup = {
             var auth = JSON.parse(localStorage.getItem('auth'));
             if (auth) {
                 if (auth.auth === true) {
-                    // router.push('/treding');
                     window.location.href="/treding";
                 } else {}                    
             } else {}
@@ -791,7 +771,6 @@ const idgroup = {
                     } else { }
                     localStorage.removeItem('Jami');
                     localStorage.removeItem('sotuv');
-                    context.commit('Live_Search_Sqlad_Mut', request)
                     context.commit('Live_Search_Sotuv_Mut');
                     context.commit('FilterAuthMut');
                 } else {
@@ -879,9 +858,6 @@ const idgroup = {
         userdata(state){
             return state.userdata;
         },
-        objectauth(state){
-            return state.objectauth;
-        },
         objectauth2(state){
             return state.objectauth2;
         },
@@ -905,6 +881,7 @@ const idgroup = {
             var ddd = 0;
             var jamisdd = 0;
             var natija = 0;
+            var coun = 0;
             const local = JSON.parse(localStorage.getItem('sotuv'));
             if (local) {
                 for (let i = 0; i < local.length; i++) {
@@ -915,6 +892,7 @@ const idgroup = {
                 jamisdd = sotilish_prise2 - jami2;
                 natija = sotilish_prise2 / 100;
                 ddd = jamisdd / natija;
+                coun = local.length;
             } else {
                 
             }
@@ -923,6 +901,7 @@ const idgroup = {
                 jami: new Intl.NumberFormat().format(jami2),
                 skidka: new Intl.NumberFormat().format(ddd) + ' %',
                 chegir: new Intl.NumberFormat().format(chegirma2),
+                coun: coun,
             }
         },
         JamiSumma2(state){
@@ -960,7 +939,7 @@ const idgroup = {
             return {
                 summa,
                 sht,
-                koli
+                koli,
             };
         },
         valyudata(state){

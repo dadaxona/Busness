@@ -32,41 +32,61 @@
             filad: '',
             login:'',
             token:'',
+            Jamisum: '',
             statustyp: '',
             excel: [],
             kurs: '',
             checke: '',
             drive: '',
+            mijozs: 'Имя нет',
+            mijozs_name: 'Имя нет',
+            naqt: '',
+            plastik: '',
+            bank: '',
+            karz: '',
+            srok: '',
+            dolgi: 0,
+            balanse: 0,
+            polnisum: 0,
+            ohirgis: 0,
+            mijozs_savdo: '',
+            chesxbox: '',
+            Kamentariya: '',
+            Kamentariya2: '',
+            ModalOplate: false,
+            oknamodzaqaz2: false
         }
     },
     methods: {
       ...mapMutations([
-            'Live_Search_Sotuv_Mut'
-          ]),
+        'Live_Search_Sotuv_Mut'
+      ]),
       ...mapActions([
-          'FilterAuthAc',
-          'SqladMethodUrlPost',
-          'Live_Search_Sqlad',
-          'Sotuvga_Olish_Action',
-          'Fil_Ac',
-          'SqladDB',
-          'Update_Ky',
-          'Valyuta_Kurs',
-          'Delete_Sotuv_Ac',
-          'Delet_Stor_act'
+        'FilterAuthAc',
+        'SqladMethodUrlPost',
+        'Live_Search_Sqlad',
+        'Sotuvga_Olish_Action',
+        'Fil_Ac',
+        'SqladDB',
+        'Update_Ky',
+        'Valyuta_Kurs',
+        'Delete_Sotuv_Ac',
+        'Delet_Stor_act',
+        'Oplata_Start_Action',
+        'Zaqaz_Olish_Ac'
       ]),
       FilterAuth(){
-          this.FilterAuthAc();
+        this.FilterAuthAc();
       },
       Localstor(){
-          this.login = auth.login,
-          this.token = auth.token
-          this.statustyp = auth.action
+        this.login = auth.login,
+        this.token = auth.token
+        this.statustyp = auth.action
       },
       vremya(){
-          setInterval(() => {
-              this.sana_data = new Date();
-          }, 1000);
+        // setInterval(() => {
+        //   this.sana_data = new Date();
+        // }, 1000);
       },
       exp(){
           saveExcel({
@@ -200,8 +220,21 @@
           this.sotilish2='';
           this.valyuta='';
           this.shtrix='';
+          this.shtrix='';
+          this.Jamisum = '',
+          this.mijozs = 'Имя нет',
+          this.CreateSqlad = 'Имя нет',
+          this.mijozs_savdo = '',
+          this.chesxbox = '',
+          this.dolgi = 0,
+          this.balanse = 0,
+          this.polnisum = 0,
+          this.ohirgis = 0;
+          this.Kamentariya = '',
+          this.Kamentariya2 = '',
           this.showModal = false,
-          this.showModalDel = false
+          this.showModalDel = false,
+          this.ModalOplate = false
         },
         updatekeyup(item){
           this.Update_Ky({
@@ -444,6 +477,137 @@
       deletStor(){
         this.Delet_Stor_act();
       },
+      chesx(){
+        if (this.chesxbox === 1) {
+          this.chesxbox = 0;
+        } else {
+          this.chesxbox = 1;
+        }
+      },
+      oplate(typ){
+        this.ModalOplate = typ;
+        this.Jamisum = this.JamiSumma2;
+        this.karz = this.JamiSumma2;
+      },
+      naqt1(valyu){
+        this.JamiSum = parseFloat(this.JamiSumma2) - parseFloat(valyu) - this.plastik - this.bank;
+        this.karz = this.JamiSum;
+      },
+      plastik1(valyu){
+        this.JamiSum = parseFloat(this.JamiSumma2) - parseFloat(valyu) - this.naqt - this.bank;
+        this.karz = this.JamiSum;
+      },
+      bank1(valyu){
+        this.JamiSum = parseFloat(this.JamiSumma2) - parseFloat(valyu) - this.plastik - this.naqt;
+        this.karz = this.JamiSum;
+      },
+      naqinp(){
+        this.plastik = '';
+        this.bank = '';
+        this.karz = 0;
+        this.naqt = this.JamiSumma2;
+      },
+      plasinp(){
+        this.naqt = '';
+        this.bank = '';
+        this.karz = 0;
+        this.plastik = this.JamiSumma2;
+      },
+      bankinp(){
+        this.naqt = '';
+        this.plastik = '';
+        this.karz = 0;
+        this.bank = this.JamiSumma2;
+      },
+      OplataStart(){
+        if (auth.method_id) {
+          var qarz = '';
+          if (this.chesxbox == 1 && this.Kamentariya) {
+            this.Oplata_Start_Action({
+              'method': 'post',
+              'url2': 'karzina',
+              'url': 'live_search',
+              'name': this.Kamentariya,
+              'login': this.login,
+              'token': this.token,
+              'magazinId': auth.method_id,
+              'magazin': auth.method_name,
+              'status': this.statustyp,
+              'local': JSON.parse(localStorage.getItem('sotuv'))
+            }); 
+          } else {
+            if (kurs.uid == 99999) {
+              qarz = this.karz;
+            } else {
+              qarz = this.karz * kurs.u;
+            }
+            this.Oplata_Start_Action({
+              'method': 'post',
+              'url2': 'oplata',
+              'url': 'live_search',
+              'driver': this.drive,
+              'jamisum': this.JamiSumma2,
+              'mijozId': this.mijozs,
+              'naqt': this.naqt,
+              'plastik': this.plastik,
+              'bank': this.bank,
+              'karz': qarz,
+              'srok': this.srok,
+              'sana': this.date,
+              'vid': kurs.uid,
+              'vname': kurs.un,
+              'vsumma': kurs.u,
+              'login': this.login,
+              'token': this.token,
+              'magazinId': auth.method_id,
+              'magazin': auth.method_name,
+              'status': this.statustyp,
+              'local': JSON.parse(localStorage.getItem('sotuv'))
+            });              
+          }
+          this.Clears();
+        } else {}
+      },
+      otkrit_zaqaz(typ){
+          this.oknamodzaqaz2 = typ;
+      },
+      olish(item){
+        this.Zaqaz_Olish_Ac({
+          'method': 'post',
+          'url': 'zaqaz_delet',
+          'id': item.id,
+        });
+        this.oknamodzaqaz2 = false;
+      },
+      mijozs_torgso(obj){
+        this.dolgi = 0;
+        this.balanse = 0;
+        this.ohirgis = 0;
+        this.mijozs_savdo = 0;
+        this.polnisum = 0;
+        const result =  this.MijozSelect.find(e => { if (e.id == obj) return e; });
+        if (result) {
+            var mijozm = this.objectauth2.savdo.filter((item) => { if (item.mijozId == result.id) return item;});
+            var so = mijozm.length - 1;
+            for (let i = 0; i < mijozm.length; i++) {
+              this.polnisum += parseFloat(mijozm[i].jamisumma)            
+            }
+            for (let i = so; i < mijozm.length; i++) {
+              this.ohirgis += parseFloat(mijozm[i].jamisumma)            
+            }
+            this.mijozs_name = result.name;
+            this.dolgi = result.karz;
+            this.balanse = result.summa;
+            this.mijozs_savdo = mijozm.length;        
+        } else {
+            this.mijozs_name = 'Имя нет';
+            this.dolgi = 0;
+            this.balanse = 0;
+            this.ohirgis = 0;
+            this.mijozs_savdo = 0;  
+        }
+        console.log(result, mijozm, this.mijozs_savdo)
+      }
     },
     watch: {
       tovarsqlad(row){
@@ -528,17 +692,21 @@
         codecler: 'code',
         Sotish: 'Sotish',
         JamiSumma: 'JamiSumma',
-        JamiSummaTorgo: 'JamiSummaTorgo'
+        JamiSumma2: 'JamiSumma2',
+        JamiSummaTorgo: 'JamiSummaTorgo',
+        MijozSelect: 'MijozSelect',
+        objectauth2: 'objectauth2',
+        savdoobj: 'savdoobj',
       }),
     },
     mounted() {
-        this.FilterAuth();
-        this.Localstor();
-        this.vremya();
-        this.Sqlad();
-        this.toogler2();
-        this.driverpMount();
-        this.checkedTyp3();
+      this.FilterAuth();
+      this.Localstor();
+      this.vremya();
+      this.Sqlad();
+      this.toogler2();
+      this.driverpMount();
+      this.checkedTyp3();
     }
 }
 </script>
@@ -590,7 +758,10 @@
         <div class="row">
             <div class="dasd1 pl-4">
                 <p class="ptegs">
-                    Lorem ipsum dolor sit amet
+                  <select class="klent_to text-center" v-on:change="mijozs_torgso(mijozs)" v-model="mijozs">
+                    <option value="Имя нет">--Выберите--</option>
+                    <option v-for="itema in MijozSelect" :value="itema.id">{{ itema.name }}</option>
+                  </select>
                 </p>
             </div>
             <div class="dasd2">
@@ -616,33 +787,33 @@
             </div>
             <div class="loiu2">
                 <p class="ptgtyasdsd">
-                    Dadaxon
+                    {{ mijozs_name }}
                 </p>
-                <input type="text" disabled class="bonnns">
+                <input type="text" disabled class="bonnns" v-model="JamiSummaTorgo.skidka">
                 <span class="bnos">Бонус</span>
-                <input type="text" disabled class="derfd">
-                <span class="mx-2 bnos">Пося покупки</span>
-                <input type="text" disabled class="derfd">
+                <input type="text" disabled class="derfd text-center" value="0">
+                <span class="mx-2 bnos">Баланс</span>
+                <input type="text" disabled class="derfd text-center text-success" v-model="balanse">
                 <br>
-                <input type="text" disabled class="ppaku">
+                <input type="text" disabled class="ppaku text-center" v-model="mijozs_savdo">
                 <span class="bnos3">Вазвраты</span>
-                <input type="text" disabled class="derfderer">
+                <input type="text" disabled class="derfderer text-center" value="0">
             </div>
             <div class="loiu4">
                 <p class="ptgty">
                     😊 ДОЛГ
                 </p>
                 <p class="ptgty">
-                    Нач сумма
+                  Полни сумма
                 </p>
                 <p class="ptgty">
                     Сниженние
                 </p>
             </div>
             <div>
-                <input type="text" disabled class="derfderer" value="Расчитаты"> <br>
-                <input type="text" disabled class="derfderer"><br>
-                <input type="text" disabled class="derfderer">
+                <input type="text" disabled class="derfderer text-center text-danger" v-model="dolgi"> <br>
+                <input type="text" disabled class="derfderer text-center" v-model="polnisum"><br>
+                <input type="text" disabled class="derfderer text-center" v-model="JamiSummaTorgo.coun">
             </div>
             <div class="pl-3">
                 <span class="ptgty">
@@ -675,11 +846,11 @@
     <div class="hed4 pl-1">
         <span class="bnos ">Последная чек:</span> 
         <span class="bnos text-danger">К оплата</span>
-        <input type="text" disabled class="derfderer">
+        <input type="text" disabled class="derfderer text-center" v-model="ohirgis">
         <span class="bnos pl-2">Получено</span>
-        <input type="text" disabled class="derfderer">
+        <input type="text" disabled class="derfderer text-center" v-model="mijozs_savdo">
         <span class="bnos pl-2 text-success">Cдача</span>
-        <input type="text" disabled class="derfderer">
+        <input type="text" disabled class="derfderer text-center" v-model="JamiSummaTorgo.chegir">
         <svg xmlns="http://www.w3.org/2000/svg" v-on:click="pdef" width="18" height="18" fill="currentColor" class="bi bi-printer-fill ml-3" viewBox="0 0 16 16">
             <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
             <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
@@ -765,14 +936,22 @@
             <br>
             Оплаты
         </button>
-        <button class="diseg">
+        <button v-if="objectauth2.zaqaz.length >= 1" class="diseg3" v-on:click="otkrit_zaqaz(true)">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
                 <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"/>
                 <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
               </svg>
-              <br>
-            Приняти заказ
+              <br>          
+          Приняти заказ
         </button>
+        <button v-else class="diseg">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
+              <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"/>
+              <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+            </svg>
+            <br>
+          Приняти заказ
+      </button>
         <button class="diseg" v-on:click="modalsokna3(true)">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket-fill" viewBox="0 0 16 16">
                 <path d="M5.071 1.243a.5.5 0 0 1 .858.514L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 6h1.717L5.07 1.243zM3.5 10.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3z"/>
@@ -1101,6 +1280,148 @@
       </div>
     </div>
     
+    <div v-if="ModalOplate" class="modal_okn">
+      <div class="modal_okna_torgo">
+          <h5 class="text-center mt-3">Оплата</h5>
+          <div class="row mt-0">
+            <div class="mt-0 mx-2">
+              <label for="firstName1">Итого сумма</label>
+              <input class="form-control " type="text" v-model="JamiSumma" disabled>
+              <label for="firstName1">Клент Выберите</label>
+              <select class="form-control " name="" id="" v-model="mijozs">
+                <option value="">--Выберите--</option>
+                <option v-for="itema in MijozSelect" :value="itema.id">{{ itema.name }}</option>
+              </select>
+              <div v-if="karz == 0">
+                <label class=" tex text-success">Долг</label>
+                <input class="form-control border-success " type="text" v-model="karz" disabled>
+                <label>Дата срок</label>
+                <input class="form-control " type="date" disabled>
+              </div>
+              <div v-else class="mt-0">
+                <label class=" tex text-danger">Долг</label>
+                <input class="form-control  border-danger " type="text" v-model="karz" disabled>
+                <label class="text-danger ">Дата срок</label>
+                <input class="form-control  border-danger" type="date" v-model="srok">
+              </div>
+            </div>
+            <div class="mt-0">
+              <label for="firstName1" class="mx-4">Налични</label>
+              <div class="row">
+                <div class="col-10">
+                  <input class="form-control mx-4" type="text" v-on:keyup="naqt1(naqt)" v-model="naqt">
+                </div>
+                <div class="col-1">
+                  <button class="btn btn-success" v-on:click="naqinp">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor" class="bi bi-unindent" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M13 8a.5.5 0 0 0-.5-.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H12.5A.5.5 0 0 0 13 8Z"/>
+                      <path fill-rule="evenodd" d="M3.5 4a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 1 0v-7a.5.5 0 0 0-.5-.5Z"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <label for="firstName1" class="mx-4">Карта</label>
+              <div class="row">
+                <div class="col-10">
+                  <input class="form-control mx-4" type="text" v-on:keyup="plastik1(plastik)" v-model="plastik">
+                </div>
+                <div class="col-1">
+                  <button class="btn btn-success" v-on:click="plasinp">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor" class="bi bi-unindent" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M13 8a.5.5 0 0 0-.5-.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H12.5A.5.5 0 0 0 13 8Z"/>
+                      <path fill-rule="evenodd" d="M3.5 4a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 1 0v-7a.5.5 0 0 0-.5-.5Z"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <label for="firstName1" class="mx-4">Банк</label>
+              <div class="row">
+                <div class="col-10">
+                  <input class="form-control mx-4" type="text" v-on:keyup="bank1(bank)" v-model="bank">
+                </div>
+                <div class="col-1">
+                  <button class="btn btn-success" v-on:click="bankinp">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor" class="bi bi-unindent" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M13 8a.5.5 0 0 0-.5-.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H12.5A.5.5 0 0 0 13 8Z"/>
+                      <path fill-rule="evenodd" d="M3.5 4a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 1 0v-7a.5.5 0 0 0-.5-.5Z"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <label class="mx-4">Приняти заказ</label>
+              <div class="row">
+                <div class="col-10">
+                  <input class="form-control mx-4" type="text" v-model="Kamentariya" placeholder="Kamentariya">
+                </div>
+                <div class="col-1">
+                  <input class="form-check-input mx-4" type="checkbox" v-on:click="chesx">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="border-top">
+            <div v-if="karz == 0" class="mt-4 mb-4">
+              <button class="btn btn-danger" v-on:click="ModalOplate = false">Отмена</button>
+              <button type="button" class="btn btn-success mx-2" v-on:click="OplataStart">Оплата</button>
+            </div>
+            <div v-else-if="chesxbox == 1 && Kamentariya2" class="mt-4 mb-4">
+              <button class="btn btn-danger" v-on:click="ModalOplate = false">Отмена</button>
+              <button type="button" class="btn btn-success mx-2" v-on:click="OplataStart">Оплата</button>
+            </div>
+            <div v-else-if="srok && mijozs" class="mt-4 mb-4">
+              <button class="btn btn-danger" v-on:click="ModalOplate = false">Отмена</button>
+              <button type="button" class="btn btn-success mx-2" v-on:click="OplataStart">Оплата</button>
+            </div>
+            <div v-else class="mt-4 mb-4">
+              <button class="btn btn-danger" v-on:click="ModalOplate = false">Отмена</button>
+              <button type="button" class="btn btn-light mx-2">Оплата</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div v-if="oknamodzaqaz2" class="div1">
+      <div class="div2torgo">
+          <button type="button" class="close mb-3 mt-3 mr-3" v-on:click="otkrit_zaqaz(false)">
+              <span aria-hidden="true" v-on:click="showModalEditor = false">&times;</span>
+          </button>
+          <div class="table-responsive">
+              <div class="scro pl-3">
+                  <table class="tabl scroltab_torgo">
+                      <thead>
+                          <tr>
+                              <th>Sotuvchi</th>
+                              <th>Zaqaz nomi</th>
+                              <th>Action</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                      <tr class="tir" v-for="item in objectauth2.zaqaz" :key="item.id">
+                          <td>
+                              {{ item.sotivchi }}
+                          </td>                  
+                          <td> 
+                              <span style="color: #2b64e2;">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                      <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                                  </svg>
+                              </span>
+                              {{ item.name }}
+                          </td>
+                          <td>
+                              <button class="btn btn-success pt-0 pb-0" v-on:click="olish(item)">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                      <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                      <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                                    </svg>
+                              </button>
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  </div>
 </template>
 
 <style>
