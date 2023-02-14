@@ -236,7 +236,7 @@
         },
       cadasd(){
           if (this.codecler == false) {
-            // this.search = '';
+            this.search = '';
           } else {
             this.search;           
             this.savdotormod = true;
@@ -303,8 +303,13 @@
       },
       Deletsotuv(id, jami){
           this.Delete_Sotuv_Ac({
-            'id': id,
+            'i': id,
             'jami': jami
+          });
+        },
+        Deletsotuv1(id){
+          this.Delete_Sotuv_Ac({
+            'i': id,
           });
         },
       UpdateSotilish(item){
@@ -558,7 +563,7 @@
                 <span class="bkapt mx-1">Дата Продажи</span><input type="date" class="inps1">
             </div>
             <div class="col-3">
-                <button class="otmen" v-on:click="Deletsotuv(0)">
+                <button class="otmen" v-on:click="Deletsotuv1(0)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="text-danger mx-1 bi bi-slash-circle" viewBox="0 0 16 16">
                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                         <path d="M11.354 4.646a.5.5 0 0 0-.708 0l-6 6a.5.5 0 0 0 .708.708l6-6a.5.5 0 0 0 0-.708z"/>
@@ -1089,7 +1094,7 @@
         </table>
         </div>
       </div>
-      <div class="text-center mt-4">
+      <div class="mt-4">
         <button type="button" class="btn btn-danger" @click="savdotormod = false">
           Отмена
         </button>

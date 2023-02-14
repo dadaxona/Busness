@@ -78,7 +78,7 @@
           },
           Deletsotuv(id, jami){
             this.Delete_Sotuv_Ac({
-              'id': id,
+              'i': id,
               'jami': jami
             });
           },
