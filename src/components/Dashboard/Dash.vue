@@ -223,7 +223,7 @@
                     <div class="header-part-right">
                     <div v-if="authtenticat.status == 'brend'">
                         <select name="" id="" v-on:change="magarew(maga)" v-model="maga" class="ffdd">
-                            <option value="">Magazin</option>
+                            <option value="">Магазин</option>
                             <option v-for="itema in objectauth2.magazin" :value="itema.id">{{ itema.name }}</option>
                         </select>
                     </div>
@@ -244,8 +244,8 @@
                                 <div class="dropdown-header">
                                     <i class="i-Lock-User mr-1"></i> {{ authtenticat.login }}
                                 </div>
-                                <RouterLink v-if="authtenticat.status == 'brend'" class="dropdown-item" to="/setting">Account settings</RouterLink>
-                                <a class="dropdown-item" v-on:click="Logaut_user">Sign out</a>
+                                <RouterLink v-if="authtenticat.status == 'brend'" class="dropdown-item" to="/setting">Профил Настройки </RouterLink>
+                                <a class="dropdown-item" v-on:click="Logaut_user">Выход</a>
                             </div>
                         </div>
                     </div>
@@ -260,14 +260,14 @@
                                 <li>
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Bosh sahifa</label><RouterLink to="dash"><i class="nav-icon mr-2 i-Bar-Chart"></i> Bosh sahifa</RouterLink>
+                                            <label class="toggle" for="drop-2">Главная страница</label><RouterLink to="dash"><i class="nav-icon mr-2 i-Bar-Chart"></i> Главная страница</RouterLink>
                                         </div>
                                     </div>
                                 </li>
                                 <li>
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Savdo</label><RouterLink to="treding"><i class="nav-icon mr-2 i-Suitcase"></i>Savdo</RouterLink>
+                                            <label class="toggle" for="drop-2">Торговы</label><RouterLink to="treding"><i class="nav-icon mr-2 i-Suitcase"></i>Торговы</RouterLink>
                                         </div>
                                     </div>
                                 </li>
@@ -275,7 +275,7 @@
                                 <li>
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Valyuta</label><RouterLink to="valyuta"><i class="nav-icon i-Library mr-2"></i> Valyuta </RouterLink>
+                                            <label class="toggle" for="drop-2">Валюта</label><RouterLink to="valyuta"><i class="nav-icon i-Library mr-2"></i> Валюта </RouterLink>
                                         </div>
                                     </div>
                                 </li>
@@ -283,7 +283,7 @@
                                 <li>
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Mijoz</label><RouterLink to="user"><i class="nav-icon mr-2 i-Computer-Secure"></i> Mijoz</RouterLink>
+                                            <label class="toggle" for="drop-2">Слент</label><RouterLink to="user"><i class="nav-icon mr-2 i-Computer-Secure"></i> Слент</RouterLink>
                                         </div>
                                     </div>
                                 </li>
@@ -291,7 +291,7 @@
                                 <li>
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Tovar tip</label><RouterLink to="tovartip"><i class="nav-icon mr-2 i-File-Clipboard-File--Text"></i> Tovar tip</RouterLink>
+                                            <label class="toggle" for="drop-2">Тип товар</label><RouterLink to="tovartip"><i class="nav-icon mr-2 i-File-Clipboard-File--Text"></i> Тип товар</RouterLink>
                                         </div>
                                     </div>
                                 </li>
@@ -299,14 +299,14 @@
                                 <li>
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Yetkazuvchi</label><RouterLink to="yetkazuvchi"><i class="nav-icon mr-2 i-Bar-Chart-5"></i> Yetkazuvchi</RouterLink>
+                                            <label class="toggle" for="drop-2">Доставщик</label><RouterLink to="yetkazuvchi"><i class="nav-icon mr-2 i-Bar-Chart-5"></i> Доставщик</RouterLink>
                                         </div>
                                     </div>
                                 </li>
                                 <li>
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Sqlad</label><RouterLink to="sqlad"><i class="nav-icon mr-2 i-Windows-2"></i> Sqlad</RouterLink>
+                                            <label class="toggle" for="drop-2">Склад</label><RouterLink to="sqlad"><i class="nav-icon mr-2 i-Windows-2"></i> Склад</RouterLink>
                                         </div>
                                     </div>
                                 </li>
@@ -314,14 +314,14 @@
                                 <li>
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Chiqim</label><RouterLink to="chiqim"><i class="nav-icon mr-2 i-Administrator"></i> Chiqim</RouterLink>
+                                            <label class="toggle" for="drop-2">Расход</label><RouterLink to="chiqim"><i class="nav-icon mr-2 i-Administrator"></i> Расход</RouterLink>
                                         </div>
                                     </div>
                                 </li>                  
                                 <li>
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Foyda</label><RouterLink to="foyda"><i class="nav-icon mr-2 i-File-Horizontal-Text"></i> Foyda</RouterLink>
+                                            <label class="toggle" for="drop-2">Прибл</label><RouterLink to="foyda"><i class="nav-icon mr-2 i-File-Horizontal-Text"></i> Прибл</RouterLink>
                                         </div>
                                     </div>
                                 </li>
@@ -331,14 +331,14 @@
                                 <li>
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Bosh sahifa</label><RouterLink to="dash"><i class="nav-icon mr-2 i-Bar-Chart"></i> Bosh sahifa</RouterLink>
+                                            <label class="toggle" for="drop-2">Главная страница</label><RouterLink to="dash"><i class="nav-icon mr-2 i-Bar-Chart"></i> Главная страница</RouterLink>
                                         </div>
                                     </div>
                                 </li>
                                 <li>
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Savdo</label><RouterLink to="treding"><i class="nav-icon mr-2 i-Suitcase"></i>Savdo</RouterLink>
+                                            <label class="toggle" for="drop-2">Торговы</label><RouterLink to="treding"><i class="nav-icon mr-2 i-Suitcase"></i>Торговы</RouterLink>
                                         </div>
                                     </div>
                                 </li>
@@ -346,7 +346,7 @@
                                 <li v-if="authtenticat.valyuta == 1">
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Valyuta</label><RouterLink to="valyuta"><i class="nav-icon i-Library mr-2"></i> Valyuta </RouterLink>
+                                            <label class="toggle" for="drop-2">Валюта</label><RouterLink to="valyuta"><i class="nav-icon i-Library mr-2"></i> Валюта </RouterLink>
                                         </div>
                                     </div>
                                 </li>
@@ -354,7 +354,7 @@
                                 <li v-if="authtenticat.mijoz == 1">
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Mijoz</label><RouterLink to="user"><i class="nav-icon mr-2 i-Computer-Secure"></i> Mijoz</RouterLink>
+                                            <label class="toggle" for="drop-2">Слент</label><RouterLink to="user"><i class="nav-icon mr-2 i-Computer-Secure"></i> Слент</RouterLink>
                                         </div>
                                     </div>
                                 </li>
@@ -362,7 +362,7 @@
                                 <li v-if="authtenticat.tip == 1">
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Tovar tip</label><RouterLink to="tovartip"><i class="nav-icon mr-2 i-File-Clipboard-File--Text"></i> Tovar tip</RouterLink>
+                                            <label class="toggle" for="drop-2">Тип товар</label><RouterLink to="tovartip"><i class="nav-icon mr-2 i-File-Clipboard-File--Text"></i> Тип товар</RouterLink>
                                         </div>
                                     </div>
                                 </li>
@@ -370,14 +370,14 @@
                                 <li v-if="authtenticat.yetkazu == 1">
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Yetkazuvchi</label><RouterLink to="yetkazuvchi"><i class="nav-icon mr-2 i-Bar-Chart-5"></i> Yetkazuvchi</RouterLink>
+                                            <label class="toggle" for="drop-2">Доставщик</label><RouterLink to="yetkazuvchi"><i class="nav-icon mr-2 i-Bar-Chart-5"></i> Доставщик</RouterLink>
                                         </div>
                                     </div>
                                 </li>
                                 <li v-if="authtenticat.sqlad == 1">
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Sqlad</label><RouterLink to="sqlad"><i class="nav-icon mr-2 i-Windows-2"></i> Sqlad</RouterLink>
+                                            <label class="toggle" for="drop-2">Склад</label><RouterLink to="sqlad"><i class="nav-icon mr-2 i-Windows-2"></i> Склад</RouterLink>
                                         </div>
                                     </div>
                                 </li>
@@ -385,14 +385,14 @@
                                 <li v-if="authtenticat.chiqim == 1">
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Chiqim</label><RouterLink to="chiqim"><i class="nav-icon mr-2 i-Administrator"></i> Chiqim</RouterLink>
+                                            <label class="toggle" for="drop-2">Расход</label><RouterLink to="chiqim"><i class="nav-icon mr-2 i-Administrator"></i> Расход</RouterLink>
                                         </div>
                                     </div>
                                 </li>                  
                                 <li v-if="authtenticat.foyda == 1">
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Foyda</label><RouterLink to="foyda"><i class="nav-icon mr-2 i-File-Horizontal-Text"></i> Foyda</RouterLink>
+                                            <label class="toggle" for="drop-2">Прибл</label><RouterLink to="foyda"><i class="nav-icon mr-2 i-File-Horizontal-Text"></i> Прибл</RouterLink>
                                         </div>
                                     </div>
                                 </li>
@@ -415,7 +415,7 @@
                                 <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                                     <div class="card-body text-center"><i class="i-Add-User"></i>
                                         <div class="content">
-                                            <p class="text-muted mt-2 mb-0">Clent</p>
+                                            <p class="text-muted mt-2 mb-0">Слент</p>
                                             <p class="text-primary text-24 line-height-1 mb-2">{{ objectauth2.mijoz.length }}</p>
                                         </div>
                                     </div>
@@ -426,7 +426,7 @@
                             <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                                 <div class="card-body text-center"><i class="i-Financial"></i>
                                     <div class="content">
-                                        <p class="text-muted mt-2 mb-0">Savdo</p>
+                                        <p class="text-muted mt-2 mb-0">Торговы</p>
                                         <p class="text-primary text-24 line-height-1 mb-2">$ {{ objectauth2.savdo.length }}</p>
                                     </div>
                                 </div>
@@ -436,7 +436,7 @@
                             <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                                 <div class="card-body text-center"><i class="i-Checkout-Basket"></i>
                                     <div class="content">
-                                        <p class="text-muted mt-2 mb-0">Zaqaz</p>
+                                        <p class="text-muted mt-2 mb-0">Заказ</p>
                                         <p class="text-primary text-24 line-height-1 mb-2">{{ objectauth2.zaqaz.length }}</p>
                                     </div>
                                 </div>
@@ -446,7 +446,7 @@
                             <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                                 <div class="card-body text-center"><i class="i-Money-2"></i>
                                     <div class="content">
-                                        <p class="text-muted mt-2 mb-0">Qardorlar</p>
+                                        <p class="text-muted mt-2 mb-0">Долги</p>
                                         <p class="text-primary text-24 line-height-1 mb-2">$ {{ objectauth2.qarz.length }}</p>
                                     </div>
                                 </div>
@@ -464,34 +464,22 @@
                 <span aria-hidden="true" v-on:click="showModalEditor = false">&times;</span>
             </button>
             <br>
-            <div class="row">
-                <a class="col-6 text-center bor_but" v-on:click="objecta2(1)">
-                    Doyimiy
-                </a>
-                <a class="col-6 text-center bor_but2" v-on:click="objecta2(2)">
-                    Burlamchi
-                </a>
-            </div>
             <div class="table-responsive">
                 <div class="scro">
                     <table class="tabl scroltab">
-                        <thead v-if="objectauth2.tug">
+                        <thead>
                             <tr>
-                                <th>Mijoz</th>
-                                <th>Savdo</th>
+                                <th>Слент</th>
+                                <th>Торговы</th>
+                                <th>Налични</th>
+                                <th>Карта</th>
+                                <th>Банк</th>
                                 <th>Karz</th>
-                                <th>Sotuvchi</th>
-                                <th>Sana</th>
+                                <th>Продавец</th>
+                                <th>Дата</th>
                             </tr>
                         </thead>
-                        <thead v-else>
-                            <tr>
-                                <th>Sotuvchi</th>
-                                <th>Sana</th>
-                                <th>Savdo</th>
-                            </tr>
-                        </thead>
-                        <tbody v-if="objectauth2.tug">
+                        <tbody>
                             <tr class="tir" v-for="item in objectauth2.tugl" :key="item.id" v-on:click="SavdoBut(item)">
                                 <td> 
                                     <span style="color: #2b64e2;">
@@ -509,7 +497,40 @@
                                             <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
                                         </svg>
                                     </span>
-                                    {{ item.jamisumma | formatNumber }}
+                                    {{ item.jamisumma | formatNumber }} {{ item.valyuta }}
+                                </td>
+
+                                <td>
+                                    <span style="color: #6363ff;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
+                                            <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                            <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
+                                        </svg>
+                                    </span>
+                                    {{ item.naqt | formatNumber }}
+                                </td>
+
+                                <td>
+                                    <span style="color: #6363ff;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
+                                            <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                            <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
+                                        </svg>
+                                    </span>
+                                    {{ item.plastik | formatNumber }}
+                                </td>
+
+                                       <td>
+                                    <span style="color: #6363ff;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
+                                            <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                            <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
+                                        </svg>
+                                    </span>
+                                    {{ item.bank | formatNumber }}
                                 </td>
                                 <td>
                                     <span style="color: #d34e15;">
@@ -539,33 +560,7 @@
                                             <path d="M16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-6.664-1.21c-1.11 0-1.656-.767-1.703-1.407h.683c.043.37.387.82 1.051.82.844 0 1.301-.848 1.305-2.164h-.027c-.153.414-.637.79-1.383.79-.852 0-1.676-.61-1.676-1.77 0-1.137.871-1.809 1.797-1.809 1.172 0 1.953.734 1.953 2.668 0 1.805-.742 2.871-2 2.871zm-2.89-5.435v5.332H5.77V8.079h-.012c-.29.156-.883.52-1.258.777V8.16a12.6 12.6 0 0 1 1.313-.805h.632z"/>
                                         </svg>
                                     </span>
-                                    {{ item.createdAt }}
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tbody v-else>
-                            <tr class="tir" v-for="item in objectauth2.tugl" :key="item.id" v-on:click="SavdoBut222(item)">
-                                <td>
-                                    {{ item.sotivchi }}
-                                </td>
-                                <td> 
-                                    <span style="color:green">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-calendar-date-fill" viewBox="0 0 16 16">
-                                            <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zm5.402 9.746c.625 0 1.184-.484 1.184-1.18 0-.832-.527-1.23-1.16-1.23-.586 0-1.168.387-1.168 1.21 0 .817.543 1.2 1.144 1.2z"/>
-                                            <path d="M16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-6.664-1.21c-1.11 0-1.656-.767-1.703-1.407h.683c.043.37.387.82 1.051.82.844 0 1.301-.848 1.305-2.164h-.027c-.153.414-.637.79-1.383.79-.852 0-1.676-.61-1.676-1.77 0-1.137.871-1.809 1.797-1.809 1.172 0 1.953.734 1.953 2.668 0 1.805-.742 2.871-2 2.871zm-2.89-5.435v5.332H5.77V8.079h-.012c-.29.156-.883.52-1.258.777V8.16a12.6 12.6 0 0 1 1.313-.805h.632z"/>
-                                        </svg>
-                                    </span>
                                     {{ item.sana }}
-                                </td>
-                                <td>
-                                    <span style="color: #6363ff;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
-                                            <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
-                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                            <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
-                                        </svg>
-                                    </span>
-                                    {{ item.jamisumma | formatNumber }} {{ item.valy }}
                                 </td>
                             </tr>
                         </tbody>
@@ -586,35 +581,56 @@
                     <table class="tabl scroltab">
                         <thead>
                             <tr>
-                                <th>Tovar</th>
-                                <th>Soni</th>
-                                <th>Sotilishi</th>
-                                <th>Chegirma</th>
-                                <th>Jami Summa</th>
-                                <th>Sotuvchi</th>
+                                <th>Товар</th>
+                                <th>Количество</th>
+                                <th>Продажи</th>
+                                <th>Скидка сумма</th>
+                                <th>Скидка протсент</th>
+                                <th>Итого сумма</th>
+                                <th>Продавец</th>
                             </tr>
                         </thead>
                         <tbody>
-                        <tr class="tir" v-for="item in savdoobj" :key="item.id">
-                            <td>
-                                {{ item.name }}
-                            </td>
-                            <td>
-                                {{ item.soni }}
-                            </td>
-                            <td>
-                                {{ item.sotilish | formatNumber }}
-                            </td>
-                            <td>
-                                {{ item.chegrma }}
-                            </td>
-                            <td>
-                                {{ item.jami | formatNumber }} {{ item.valy }}
-                            </td>
-                            <td>
-                                {{ item.sotivchi }}
-                            </td>
-                        </tr>
+                            <tr class="tir" v-for="item in savdoobj" :key="item.id">
+                                <td>
+                                    {{ item.name }}
+                                </td>
+                                <td>
+                                    {{ item.soni }}
+                                </td>
+                                <td>
+                                    {{ item.sotilish | formatNumber }}
+                                </td>
+                                <td>
+                                    {{ item.chegrma }}
+                                </td>
+                                <td>
+                                    {{ item.skidka }}
+                                </td>
+                                <td>
+                                    {{ item.jami | formatNumber }} {{ item.valyuta }}
+                                </td>
+                                <td>
+                                    {{ item.sotivchi }}
+                                </td>
+                            </tr>
+                            <!-- { "id": 4,
+                             "userId": 1,
+                             "magazinId": 1,
+                             "magazin": "Dokon",
+                             "sotivchi": "Dadaxon",
+                             "savdoId": 3,
+                             "tovar": 2,
+                             "name": "Hd 555",
+                             "shtrix": "3464354",
+                             "olinish": "25",
+                             "soni": "1",
+                             "sotilish": "33.333333333333336",
+                             "chegrma": "0",
+                             "skidka": "0 %",
+                             "jami": "33.333333333333336",
+                             "kurs": "USD",
+                             "valyuta": "12000" -->
                         </tbody>
                     </table>
                 </div>
@@ -632,10 +648,10 @@
                     <table class="tabl scroltab">
                         <thead>
                             <tr>
-                                <th>Mijoz</th>
-                                <th>Savdo</th>
-                                <th>Muddat</th>
-                                <th>Karz</th>
+                                <th>Слент</th>
+                                <th>Торговы</th>
+                                <th>Срок</th>
+                                <th>Долг</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -657,7 +673,7 @@
                                         <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
                                     </svg>
                                 </span>
-                                {{ item.jamisumma | formatNumber }}
+                                {{ item.jamisumma | formatNumber }} {{ item.valyuta }}
                             </td>
                             <td>
                                 <span style="color:green">
@@ -704,10 +720,10 @@
                     <table class="tabl scroltab">
                         <thead>
                             <tr>
-                                <th>Mijoz</th>
-                                <th>Savdo</th>
-                                <th>Muddat</th>
-                                <th>Karz</th>
+                                <th>Слент</th>
+                                <th>Торговы</th>
+                                <th>Срок</th>
+                                <th>Долг</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -729,7 +745,7 @@
                                         <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
                                     </svg>
                                 </span>
-                                {{ item.jamisumma | formatNumber }}
+                                {{ item.jamisumma | formatNumber }} {{ item.valyuta }}
                             </td>
                             <td>
                                 <span style="color:green">
@@ -747,7 +763,7 @@
                                     </svg>-
                                 </span>
                                 <span class="text-danger">
-                                    {{ item.karz | formatNumber }}
+                                    {{ item.karz | formatNumber }} {{ item.valyuta }}
                                 </span>
                             </td>
                             <td>
@@ -776,8 +792,8 @@
                     <table class="tabl scroltab">
                         <thead>
                             <tr>
-                                <th>Sotuvchi</th>
-                                <th>Zaqaz nomi</th>
+                                <th>Продавец</th>
+                                <th>Заказ</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -816,7 +832,7 @@
         </button>
         <br>
         <h4 class="text-center">{{ name }}</h4>
-        <label for="" class="mx-3">Qarz</label>
+        <label for="" class="mx-3">Долг</label>
         <div class="col-12">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stack-overflow position-fixed mt-2 ml-2" viewBox="0 0 16 16">
                 <path d="M12.412 14.572V10.29h1.428V16H1v-5.71h1.428v4.282h9.984z"/>
@@ -824,7 +840,7 @@
             </svg>
             <input type="text" name="" class="text-right form-control" v-model="qarz" disabled>
         </div>
-        <label for="" class="mx-3 mt-2">Tolov summa</label>
+        <label for="" class="mx-3 mt-2">К оплате</label>
         <div class="col-12">        
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-coin position-fixed mt-2 ml-2 pt-1" viewBox="0 0 16 16">
                 <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
@@ -834,7 +850,7 @@
             <input type="text" name="" class="text-right form-control" v-model="tolov" v-on:keyup="tolov_key(tolov)" placeholder="To`lov summa">
         </div>
         <div v-if="muddat">
-            <label for="" class="mx-3 mt-2">Muddatni belgilang</label>
+            <label for="" class="mx-3 mt-2">Выберите срок</label>
             <div class="col-12">
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-alarm position-fixed mt-2 ml-2 pt-1" viewBox="0 0 16 16">
                     <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9V5.5z"/>
@@ -848,17 +864,17 @@
         </div>
         <div v-if="filtretr === true">
             <div class="col-12 mt-3 mb-4">
-                <button class="btn btn-success" style="width: 100%;" v-on:click="tolov_action">To`lash</button>
+                <button class="btn btn-success" style="width: 100%;" v-on:click="tolov_action">Платить</button>
             </div>
         </div>
         <div v-else-if="muddatdate">
             <div class="col-12 mt-3 mb-4">
-                <button class="btn btn-success" style="width: 100%;" v-on:click="tolov_action">To`lash</button>
+                <button class="btn btn-success" style="width: 100%;" v-on:click="tolov_action">Платить</button>
             </div>
         </div>
         <div v-else>
             <div class="col-12 mt-3 mb-4">
-                <button class="btn btn-light" style="width: 100%;">To`lash</button>                
+                <button class="btn btn-light" style="width: 100%;">Платить</button>                
             </div>
         </div>
     </div>

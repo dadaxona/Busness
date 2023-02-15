@@ -171,7 +171,7 @@
     <div class="col-md-12 mb-3">
         <div class="card text-left">
             <div class="card-body">
-                <button class="btn btn-success mb-2" v-on:click="showModal = true">Tip qo`shish</button>
+                <button class="btn btn-success mb-2" v-on:click="showModal = true">Тип  добавлять</button>
                 <input type="file" id="archiveExcel" v-on:change="subirExcel()">
                 <button class="btn btn-success mb-2 mx-3" v-on:click="clik">                  
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
@@ -191,7 +191,7 @@
                     <table class="tabl scroltab">
                         <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>Тип</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -222,7 +222,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Modal Tip</h5>
+              <h5 class="modal-title">Тип</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" v-on:click="showModal = false">&times;</span>
               </button>
@@ -230,14 +230,14 @@
             <div class="modal-body">
               <div class="row">
                 <div class="col-md-12 form-group mb-3">
-                    <label for="firstName1">Tip Name</label>
+                    <label for="firstName1">Тип</label>
                     <input class="form-control" id="firstName1" type="text" v-model="nametip" placeholder="Tip name">
                 </div>
             </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" v-on:click="showModal = false">Close</button>
-              <button type="button" class="btn btn-primary" v-on:click="CreateTip">Save changes</button>
+              <button type="button" class="btn btn-secondary" v-on:click="showModal = false">Назад</button>
+              <button type="button" class="btn btn-primary" v-on:click="CreateTip">Сохранить</button>
             </div>
           </div>
         </div>
@@ -254,7 +254,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title text-danger">Delete Tip</h5>
+              <h5 class="modal-title text-danger">Удалить</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" @click="showModalDal = false">&times;</span>
               </button>
@@ -264,8 +264,8 @@
                 <input class="form-control text-center" type="text"  v-model="nametip" disabled>
             </div>
             <div class="modal-body text-center">
-              <button type="button" class="btn btn-danger mx-2" @click="showModalDal = false">No</button>
-              <button type="button" class="btn btn-primary" v-on:click="TipsDelet">Yes</button>
+              <button type="button" class="btn btn-danger mx-2" @click="showModalDal = false">Нет</button>
+              <button type="button" class="btn btn-primary" v-on:click="TipsDelet">Да</button>
             </div>
           </div>
         </div>

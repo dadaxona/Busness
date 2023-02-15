@@ -12,6 +12,8 @@
               id: '',
               name: '',
               summa: 0,
+              kurs: '',
+              valyuta: '',
               yerkazse: '',
               login:'',
               token:'',
@@ -29,7 +31,6 @@
             this.FilterAuthAc();
           },
           Localstor(){
-            // const auth = JSON.parse(localStorage.getItem('auth'));
             this.login = auth.login,
             this.token = auth.token,
             this.statustyp = auth.action
@@ -45,6 +46,8 @@
                 {field: 'magazin'},
                 {field: 'name'},
                 {field: 'summa'},
+                {field: 'kurs'},
+                {field: 'valyuta'},                
               ]
             });
           },
@@ -60,7 +63,9 @@
                   'magazinId': rows[i][2],
                   'magazin': rows[i][3],
                   'name': rows[i][4],
-                  'summa': rows[i][5]
+                  'summa': rows[i][5],
+                  'kurs': rows[i][6],
+                  'valyuta': rows[i][7],
                 });                
               }
               this.OriginalMethodUrlPost({
@@ -79,7 +84,6 @@
             input.value = '';
           },
           CreateYetkazuvchi(){
-            // const auth = JSON.parse(localStorage.getItem('auth'));
             if (auth.method_id) {
               this.OriginalMethodUrlPost({
                 'method': 'post',
@@ -88,6 +92,8 @@
                 'id': this.id,
                 'name': this.name,
                 'summa': this.summa,
+                'kurs': this.kurs,
+                'valyuta': this.valyuta,
                 'login': this.login,
                 'token': this.token,
                 'magazinId': auth.method_id,
@@ -99,10 +105,12 @@
               
             }
           },
-          edittip(id, name, summa){
-            this.id = id;
-            this.name = name;
-            this.summa = summa;
+          edittip(resu){
+            this.id = resu.id;
+            this.name = resu.name;
+            this.summa = resu.summa;
+            this.kurs = resu.kurs;
+            this.valyuta = resu.valyuta;            
             this.showModal = true;
           },
           getTip(){
@@ -141,13 +149,20 @@
             this.id = '',
             this.name = '',
             this.summa = 0,
+            this.kurs = '',
+            this.valyuta = '',
             this.showModal = false,
             this.showModalDel = false
           },
+          valyu_kurs(resu){
+            const val = this.valyudata.find(e => { if (e.name == resu) return e; });
+            this.kurs = val.summa;
+            this.valyuta = val.name;
+          }
         },
         watch: {
           yerkazse(row){
-            // const auth = JSON.parse(localStorage.getItem('auth'));
+            const auth = JSON.parse(localStorage.getItem('auth'));
             if (auth.method_id) {
               this.OriginalMethodUrlGet({
                 'method': 'post',
@@ -164,7 +179,8 @@
         },
         computed: {
           ...mapGetters({
-            Itemobjects: 'Itemobjects'
+            Itemobjects: 'Itemobjects',
+            valyudata: 'valyudata'
           }),
         },
         mounted() {
@@ -180,7 +196,7 @@
     <div class="col-md-12 mb-3">
         <div class="card text-left">
             <div class="card-body">
-                <button class="btn btn-success mb-2" @click="showModal = true">Yetkazuvchi qo`shish</button>
+                <button class="btn btn-success mb-2" @click="showModal = true">Доставщик добавлять</button>
                 <input type="file" id="archiveExcel" v-on:change="subirExcel()">
                 <button class="btn btn-success mb-2 mx-3" v-on:click="clik">                  
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
@@ -200,17 +216,17 @@
                     <table class="tabl scroltab">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Summa</th>
+                                <th>Доставщик</th>
+                                <th>Сумма</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                           <tr v-for="item in Itemobjects" :key="item.id" class="tir">
                             <td>{{ item.name }}</td>
-                            <td>{{ item.summa }}</td>
+                            <td>{{ item.summa }} {{ item.valyuta }}</td>
                             <td>
-                              <a class="text-success mr-2" v-on:click="edittip(item.id, item.name, item.summa)">
+                              <a class="text-success mr-2" v-on:click="edittip(item)">
                                 <i class="nav-icon i-Pen-2 font-weight-bold"></i>
                               </a>
                               <a class="text-danger mr-2" v-on:click="delettip(item.id, item.name)">
@@ -233,7 +249,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Modal Yetkazuvchi</h5>
+              <h5 class="modal-title">Доставщик</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" v-on:click="showModal = false">&times;</span>
               </button>
@@ -241,18 +257,25 @@
             <div class="modal-body">
               <div class="row">
                 <div class="col-md-12 form-group mb-3">
-                    <label for="firstName1">Name Yetkazuvchi</label>
+                    <label for="firstName1">Имя Доставщик</label>
                     <input class="form-control" id="firstName1" type="text" v-model="name" placeholder="Yetkazuvchi name">
                 </div>
                 <div class="col-md-12 form-group mb-3">
-                  <label for="firstName1">Summa</label>
+                  <label for="firstName1">Сумма</label>
                   <input class="form-control" id="firstName1" type="number" v-model="summa" placeholder="Summa">
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                  <label for="firstName1">Валюта</label>
+                  <select class="form-control" v-on:change="valyu_kurs(valyuta)" v-model="valyuta">
+                    <option value="">----</option>
+                    <option  v-for="itema in valyudata" :value="itema.name">{{itema.name}}</option>
+                  </select>
+                </div>
               </div>
             </div>
-            </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" v-on:click="showModal = false">Close</button>
-              <button type="button" class="btn btn-primary" v-on:click="CreateYetkazuvchi">Save changes</button>
+              <button type="button" class="btn btn-secondary" v-on:click="showModal = false">Назад</button>
+              <button type="button" class="btn btn-primary" v-on:click="CreateYetkazuvchi">Сохранить</button>
             </div>
           </div>
         </div>
@@ -268,7 +291,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title text-danger">Delete Yetkazuvchi</h5>
+              <h5 class="modal-title text-danger">Удалить</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" @click="showModalDel = false">&times;</span>
               </button>
@@ -278,8 +301,8 @@
                 <input class="form-control text-center" type="text"  v-model="name" disabled>
             </div>
             <div class="modal-body text-center">
-              <button type="button" class="btn btn-danger mx-2" @click="showModalDel = false">No</button>
-              <button type="button" class="btn btn-primary" v-on:click="YetkazDelet">Yes</button>
+              <button type="button" class="btn btn-danger mx-2" @click="showModalDel = false">Нет</button>
+              <button type="button" class="btn btn-primary" v-on:click="YetkazDelet">Да</button>
             </div>
           </div>
         </div>

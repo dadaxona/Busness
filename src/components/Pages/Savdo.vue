@@ -5,484 +5,511 @@
   const auth = JSON.parse(localStorage.getItem('auth'));
   const kurs = JSON.parse(localStorage.getItem('Kurs'));
   import { saveExcel } from '@progress/kendo-vue-excel-export';
+  const format = new Intl.NumberFormat();
   export default {
     data() {
-            return {
-              login:'',
-              token:'',
-              statustyp: '', 
-              search: '',
-              id: '',
-              name: '',
-              soni: '',
-              soni2: '',
-              summa: '',
-              jami: '',
-              skidka: '',
-              kurs: '',
-              checke: '',
-              Jamisum: '',
-              mijozs: '',
-              naqt: '',
-              plastik: '',
-              bank: '',
-              karz: '',
-              srok: '',
-              drive: '',
-              mijozsumma: '',
-              date: new Date().toLocaleDateString('en-CA'),
-              chesxbox: '',
-              Kamentariya: '',
-              Kamentariya2: '',
-              showModalEditor: false,
-              ModalOplate: false,
-            }
-        },
-        methods: {
-          ...mapMutations([
-            'Live_Search_Sotuv_Mut'
-          ]),
-          ...mapActions([
-            'FilterAuthAc',
-            'Live_Search_Sqlad',
-            'Live_Search_Sotuv',
-            'Sotuvga_Olish_Action',
-            'Delete_Sotuv_Ac',
-            'Plus_Minus_Ac',
-            'EditStoreg',
-            'Valyuta_Kurs',
-            'Oplata_Start_Action',
-            'Driver_Act',
-            'Delet_Stor_act'
-          ]),
-          Localstor(){
-            this.login = auth.login,
-            this.token = auth.token,
-            this.statustyp = auth.action
-          },
-          FilterAuth(){
-            this.FilterAuthAc();
-          },
-          Sqlad(){
-            if (auth.method_id) {
-              this.Live_Search_Sqlad({
-                'method': 'post',
-                'url': 'live_search',
-                'login': this.login,
-                'token': this.token,
-                'magazinId': auth.method_id,
-                'magazin': auth.method_name,
-                'status': this.statustyp,
-              });
-            } else {}
-          },
-          Deletsotuv(id, jami){
-            this.Delete_Sotuv_Ac({
-              'i': id,
-              'jami': jami
-            });
-          },
-          Sotuvga_Olish(obj){
-            var sum = '';
-            var olsh = '';
-            if (obj.soni > 0) {
-              if (kurs.uid == 99999) {
-                if (obj.summa == '') {
-                  if (this.checke === 1) {
-                    sum = obj.sotilish2;
-                  } else {
-                    sum = obj.sotilish;
-                  }
-                  olsh = obj.olinish;
-                } else {
-                  if (this.checke === 1) {
-                    sum = obj.sotilish2 * obj.summa;
-                  } else {
-                    sum = obj.sotilish * obj.summa;
-                  }
-                  olsh = obj.olinish * obj.summa;
-                }
+      return {
+        login:'',
+        token:'',
+        statustyp: '', 
+        search: '',
+        id: '',
+        name: '',
+        soni: '',
+        soni2: '',
+        summa: '',
+        jami: '',
+        skidka: '',
+        kurs: '',
+        checke: '',
+        Jamisum: '',
+        mijozs: '',
+        naqt: '',
+        plastik: '',
+        bank: '',
+        karz: '',
+        srok: '',
+        drive: '',
+        mijozsumma: '',
+        date: new Date().toLocaleDateString('en-CA'),
+        chesxbox: '',
+        Kamentariya: '',
+        Kamentariya2: '',
+        showModalEditor: false,
+        ModalOplate: false,
+      }
+    },
+    methods: {
+      ...mapMutations([
+        'Live_Search_Sotuv_Mut'
+      ]),
+      ...mapActions([
+        'FilterAuthAc',
+        'Live_Search_Sqlad',
+        'Live_Search_Sotuv',
+        'Sotuvga_Olish_Action',
+        'Delete_Sotuv_Ac',
+        'Plus_Minus_Ac',
+        'EditStoreg',
+        'Valyuta_Kurs',
+        'Oplata_Start_Action',
+        'Driver_Act',
+        'Delet_Stor_act'
+      ]),
+      Localstor(){
+        this.login = auth.login,
+        this.token = auth.token,
+        this.statustyp = auth.action
+      },
+      FilterAuth(){
+        this.FilterAuthAc();
+      },
+      Sqlad(){
+        if (auth.method_id) {
+          this.Live_Search_Sqlad({
+            'method': 'post',
+            'url': 'live_search',
+            'login': this.login,
+            'token': this.token,
+            'magazinId': auth.method_id,
+            'magazin': auth.method_name,
+            'status': this.statustyp,
+          });
+        } else {}
+      },
+      Deletsotuv(id, jami){
+        this.Delete_Sotuv_Ac({
+          'i': id,
+          'jami': jami
+        });
+      },
+      Sotuvga_Olish(obj){
+        var sum = '';
+        var olsh = '';
+        const kurs = JSON.parse(localStorage.getItem('Kurs'));
+        if (obj.soni > 0) {
+          if (kurs.uid == 99999) {
+            if (obj.summa == '') {
+              if (this.checke === 1) {
+                sum = obj.sotilish2;
               } else {
-                if (obj.summa == '') {
-                  if (this.checke === 1) {
-                    sum = obj.sotilish2 / kurs.u;
-                  } else {
-                    sum = obj.sotilish / kurs.u;
-                  }
-                  olsh = obj.olinish / kurs.u;
-                } else {
-                  if (this.checke === 1) {
-                    sum = obj.sotilish2 * obj.summa / kurs.u;
-                  } else {
-                    sum = obj.sotilish * obj.summa / kurs.u;
-                  }
-                  olsh = obj.olinish * obj.summa / kurs.u;
-                }
+                sum = obj.sotilish;
               }
-              this.Sotuvga_Olish_Action({
-                'id': obj.id,
-                'name': obj.name,
-                'olinish': olsh,
-                'soni': 1,
-                'soni2': obj.soni,
-                'chegirma': 0,
-                'sotilish': sum,
-                'jami': sum,
-                'summa': obj.summa,
-                'valyuta': obj.valyuta,
-              });
+              olsh = obj.olinish;
             } else {
-              
-            }
-          },
-          Minus(id, i, typ){
-            this.Plus_Minus_Ac({
-              'id': id,
-              'i': i,
-              'type': typ
-            });
-          },
-          Plus(id, i, typ){
-            this.Plus_Minus_Ac({
-              'id': id,
-              'i': i,
-              'type': typ
-            });
-          },
-          editr(data){
-            this.id = data.id,
-            this.name = data.name,
-            this.soni = data.soni,
-            this.soni2 = data.soni2,
-            this.summa = data.sotilish,
-            this.jami = data.jami,
-            this.skidka = data.chegirma,
-            this.showModalEditor = true
-          },
-          CreateEdit(){
-            this.EditStoreg({
-              'id': this.id,
-              'sotilish': this.summa,
-              'soni': this.soni,
-              'chegirma': this.skidka,
-              'jami': this.jami,
-            });
-            this.Clears();
-          },
-          Clears(){
-            this.id = '',
-            this.name = '',
-            this.soni = '',
-            this.soni2 = '',
-            this.summa = '',
-            this.jami = '',
-            this.skidka = '',
-            this.Jamisum = '',
-            this.mijozs = '',
-            this.naqt = '',
-            this.plastik = '',
-            this.bank = '',
-            this.karz = '',
-            this.srok = '',
-            this.drive = '',
-            this.chesxbox = '',
-            this.Kamentariya = '',
-            this.Kamentariya2 = '',
-            this.showModalEditor = false,
-            this.ModalOplate = false
-          },
-          chesx(){
-            if (this.chesxbox === 1) {
-              this.chesxbox = 0;
-            } else {
-              this.chesxbox = 1;
-            }
-          },
-          sonival(val){
-            if (val > this.soni2) {
-              this.jami = this.summa * this.soni2;
-              this.soni = this.soni2;
-            } else {
-              this.jami = this.summa * val;
-            }
-          },
-          summaval(val){
-            this.jami = this.soni * val;
-          },
-          jamival(val){
-            this.summa = val / this.soni;
-          },
-          skidkaval(val){
-            if (val > 0) {
-              this.jami = this.jami - val * this.jami / 100;
-            } else {
-              this.jami = this.summa * this.soni;
-            }
-          },
-          toogler(u){
-            var id = '';
-            var name = '';
-            var summa = '';
-            if (u === 99999) {
-              id = 99999;
-              name = '';
-              summa = '1';
-            } else {
-              const data = this.valyudata.find(e => { return e.id == u });
-              id = data.id;
-              name = data.name;
-              summa = data.summa;
-            }
-            this.Valyuta_Kurs({
-              'kursid': id,
-              'kurs1': summa,
-              'kursname': name,
-            });
-          },
-          toogler2(){
-            var kur =JSON.parse(localStorage.getItem('Kurs'));
-            if (kur) {
-              this.kurs = JSON.parse(localStorage.getItem('Kurs')).uid;
-            } else {
-              localStorage.setItem('Kurs',  JSON.stringify({'u': 99999, 'uid': '',  'un': ''}));
-              this.kurs = 99999;
-            }
-          },
-          checkedTyp(foo){
-            localStorage.setItem('Checked',  JSON.stringify({'chesked': foo}));          
-            this.checkedTyp3();
-          },     
-          checkedTyp3(){
-            var che = JSON.parse(localStorage.getItem('Checked'));
-            if (che) {
-              this.checke = che.chesked;
-            } else {
-              localStorage.setItem('Checked',  JSON.stringify({'chesked': 1}));
-              var che2 = JSON.parse(localStorage.getItem('Checked'));
-              this.checke = che2.chesked;
-            }
-          },
-          oplate(typ){
-            this.ModalOplate = typ;
-            this.Jamisum = this.JamiSumma2;
-            this.karz = this.JamiSumma2;
-          },
-          naqt1(valyu){
-            this.JamiSum = parseFloat(this.JamiSumma2) - parseFloat(valyu) - this.plastik - this.bank;
-            this.karz = this.JamiSum;
-          },
-          plastik1(valyu){
-            this.JamiSum = parseFloat(this.JamiSumma2) - parseFloat(valyu) - this.naqt - this.bank;
-            this.karz = this.JamiSum;
-          },
-          bank1(valyu){
-            this.JamiSum = parseFloat(this.JamiSumma2) - parseFloat(valyu) - this.plastik - this.naqt;
-            this.karz = this.JamiSum;
-          },
-          naqinp(){
-            this.plastik = '';
-            this.bank = '';
-            this.karz = 0;
-            this.naqt = this.JamiSumma2;
-          },
-          plasinp(){
-            this.naqt = '';
-            this.bank = '';
-            this.karz = 0;
-            this.plastik = this.JamiSumma2;
-          },
-          bankinp(){
-            this.naqt = '';
-            this.plastik = '';
-            this.karz = 0;
-            this.bank = this.JamiSumma2;
-          },
-          OplataStart(){
-            if (auth.method_id) {
-              var qarz = '';
-              if (this.chesxbox == 1 && this.Kamentariya) {
-                this.Oplata_Start_Action({
-                  'method': 'post',
-                  'url2': 'karzina',
-                  'url': 'live_search',
-                  'name': this.Kamentariya,
-                  'login': this.login,
-                  'token': this.token,
-                  'magazinId': auth.method_id,
-                  'magazin': auth.method_name,
-                  'status': this.statustyp,
-                  'local': JSON.parse(localStorage.getItem('sotuv'))
-                }); 
+              if (this.checke === 1) {
+                sum = obj.sotilish2 * obj.summa;
               } else {
-                if (kurs.uid == 99999) {
-                  qarz = this.karz;
-                } else {
-                  qarz = this.karz * kurs.u;
-                }
-                this.Oplata_Start_Action({
-                  'method': 'post',
-                  'url2': 'oplata',
-                  'url': 'live_search',
-                  'driver': this.drive,
-                  'jamisum': this.JamiSumma2,
-                  'mijozId': this.mijozs,
-                  'naqt': this.naqt,
-                  'plastik': this.plastik,
-                  'bank': this.bank,
-                  'karz': qarz,
-                  'srok': this.srok,
-                  'sana': this.date,
-                  'vid': kurs.uid,
-                  'vname': kurs.un,
-                  'vsumma': kurs.u,
-                  'login': this.login,
-                  'token': this.token,
-                  'magazinId': auth.method_id,
-                  'magazin': auth.method_name,
-                  'status': this.statustyp,
-                  'local': JSON.parse(localStorage.getItem('sotuv'))
-                });              
+                sum = obj.sotilish * obj.summa;
               }
-              this.Clears();
-            } else {}
-          },
-          driverpMount(){
-            var dri =JSON.parse(localStorage.getItem('Driver'));
-            if (dri) {
-              this.drive = JSON.parse(localStorage.getItem('Driver')).d;
-            } else {
-              localStorage.setItem('Driver',  JSON.stringify({'d': 1}));
-              this.drive = 1;
+              olsh = obj.olinish * obj.summa;
             }
-          },
-          dr(d){
-            localStorage.setItem('Driver',  JSON.stringify({'d': d}));
-            this.driverpMount();
-          },
-          deletStor(){
-            this.Delet_Stor_act();
-          },
-          cadasd(){
-            if (this.codecler == false) {
-              this.search = '';
+          } else {
+            if (obj.summa == '') {
+              if (this.checke === 1) {
+                sum = obj.sotilish2 / kurs.u;
+              } else {
+                sum = obj.sotilish / kurs.u;
+              }
+              olsh = obj.olinish / kurs.u;
             } else {
-              this.search;
-            }
-          },
-          UpdateSotilish(item){
-            const local1 = JSON.parse(localStorage.getItem('sotuv'));
-            local1.find(e => {
-              if (e.id === item.id) {
-                  e.sotilish = item.sotilish;
-                  e.jami = e.soni * e.sotilish - e.chegirma;
-                }else{}
-            });
-            localStorage.setItem('sotuv', JSON.stringify(local1));
-            this.Live_Search_Sotuv_Mut();
-          },
-          UpdateSon(item){
-            const local2 = JSON.parse(localStorage.getItem('sotuv'));
-            local2.find(e => {
-              if (e.id === item.id) {
-                if (e.soni2 > item.soni) {
-                  e.soni = item.soni;
-                } else {
-                  e.soni = e.soni2;
-                }
-                e.jami = e.soni * e.sotilish - e.chegirma;
-              }else{}
-            });
-            localStorage.setItem('sotuv', JSON.stringify(local2));
-            this.Live_Search_Sotuv_Mut();
-          },
-          UpdateChgirma(item){
-            const local3 = JSON.parse(localStorage.getItem('sotuv'));
-            local3.find(e => {
-              if (e.id === item.id) {
-                  e.chegirma = item.chegirma;
-                  e.jami = e.soni * e.sotilish - e.chegirma;
-                }else{}
-              });
-            localStorage.setItem('sotuv', JSON.stringify(local3));
-            this.Live_Search_Sotuv_Mut();
-          },
-          UpdateJami(item){
-            const local4 = JSON.parse(localStorage.getItem('sotuv'));
-            local4.find(e => {
-              if (e.id === item.id) {
-                  e.jami = item.jami;
-                  e.chegirma = e.soni * item.sotilish - e.jami;               
-                }else{}
-              });
-            localStorage.setItem('sotuv', JSON.stringify(local4));
-            this.Live_Search_Sotuv_Mut();
-          },
-          exportExcel () {
-            saveExcel({
-                data: JSON.parse(localStorage.getItem('sotuv')),
-                fileName: "Export",
-                columns: [
-                  {field: 'id'},
-                  {field: 'name'},
-                  {field: 'olinish'},
-                  {field: 'soni'},
-                  {field: 'soni2'},
-                  {field: 'chegirma'},
-                  {field: 'sotilish'},
-                  {field: 'jami'},
-                  {field: 'summa'},
-                  {field: 'valyuta'}
-                  ]
-                });
-            },
-
-        },
-        watch: {
-          search(row){
-            if (auth.method_id) {
-              this.Live_Search_Sqlad({
-                'method': 'post',
-                'url': 'live_search',
-                'search': row,
-                'login': this.login,
-                'token': this.token,
-                'status': this.statustyp,
-                'magazinId': auth.method_id,
-                'magazin': auth.method_name,
-              });
-              this.cadasd();
-            }else {}
-          },
-          Kamentariya(r){
-            if (r) {
-              this.Kamentariya2 = 1;
-            } else {
-             this.Kamentariya2 = 0;
+              if (this.checke === 1) {
+                sum = obj.sotilish2 * obj.summa / kurs.u;
+              } else {
+                sum = obj.sotilish * obj.summa / kurs.u;
+              }
+              olsh = obj.olinish * obj.summa / kurs.u;
             }
           }
-        },
-        computed: {
-          ...mapGetters({
-            Items: 'Items',
-            Sotish: 'Sotish',
-            JamiSumma: 'JamiSumma',
-            JamiSumma2: 'JamiSumma2',
-            valyudata: 'valyudata',
-            MijozSelect: 'MijozSelect',
-            tog: 'tog',
-            drive: 'drive',
-            objectauth2: 'objectauth2',
-            codecler: 'code'
-          }),
-        },
-        mounted() {
-          this.FilterAuth();
-          this.Localstor();
-          this.Sqlad();
-          this.toogler2();
-          this.driverpMount();
-          this.checkedTyp3();
+          this.Sotuvga_Olish_Action({
+            // 'id': obj.id,
+            // 'name': obj.name,
+            // 'olinish': olsh,
+            // 'soni': 1,
+            // 'soni2': obj.soni,
+            // 'chegirma': 0,
+            // 'sotilish': sum,
+            // 'jami': sum,
+            // 'summa': obj.summa,
+            // 'valyuta': obj.valyuta,
+
+            'id': obj.id,
+            'name': obj.name,
+            'shtrix': obj.kod,
+            'olinish': olsh,
+            'soni': 1,
+            'soni2': obj.soni,
+            'chegirma': 0,
+            'sotilish': sum,
+            'sotilish_prise': sum,
+            'skidka': 0 + ' %',
+            'jami': sum,
+            'summa': obj.summa,
+            'valyuta': obj.valyuta,
+          });
+        } else {
+          
         }
+      },
+      Minus(id, i, typ){
+        this.Plus_Minus_Ac({
+          'id': id,
+          'i': i,
+          'type': typ
+        });
+      },
+      Plus(id, i, typ){
+        this.Plus_Minus_Ac({
+          'id': id,
+          'i': i,
+          'type': typ
+        });
+      },
+      editr(data){
+        this.id = data.id,
+        this.name = data.name,
+        this.soni = data.soni,
+        this.soni2 = data.soni2,
+        this.summa = data.sotilish,
+        this.jami = data.jami,
+        this.skidka = data.chegirma,
+        this.showModalEditor = true
+      },
+      CreateEdit(){
+        this.EditStoreg({
+          'id': this.id,
+          'sotilish': this.summa,
+          'soni': this.soni,
+          'chegirma': this.skidka,
+          'jami': this.jami,
+        });
+        this.Clears();
+      },
+      Clears(){
+        this.id = '',
+        this.name = '',
+        this.soni = '',
+        this.soni2 = '',
+        this.summa = '',
+        this.jami = '',
+        this.skidka = '',
+        this.Jamisum = '',
+        this.mijozs = '',
+        this.naqt = '',
+        this.plastik = '',
+        this.bank = '',
+        this.karz = '',
+        this.srok = '',
+        this.drive = '',
+        this.chesxbox = '',
+        this.Kamentariya = '',
+        this.Kamentariya2 = '',
+        this.showModalEditor = false,
+        this.ModalOplate = false
+      },
+      chesx(){
+        if (this.chesxbox === 1) {
+          this.chesxbox = 0;
+        } else {
+          this.chesxbox = 1;
+        }
+      },
+      sonival(val){
+        if (val > this.soni2) {
+          this.jami = this.summa * this.soni2;
+          this.soni = this.soni2;
+        } else {
+          this.jami = this.summa * val;
+        }
+      },
+      summaval(val){
+        this.jami = this.soni * val;
+      },
+      jamival(val){
+        this.summa = val / this.soni;
+      },
+      skidkaval(val){
+        if (val > 0) {
+          this.jami = this.jami - val * this.jami / 100;
+        } else {
+          this.jami = this.summa * this.soni;
+        }
+      },
+      toogler(u){
+        var id = '';
+        var name = '';
+        var summa = '';
+        if (u === 99999) {
+          id = 99999;
+          name = '';
+          summa = '1';
+        } else {
+          const data = this.valyudata.find(e => { return e.id == u });
+          id = data.id;
+          name = data.name;
+          summa = data.summa;
+        }
+        this.Valyuta_Kurs({
+          'kursid': id,
+          'kurs1': summa,
+          'kursname': name,
+        });
+      },
+      toogler2(){
+        var kur =JSON.parse(localStorage.getItem('Kurs'));
+        if (kur) {
+          this.kurs = JSON.parse(localStorage.getItem('Kurs')).uid;
+        } else {
+          localStorage.setItem('Kurs',  JSON.stringify({'u': 99999, 'uid': '',  'un': ''}));
+          this.kurs = 99999;
+        }
+      },
+      checkedTyp(foo){
+        localStorage.setItem('Checked',  JSON.stringify({'chesked': foo}));          
+        this.checkedTyp3();
+      },     
+      checkedTyp3(){
+        var che = JSON.parse(localStorage.getItem('Checked'));
+        if (che) {
+          this.checke = che.chesked;
+        } else {
+          localStorage.setItem('Checked',  JSON.stringify({'chesked': 1}));
+          var che2 = JSON.parse(localStorage.getItem('Checked'));
+          this.checke = che2.chesked;
+        }
+      },
+      oplate(typ){
+        this.ModalOplate = typ;
+        this.Jamisum = this.JamiSumma2;
+        this.karz = this.JamiSumma2;
+      },
+      naqt1(valyu){
+        this.JamiSum = parseFloat(this.JamiSumma2) - parseFloat(valyu) - this.plastik - this.bank;
+        this.karz = this.JamiSum;
+      },
+      plastik1(valyu){
+        this.JamiSum = parseFloat(this.JamiSumma2) - parseFloat(valyu) - this.naqt - this.bank;
+        this.karz = this.JamiSum;
+      },
+      bank1(valyu){
+        this.JamiSum = parseFloat(this.JamiSumma2) - parseFloat(valyu) - this.plastik - this.naqt;
+        this.karz = this.JamiSum;
+      },
+      naqinp(){
+        this.plastik = '';
+        this.bank = '';
+        this.karz = 0;
+        this.naqt = this.JamiSumma2;
+      },
+      plasinp(){
+        this.naqt = '';
+        this.bank = '';
+        this.karz = 0;
+        this.plastik = this.JamiSumma2;
+      },
+      bankinp(){
+        this.naqt = '';
+        this.plastik = '';
+        this.karz = 0;
+        this.bank = this.JamiSumma2;
+      },
+      OplataStart(){
+        if (auth.method_id) {
+          if (this.chesxbox == 1 && this.Kamentariya) {
+            this.Oplata_Start_Action({
+              'method': 'post',
+              'url2': 'karzina',
+              'url': 'live_search',
+              'name': this.Kamentariya,
+              'login': this.login,
+              'token': this.token,
+              'magazinId': auth.method_id,
+              'magazin': auth.method_name,
+              'status': this.statustyp,
+              'local': JSON.parse(localStorage.getItem('sotuv'))
+            }); 
+          } else {
+            const kurs2 = JSON.parse(localStorage.getItem('Kurs'));  
+            this.Oplata_Start_Action({
+              'method': 'post',
+              'url2': 'oplata',
+              'url': 'live_search',
+              'driver': this.drive,
+              'jamisum': this.JamiSumma2,
+              'mijozId': this.mijozs,
+              'naqt': this.naqt,
+              'plastik': this.plastik,
+              'bank': this.bank,
+              'karz': this.karz,
+              'srok': this.srok,
+              'sana': this.date,
+              'vid': kurs2.uid,
+              'vname': kurs2.un,
+              'vsumma': kurs2.u,
+              'login': this.login,
+              'token': this.token,
+              'magazinId': auth.method_id,
+              'magazin': auth.method_name,
+              'status': this.statustyp,
+              'local': JSON.parse(localStorage.getItem('sotuv'))
+            });              
+          }
+          this.Clears();
+        } else {}
+      },
+      driverpMount(){
+        var dri =JSON.parse(localStorage.getItem('Driver'));
+        if (dri) {
+          this.drive = JSON.parse(localStorage.getItem('Driver')).d;
+        } else {
+          localStorage.setItem('Driver',  JSON.stringify({'d': 1}));
+          this.drive = 1;
+        }
+      },
+      dr(d){
+        localStorage.setItem('Driver',  JSON.stringify({'d': d}));
+        this.driverpMount();
+      },
+      deletStor(){
+        this.Delet_Stor_act();
+      },
+      cadasd(){
+        if (this.codecler == false) {
+          this.search = '';
+        } else {
+          this.search;
+        }
+      },
+      UpdateSotilish(item){
+        const local1 = JSON.parse(localStorage.getItem('sotuv'));
+        var pris = 0;
+        var natija = 0;
+        local1.find(e => {
+          if (e.id === item.id) {
+            pris = e.sotilish_prise * e.soni;
+            e.sotilish = item.sotilish;
+            e.chegirma = pris - e.soni * e.sotilish;
+            natija = pris / 100;
+            var ddd = e.chegirma / natija
+            var sss = format.format(ddd)
+            e.skidka = sss + ' %';
+            e.jami = pris - e.chegirma;
+          }else{}
+        });
+        localStorage.setItem('sotuv', JSON.stringify(local1));
+        this.Live_Search_Sotuv_Mut();
+      },
+      UpdateSon(item){
+        var pris = 0;
+        var natija = 0;
+        const local2 = JSON.parse(localStorage.getItem('sotuv'));
+        local2.find(e => {
+          if (e.id === item.id) {
+            if (e.soni2 > item.soni) {
+              e.soni = item.soni;
+            } else {
+              e.soni = e.soni2;
+            }
+            pris = e.sotilish_prise * e.soni;
+            e.sotilish = item.sotilish;
+            e.chegirma = pris - e.soni * e.sotilish;
+            natija = pris / 100;
+            var ddd = e.chegirma / natija
+            var sss = format.format(ddd)
+            e.skidka = sss + ' %';
+            e.jami = pris - e.chegirma;
+          }else{}
+        });
+        localStorage.setItem('sotuv', JSON.stringify(local2));
+        this.Live_Search_Sotuv_Mut();
+      },
+      UpdateChgirma(item){
+        var pris = 0;
+        var natija = 0;
+        const local3 = JSON.parse(localStorage.getItem('sotuv'));
+          local3.find(e => {
+            if (e.id === item.id) {
+              pris = e.sotilish_prise * e.soni;
+              e.sotilish = item.sotilish;
+              e.chegirma = item.chegirma;
+              natija = pris / 100;
+              var ddd = e.chegirma / natija
+              var sss = format.format(ddd)
+              e.skidka = sss + ' %';
+              e.jami = pris - e.chegirma;
+            }else{}
+          });
+          localStorage.setItem('sotuv', JSON.stringify(local3));
+        this.Live_Search_Sotuv_Mut();
+      },
+      exportExcel () {
+        saveExcel({
+          data: JSON.parse(localStorage.getItem('sotuv')),
+          fileName: "Export",
+          columns: [
+            {field: 'id'},
+            {field: 'name'},
+            {field: 'shtrix'},
+            {field: 'olinish'},
+            {field: 'soni'},
+            {field: 'soni2'},
+            {field: 'chegirma'},
+            {field: 'sotilish'},
+            {field: 'sotilish_prise'},
+            {field: 'skidka'},
+            {field: 'jami'},
+            {field: 'summa'},
+            {field: 'valyuta'}
+            ]
+          });
+      },
+    },
+    watch: {
+      search(row){
+        if (auth.method_id) {
+          this.Live_Search_Sqlad({
+            'method': 'post',
+            'url': 'live_search',
+            'search': row,
+            'login': this.login,
+            'token': this.token,
+            'status': this.statustyp,
+            'magazinId': auth.method_id,
+            'magazin': auth.method_name,
+          });
+          this.cadasd();
+        }else {}
+      },
+      Kamentariya(r){
+        if (r) {
+          this.Kamentariya2 = 1;
+        } else {
+          this.Kamentariya2 = 0;
+        }
+      }
+    },
+    computed: {
+      ...mapGetters({
+        Items: 'Items',
+        Sotish: 'Sotish',
+        JamiSumma: 'JamiSumma',
+        JamiSumma2: 'JamiSumma2',
+        valyudata: 'valyudata',
+        MijozSelect: 'MijozSelect',
+        tog: 'tog',
+        drive: 'drive',
+        objectauth2: 'objectauth2',
+        codecler: 'code'
+      }),
+    },
+    mounted() {
+      this.FilterAuth();
+      this.Localstor();
+      this.Sqlad();
+      this.toogler2();
+      this.driverpMount();
+      this.checkedTyp3();
+    }
   }
 </script>
 <template>
@@ -491,30 +518,33 @@
       <div class="card text-left">
           <div class="card-body">
             <div v-if="tog">
-              <button class="btn btn-success btn-sm m-1" v-on:click="exportExcel" type="button">Excel</button>
-              <button class="btn btn-primary btn-sm m-1" type="button">Pdf</button>
-              <button class="btn btn-danger btn-sm m-1" type="button" v-on:click="deletStor">Delete</button>
+              <button class="btn btn-success btn-sm m-1" v-on:click="exportExcel" type="button">Ехсел</button>
+              <button class="btn btn-primary btn-sm m-1" type="button">Пдф</button>
+              <button class="btn btn-danger btn-sm m-1" type="button" v-on:click="deletStor">Удалить</button>
             </div>
             <div v-else>
-              <button class="btn btn-light btn-sm m-1" type="button">Excel</button>
-              <button class="btn btn-light btn-sm m-1" type="button">Pdf</button>
-              <button class="btn btn-light btn-sm m-1" type="button">Delete</button>
+              <button class="btn btn-light btn-sm m-1" type="button">Ехсел</button>
+              <button class="btn btn-light btn-sm m-1" type="button">Пдф</button>
+              <button class="btn btn-light btn-sm m-1" type="button">Удалить</button>
             </div>
               <div class="table-responsive">
                 <div class="scroltab2">
                   <table class="tabl scroltab">
                     <thead>
                       <tr>
-                        <th>Tovar</th>
-                        <th>Summa</th>
-                        <th>Soni</th>
-                        <th>Chgegirma</th>
-                        <th>Jami</th>
-                        <th>Delete</th>
-                      </tr>
+                        <td>Товар</td>
+                        <td>Штрих код</td>
+                        <td>Количество</td>
+                        <td>Цена прайсу</td>
+                        <td>Цена</td>
+                        <td>Вид скидки</td>
+                        <td>% Скидки</td>
+                        <td>Итого</td>
+                        <td>Удалить</td>
+                    </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(item, index) in Sotish" :key="item.id" class="tir">
+                      <!-- <tr v-for="(item, index) in Sotish" :key="item.id" class="tir">
                         <td>
                           <input type="text" class="keyinp_son" v-model="item.name" disabled>
                         </td>
@@ -529,6 +559,38 @@
                         </td>
                         <td>
                           <input type="text" class="keyinp_son" v-on:keyup="UpdateJami(item)" v-model="item.jami">
+                        </td>
+                        <td>
+                          <a class="text-danger" v-on:click="Deletsotuv(index, item.jami)">
+                            <i class="nav-icon i-Close-Window font-weight-bold"></i>
+                          </a>
+                        </td>
+                      </tr> -->
+
+                      <tr v-for="(item, index) in Sotish" :key="item.id" class="tir">
+                        <td>
+                          <input type="text" class="keyinp_son" v-model="item.name" disabled>
+                        </td>
+                        <td>
+                          <input type="text" class="keyinp_son" v-model="item.shtrix" disabled>
+                        </td>
+                        <td>
+                          <input type="number" class="keyinp_son" v-on:keyup="UpdateSon(item)" v-model="item.soni">
+                        </td>
+                        <td>
+                          <input type="text" class="keyinp_son" v-model="item.sotilish_prise" disabled>
+                        </td>
+                        <td>
+                          <input type="text" class="keyinp_son" v-on:keyup="UpdateSotilish(item)" v-model="item.sotilish">
+                        </td>
+                        <td>
+                          <input type="text" class="keyinp_son" v-on:keyup="UpdateChgirma(item)" v-model="item.chegirma">
+                        </td>
+                        <td>
+                          <input type="text" class="keyinp_son" v-model="item.skidka" disabled>
+                        </td>
+                        <td>
+                          <input type="text" class="keyinp_son" v-model="item.jami" disabled>
                         </td>
                         <td>
                           <a class="text-danger" v-on:click="Deletsotuv(index, item.jami)">
@@ -565,7 +627,7 @@
               <input class="form-check-input mx-1" type="checkbox" checked>
             </div>
             <div class="col-8 text-right">
-              Doonaga narx
+              Стандартная
             </div>
           </div>
           <div class="row mt-2 border-bottom">
@@ -573,7 +635,7 @@
               <input class="form-check-input mx-1" type="checkbox" v-on:click="checkedTyp(0)">
             </div>
             <div class="col-8 text-right">
-              Optim narx
+              Низкая
             </div>
           </div>
         </div>
@@ -583,7 +645,7 @@
               <input class="form-check-input mx-1" type="checkbox" v-on:click="checkedTyp(1)">
             </div>
             <div class="col-8 text-right">
-              Doonaga narx
+              Стандартная
             </div>
           </div>
           <div class="row mt-2 border-bottom">
@@ -591,7 +653,7 @@
               <input class="form-check-input mx-1" type="checkbox" checked>
             </div>
             <div class="col-8 text-right">
-              Optim narx
+              Низкая
             </div>
           </div>
         </div>
@@ -624,14 +686,14 @@
         <div v-if="tog">
           <div class="row">
             <button class="btn btn-success mt-2 widt" v-on:click="oplate(true)">
-              Sotish       
+              Оплата
             </button>
           </div>
         </div>
         <div v-else>
           <div class="row">
             <button class="btn btn-light mt-2 widt">
-              Sotish       
+              Оплата       
             </button>
           </div>
         </div>
@@ -650,10 +712,10 @@
                     <table class="tabl scroltab">
                       <thead>
                           <tr>
-                              <th>Tovar</th>
-                              <th>Soni</th>
-                              <th>Optviy</th>
-                              <th>Roznishni</th>
+                              <th>Товар</th>
+                              <th>Шт</th>
+                              <th>Низкая</th>
+                              <th>Стандартная</th>
                           </tr>
                       </thead>
                       <tbody>

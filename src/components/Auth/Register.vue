@@ -75,17 +75,17 @@
                     </div>
                     <div class="col-md-6">
                         <div class="p-4">
-                            <h1 class="mb-3 text-18">Sign Up</h1>                           
+                            <h1 class="mb-3 text-18">Регистрация</h1>                           
                             <div class="form-group">
-                                <label for="username">Your name</label>
+                                <label for="username">Имя</label>
                                 <input class="form-control form-control-rounded" v-model="username" id="username" type="text">
                             </div>
                             <div class="form-group">
-                                <label for="login">Login</label>
+                                <label for="login">Логин</label>
                                 <input class="form-control form-control-rounded" v-model="login" id="login" type="login">
                             </div>
                             <div class="form-group">
-                                <label for="password">Buzness type</label>
+                                <label for="password">Бизнес тип</label>
                                 <select class="form-control form-control-rounded" v-model="biznesty" name="biznesty" id="biznesty">
                                     <option v-for="item in items">
                                         {{item.biznes}}
@@ -93,18 +93,18 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="password">Password</label>
+                                <label for="password">Парол</label>
                                 <input class="form-control form-control-rounded" v-model="password" id="password" type="password">
                             </div>
                             <div class="form-group">
-                                <label for="repassword">Retype password</label>
+                                <label for="repassword">Повторите Парол</label>
                                 <input class="form-control form-control-rounded" v-model="repassword" id="repassword" type="password">
                             </div>
                             <p v-if="answer === true" style="color: green;"></p>
-                            <p v-if="answer === false" style="color: red;">Parol xato</p>
-                            <button class="btn btn-primary btn-block btn-rounded mt-3" v-on:click="SignUp">Sign Up</button>                    
+                            <p v-if="answer === false" style="color: red;">Парол ошибка</p>
+                            <button class="btn btn-primary btn-block btn-rounded mt-3" v-on:click="SignUp">Регистрация</button>                    
                             <div class="mt-3 text-center"><RouterLink class="text-muted" to="/">
-                                <u>Sign In</u></RouterLink></div>
+                                <u>Вход</u></RouterLink></div>
                         </div>
                     </div>
                 </div>

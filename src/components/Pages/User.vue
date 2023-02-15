@@ -16,6 +16,8 @@
               tel: '',
               telegram: '',
               summa: 0,
+              kurs: '',
+              valyuta: '',
               Searvh: '',
               showModal: false,
               showModalDel: false,
@@ -56,6 +58,8 @@
                 {field: 'telegram'},
                 {field: 'karz'},
                 {field: 'summa'},
+                {field: 'kurs'},
+                {field: 'valyuta'},
               ]
             });
           },
@@ -76,6 +80,8 @@
                   'telegram': rows[i][7],
                   'karz': rows[i][8],
                   'summa': rows[i][9],
+                  'kurs': rows[i][10],
+                  'valyuta': rows[i][11],
                 });                
               }
               this.OriginalMethodUrlPost({
@@ -124,6 +130,8 @@
                 'tel': this.tel,
                 'telegram': this.telegram,
                 'summa': this.summa,
+                'kurs': this.kurs,
+                'valyuta': this.valyuta,
               });
               this.Clears();              
             } else {
@@ -131,7 +139,7 @@
             }
           },
           OriginalGet(){
-            // const auth = JSON.parse(localStorage.getItem('auth'));
+            const auth = JSON.parse(localStorage.getItem('auth'));
             if (auth.method_id) {
               this.OriginalMethodUrlGet({
                 'method': 'post',
@@ -151,6 +159,8 @@
             this.tel = item.tel,
             this.telegram = item.telegram
             this.summa = item.summa,
+            this.kurs = item.kurs,
+            this.valyuta = item.valyuta,
             this.showModal = true
           },
           Clears(){
@@ -160,10 +170,16 @@
             this.tel = '',
             this.telegram = '',
             this.summa = 0,
+            this.kurs = '',
+            this.valyuta = '',
             this.showModal = false,
             this.showModalDel = false
         }, 
-        
+        valyu_kurs(resu){
+          const val = this.valyudata.find(e => { if (e.name == resu) return e; });
+          this.kurs = val.summa;
+          this.valyuta = val.name;
+        }
       },
       watch: {
         Searvh(row){
@@ -180,6 +196,7 @@
       computed: {
           ...mapGetters({
             Itemobjects: "Itemobjects",
+            valyudata: 'valyudata'
           }),
         },
         mounted() {
@@ -195,7 +212,7 @@
     <div class="col-md-12 mb-3">
         <div class="card text-left">
             <div class="card-body">
-                <button class="btn btn-success mb-2" @click="showModal = true">Mijoz qo'shish</button>
+                <button class="btn btn-success mb-2" @click="showModal = true">Слент добавлять</button>
                 <input type="file" id="archiveExcel" v-on:change="subirExcel()">
                 <button class="btn btn-success mb-2 mx-3" v-on:click="clik">                  
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
@@ -215,12 +232,12 @@
                     <table class="tabl scroltab">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Firma INN</th>
-                                <th>Tel</th>
-                                <th>Telegram</th>
-                                <th>Balans</th>
-                                <th>Karz</th>
+                                <th>Имя</th>
+                                <th>Офис или ИНН</th>
+                                <th>Тел</th>
+                                <th>Телеграм</th>
+                                <th>Баланс</th>
+                                <th>Долг</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -230,7 +247,7 @@
                             <td>{{ item.firma }}</td>
                             <td>{{ item.tel }}</td>
                             <td>{{ item.telegram }}</td>
-                            <td class="text-success">{{ item.summa }}</td>
+                            <td class="text-success">{{ item.summa }}  {{ item.valyuta }}</td>
                             <td class="text-danger">{{ item.karz }}</td>
                             <td>
                               <a class="text-success mr-2" v-on:click="editmij(item)">
@@ -256,38 +273,45 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Create User</h5>
+              <h5 class="modal-title">Слент</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" @click="showModal = false">&times;</span>
               </button>
             </div>
             <div class="modal-body">
               <div class="row">
-                <div class="col-md-12 form-group mb-3">
-                    <label for="firstName1">First name</label>
+                <div class="col-6 form-group mb-3">
+                    <label for="firstName1">Имя</label>
                     <input class="form-control" id="firstName1" type="text" v-model="name" placeholder="Enter name">
                 </div>
-                <div class="col-md-12 form-group mb-3">
-                    <label for="lastName1">Enter firma</label>
+                <div class="col-6 form-group mb-3">
+                    <label for="lastName1">Офис или ИНН</label>
                     <input class="form-control" id="lastName1" type="text" v-model="firma" placeholder="Enter firma">
                 </div>
-                <div class="col-md-12 form-group mb-3">
-                    <label for="exampleInputEmail1">Enter tel</label>
+                <div class="col-6 form-group mb-3">
+                    <label for="exampleInputEmail1">Тел</label>
                     <input class="form-control" id="phone" type="text" v-model="tel" placeholder="Enter tel">
                 </div>
-                <div class="col-md-12 form-group mb-3">
-                    <label for="phone">Enter telegram</label>
+                <div class="col-6 form-group mb-3">
+                    <label for="phone">Телеграм</label>
                     <input class="form-control" id="telegram" type="text"  v-model="telegram" placeholder="Enter telegram">
                 </div>
-                <div class="col-md-12 form-group mb-3">
-                  <label for="balans">Balans</label>
+                <div class="col-6 form-group mb-3">
+                  <label for="balans">Баланс</label>
                   <input class="form-control" id="summa" type="text"  v-model="summa" placeholder="Balans">
+                </div>
+                <div class="col-6 form-group mb-3">
+                  <label for="firstName1">Валюта</label>
+                  <select class="form-control" v-on:change="valyu_kurs(valyuta)" v-model="valyuta">
+                    <option value="">----</option>
+                    <option  v-for="itema in valyudata" :value="itema.name">{{itema.name}}</option>
+                  </select>
                 </div>
             </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" @click="showModal = false">Close</button>
-              <button type="button" class="btn btn-primary" v-on:click="SaveUser">Save changes</button>
+              <button type="button" class="btn btn-secondary" @click="showModal = false">Назад</button>
+              <button type="button" class="btn btn-primary" v-on:click="SaveUser">Сохранить</button>
             </div>
           </div>
         </div>
@@ -303,7 +327,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title text-danger">Delete Mijoz</h5>
+              <h5 class="modal-title text-danger">Удалить</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" @click="showModalDel = false">&times;</span>
               </button>
@@ -313,8 +337,8 @@
                 <input class="form-control text-center" type="text"  v-model="name" disabled>
             </div>
             <div class="modal-body text-center">
-              <button type="button" class="btn btn-danger mx-2" @click="showModalDel = false">No</button>
-              <button type="button" class="btn btn-primary" v-on:click="UserDelet">Yes</button>
+              <button type="button" class="btn btn-danger mx-2" @click="showModalDel = false">Нет</button>
+              <button type="button" class="btn btn-primary" v-on:click="UserDelet">Да</button>
             </div>
           </div>
         </div>

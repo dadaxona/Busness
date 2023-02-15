@@ -294,7 +294,7 @@
     <div class="col-md-12 mb-3">
         <div class="card text-left">
             <div class="card-body">
-                <button class="btn btn-success mb-2" @click="showModal = true">Tovar qo`shish</button>
+                <button class="btn btn-success mb-2" @click="showModal = true">Товар добавлять</button>
                 <input type="file" id="archiveExcel" v-on:change="subirExcel()">
                 <button class="btn btn-success mb-2 mx-3" v-on:click="clik">                  
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
@@ -339,16 +339,16 @@
                     <table class="tabl scroltab">
                         <thead>
                             <tr>
-                                <th>Tip</th>
-                                <th>Adress</th>
-                                <th>Tovar</th>
+                                <th>Тип</th>
+                                <th>Адрес</th>
+                                <th>Товар</th>
                                 <th>N.1</th>
-                                <th>Shtrix kod</th>
-                                <th>Xajmi</th>
-                                <th>Olinish</th>
-                                <th>Optviy</th>
-                                <th>Roznishni</th>
-                                <th>Valyuta</th>
+                                <th>Штрих код</th>
+                                <th>Количество</th>
+                                <th>Получающий</th>
+                                <th>Низкая</th>
+                                <th>Стандартная</th>
+                                <th>Валюта</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -413,7 +413,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Modal Tovar</h5>
+              <h5 class="modal-title">Товар</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" v-on:click="showModal = false">&times;</span>
               </button>
@@ -421,7 +421,7 @@
             <div class="modal-body">
               <div class="row">
                 <div class="col-md-6 form-group mb-3">
-                  <label for="firstName1">Tip</label>
+                  <label for="firstName1">Тип</label>
                   <select class="form-control" v-model="tip" name="tip" id="tip">
                     <option v-for="item in tipdata">
                         {{item.name}}
@@ -429,7 +429,7 @@
                   </select>
                 </div>
                 <div class="col-md-6 form-group mb-3">
-                  <label for="firstName1">Adress</label>
+                  <label for="firstName1">Адрес</label>
                   <select class="form-control" v-model="adress" name="adress" id="adress">
                     <option v-for="item in adressdata">
                         {{item.name}}
@@ -437,7 +437,7 @@
                   </select>
                 </div>
                 <div class="col-md-6 form-group mb-3">
-                  <label for="firstName1">Tovar</label>
+                  <label for="firstName1">Товар</label>
                   <input class="form-control" id="firstName1" type="text" v-model="name">
                 </div>
                 <div class="col-md-6 form-group mb-3">
@@ -445,23 +445,23 @@
                   <input class="form-control" id="firstName1" type="number" v-model="ogoh">
                 </div>
                 <div class="col-md-6 form-group mb-3">
-                  <label for="firstName1">Soni</label>
+                  <label for="firstName1">Количество</label>
                   <input class="form-control" id="firstName1" type="number" v-model="soni">
                 </div>
                 <div class="col-md-6 form-group mb-3">
-                  <label for="firstName1">Olinish</label>
+                  <label for="firstName1">Получающий</label>
                   <input class="form-control" id="firstName1" type="text" v-model="olinish">
                 </div>
                 <div class="col-md-6 form-group mb-3">
-                  <label for="firstName1">Optviy</label>
+                  <label for="firstName1">Низкая</label>
                   <input class="form-control" id="firstName1" type="text" v-model="sotilish">
                 </div>
                 <div class="col-md-6 form-group mb-3">
-                  <label for="firstName1">Roznishni</label>
+                  <label for="firstName1">Стандартная</label>
                   <input class="form-control" id="firstName1" type="text" v-model="sotilish2">
                 </div>
                 <div class="col-md-6 form-group mb-3">
-                  <label for="firstName1">Valyuta</label>
+                  <label for="firstName1">Валюта</label>
                   <select class="form-control" v-model="valyuta" name="adress" id="adress">
                     <option v-for="item in valyudata">
                       {{item.name}}
@@ -469,14 +469,14 @@
                   </select>
                 </div>
                 <div class="col-md-6 form-group mb-3">
-                  <label for="firstName1">Shtrix kod</label>
+                  <label for="firstName1">Штрих код</label>
                   <input class="form-control" id="firstName1" type="text" v-model="shtrix">
                 </div>
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" v-on:click="showModal = false">Close</button>
-              <button type="button" class="btn btn-primary" v-on:click="CreateSqlad">Save changes</button>
+              <button type="button" class="btn btn-secondary" v-on:click="showModal = false">Назад</button>
+              <button type="button" class="btn btn-primary" v-on:click="CreateSqlad">Сохранить</button>
             </div>
           </div>
         </div>
@@ -492,7 +492,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title text-danger">Delete User</h5>
+              <h5 class="modal-title text-danger">Удалить</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" @click="showModalDel = false">&times;</span>
               </button>
@@ -502,8 +502,8 @@
                 <input class="form-control text-center" type="text"  v-model="name" disabled>
             </div>
             <div class="modal-body text-center">
-              <button type="button" class="btn btn-danger mx-2" @click="showModalDel = false">No</button>
-              <button type="button" class="btn btn-primary" v-on:click="SqladDelet">Yes</button>
+              <button type="button" class="btn btn-danger mx-2" @click="showModalDel = false">Нет</button>
+              <button type="button" class="btn btn-primary" v-on:click="SqladDelet">Да</button>
             </div>
           </div>
         </div>

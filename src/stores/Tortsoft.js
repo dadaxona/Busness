@@ -4,41 +4,38 @@ import axios from 'axios';
 const http_url = 'http://localhost:1122/api/';
 const tortsoft = {
     state: {
-        dotator: {
-            data: '',
-            count: '',
+        foydaobjtorgo: {
+            savdo: 0,
+            rasxod: 0,
+            kirishqarz: 0,
+            foyda: 0,
         },
     },
     mutations: {
-        // axios({
-        //     method: request.method,
-        //     url: http_url + request.url2,
-        //     data: request
-        // }).then(data => {
-        //     if (data.data == 200){
-        //         localStorage.setItem('auth', JSON.stringify({"auth": true,"username": request.name , "login": request.login2, "biznesty": request.biznes, "token": request.token,"method_id": request.method_id}));
-        //         context.commit('OrigiPost_Mut', request)                    
-        //     }
-        // });
-    },
-    actions: {
-        SqladTor_ac: ({ state, comit }, request) => {
+        Foyda_Act_bugun_Mut: (state, request) => {
             axios({
                 method: request.method,
                 url: http_url + request.url,
                 data: request
             }).then(data => {
-                if (data.data == 404) {
-                    
+                if (data.data.code == 200) {                    
+                    state.foydaobjtorgo.savdo = data.data.sav;
+                    state.foydaobjtorgo.rasxod = data.data.chiq;
+                    state.foydaobjtorgo.kirishqarz = data.data.qarz;
+                    state.foydaobjtorgo.foyda = data.data.foyda;
                 } else {
-                    state.dotator.data = data.data;
                 }
             });
         }
     },
+    actions: {
+        Foyda_Act_bugun: (context, request) => {
+            context.commit('Foyda_Act_bugun_Mut', request);
+        }
+    },
     getters: {
-        Itmstor(state){
-            return state.dotator;
+        nbir(state){
+            return state.foydaobjtorgo;
         }
     }
 };

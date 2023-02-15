@@ -14,6 +14,8 @@
               sabap: '',
               summa: '',
               chiqimse: '',
+              kurs: '',
+              valyuta: '',
               login:'',
               token:'',
               statustyp: '',
@@ -46,6 +48,8 @@
                 {field: 'qayerga'},
                 {field: 'sabap'},
                 {field: 'summa'},
+                {field: 'kurs'},
+                {field: 'valyuta'},
               ]
             });
           },
@@ -63,6 +67,8 @@
                   'qayerga': rows[i][4],
                   'sabap': rows[i][5],
                   'summa': rows[i][6],
+                  'kurs': rows[i][7],
+                  'valyuta': rows[i][8],
                 });
               }
               this.OriginalMethodUrlPost({
@@ -81,7 +87,7 @@
             input.value = '';
           },
           CreateChiqim(){
-            // const auth = JSON.parse(localStorage.getItem('auth'));
+            const auth = JSON.parse(localStorage.getItem('auth'));
             if (auth.method_id) {
               this.OriginalMethodUrlPost({
                 'method': 'post',
@@ -91,6 +97,8 @@
                 'qayerga': this.qayerga,
                 'sabap': this.sabap,
                 'summa': this.summa,
+                'kurs': this.kurs,
+                'valyuta': this.valyuta,
                 'login': this.login,
                 'token': this.token,
                 'magazinId': auth.method_id,
@@ -115,7 +123,7 @@
             this.Clears();
           },
           getMethod(){
-            // const auth = JSON.parse(localStorage.getItem('auth'));
+            const auth = JSON.parse(localStorage.getItem('auth'));
             if (auth.method_id) {
               this.OriginalMethodUrlGet({
                 'method': 'post',
@@ -128,11 +136,13 @@
               });
             }else{}
           },
-          editchiqim(id, qayerga, sabap, summa){
-            this.id = id;
-            this.qayerga = qayerga;
-            this.sabap = sabap;
-            this.summa = summa;
+          editchiqim(resu){
+            this.id = resu.id;
+            this.qayerga = resu.qayerga;
+            this.sabap = resu.sabap;
+            this.summa = resu.summa;
+            this.kurs = resu.kurs,
+            this.valyuta = resu.valyuta,
             this.showModal = true;
           },
           deletchiqim(id){
@@ -144,9 +154,16 @@
             this.qayerga = '',
             this.sabap = '',
             this.summa = '',
+            this.kurs = '',
+            this.valyuta = '',
             this.showModal = false,
             this.showModalDel = false
           },
+          valyu_kurs(resu){
+            const val = this.valyudata.find(e => { if (e.name == resu) return e; });
+            this.kurs = val.summa;
+            this.valyuta = val.name;
+          }
         },
         watch: {
           chiqimse(row){
@@ -167,7 +184,8 @@
         },
         computed: {
           ...mapGetters({
-            Itemobjects: 'Itemobjects'
+            Itemobjects: 'Itemobjects',
+            valyudata: 'valyudata'
           }),
         },
         mounted() {
@@ -203,9 +221,9 @@
                     <table class="tabl scroltab">
                         <thead>
                             <tr>
-                                <th>Qayerga</th>
-                                <th>Sabap</th>
-                                <th>Summa</th>
+                                <th>Где</th>
+                                <th>Проблем</th>
+                                <th>Сумма</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -213,9 +231,9 @@
                           <tr v-for="item in Itemobjects" :key="item.id" class="tir">
                             <td>{{ item.qayerga }}</td>
                             <td>{{ item.sabap }}</td>
-                            <td>{{ item.summa }}</td>
+                            <td>{{ item.summa }} {{ item.valyuta }}</td>
                             <td>
-                              <a class="text-success mr-2" v-on:click="editchiqim(item.id, item.qayerga, item.sabap, item.summa)">
+                              <a class="text-success mr-2" v-on:click="editchiqim(item)">
                                 <i class="nav-icon i-Pen-2 font-weight-bold"></i>
                               </a>
                               <a class="text-danger mr-2" v-on:click="deletchiqim(item.id)">
@@ -238,7 +256,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Modal Chiqim</h5>
+              <h5 class="modal-title">Расход</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" @click="showModal = false">&times;</span>
               </button>
@@ -246,22 +264,29 @@
             <div class="modal-body">
               <div class="row">
                 <div class="col-md-12 form-group mb-3">
-                    <label for="firstName1">Qayerga</label>
+                    <label for="firstName1">Где</label>
                     <input class="form-control" id="firstName1" type="text" v-model="qayerga" placeholder="Qayerga">
                 </div>
                 <div class="col-md-12 form-group mb-3">
-                  <label for="firstName1">Sabap</label>
+                  <label for="firstName1">Проблем</label>
                   <input class="form-control" id="firstName1" type="text" v-model="sabap" placeholder="Sabap">
               </div>
               <div class="col-md-12 form-group mb-3">
-                <label for="firstName1">Summa</label>
+                <label for="firstName1">Сумма</label>
                 <input class="form-control" id="firstName1" type="number" v-model="summa" placeholder="Summa">
-            </div>
+              </div>
+              <div class="col-md-12 form-group mb-3">
+                <label for="firstName1">Валюта</label>
+                <select class="form-control" v-on:change="valyu_kurs(valyuta)" v-model="valyuta">
+                  <option value="">----</option>
+                  <option  v-for="itema in valyudata" :value="itema.name">{{itema.name}}</option>
+                </select>
+              </div>
             </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" @click="showModal = false">Close</button>
-              <button type="button" class="btn btn-primary" v-on:click="CreateChiqim">Save changes</button>
+              <button type="button" class="btn btn-secondary" @click="showModal = false">Назад</button>
+              <button type="button" class="btn btn-primary" v-on:click="CreateChiqim">Сохранить</button>
             </div>
           </div>
         </div>
@@ -277,14 +302,14 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title text-danger">Delete Chiqim</h5>
+              <h5 class="modal-title text-danger">Удалить</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" @click="showModalDel = false">&times;</span>
               </button>
             </div>
             <div class="modal-body text-center">
-              <button type="button" class="btn btn-danger mx-2" @click="showModalDel = false">No</button>
-              <button type="button" class="btn btn-primary" v-on:click="ChiqimDelet">Yes</button>
+              <button type="button" class="btn btn-danger mx-2" @click="showModalDel = false">Нет</button>
+              <button type="button" class="btn btn-primary" v-on:click="ChiqimDelet">Да</button>
             </div>
           </div>
         </div>

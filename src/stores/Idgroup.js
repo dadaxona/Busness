@@ -168,14 +168,14 @@ const idgroup = {
                 } else {}                    
             } else {}
         },
-        
         OriginalMethodUrlMutGet: (state, request) => {
             axios({
                 method: request.method,
                 url: http_url + request.url,
                 data: request
             }).then(data => {
-                state.objects = data.data;
+                state.objects = data.data.obj;
+                state.objects4 = data.data.valyuta;
             });
         },
         SqladDBMut: (state, request) => {
@@ -325,13 +325,8 @@ const idgroup = {
             });
         },
         Savdo2_Mut: (state, request) => {
-            if (request.typ == 1) {
-                state.objectauth2.tugl = state.objectauth2.savdo;
-                state.objectauth2.tug = true;
-            } else {
-                state.objectauth2.tugl = state.objectauth2.savdo2;
-                state.objectauth2.tug = false;
-            }
+            state.objectauth2.tugl = state.objectauth2.savdo;
+            state.objectauth2.tug = true;
         },
         Fil_Mut: (state, request) => {
             if (request.resul) {
@@ -642,6 +637,7 @@ const idgroup = {
                         for (let i = 0; i < local.length; i++) {
                             local[i].olinish = local[i].olinish / request.kurs1;
                             local[i].sotilish = local[i].sotilish / request.kurs1;
+                            local[i].sotilish_prise = local[i].sotilish_prise / request.kurs1;
                             local[i].chegirma = local[i].chegirma / request.kurs1;
                             local[i].jami = local[i].jami / request.kurs1;
                             localStorage.setItem('sotuv', JSON.stringify(local));
@@ -658,6 +654,7 @@ const idgroup = {
                         for (let i = 0; i < local.length; i++) {
                             local[i].olinish = local[i].olinish * kurs / request.kurs1;
                             local[i].sotilish = local[i].sotilish * kurs / request.kurs1;
+                            local[i].sotilish_prise = local[i].sotilish_prise * kurs / request.kurs1;
                             local[i].chegirma = local[i].chegirma * kurs / request.kurs1;
                             local[i].jami = local[i].jami * kurs / request.kurs1;
                             localStorage.setItem('sotuv', JSON.stringify(local));

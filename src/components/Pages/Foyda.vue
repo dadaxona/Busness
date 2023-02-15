@@ -2,12 +2,19 @@
   import { RouterLink } from 'vue-router'
   import { mapState, mapGetters, mapActions} from 'vuex'
   const auth = JSON.parse(localStorage.getItem('auth'));
+  const format = new Intl.NumberFormat();
   export default {
         data() {
             return {
               login: '',
               token: '',
               statustyp: '',
+              savdo: 0,
+              rasxod: 0,
+              chiqishqarz: 0,
+              kirishqarz: 0,
+              foyda1: 0,
+              sqlad: 0,
             }
         },
         methods: {
@@ -35,6 +42,16 @@
               'status': this.statustyp,
             });
           },
+          chaqirish(){
+            setInterval(() => {
+              this.savdo = format.format(this.foyda.savdo);
+              this.rasxod = format.format(this.foyda.rasxod);
+              this.chiqishqarz = format.format(this.foyda.chiqishqarz);
+              this.kirishqarz = format.format(this.foyda.kirishqarz);
+              this.foyda1 = format.format(this.foyda.foyda);
+              this.sqlad = format.format(this.foyda.sqlad);              
+            }, 1000);
+          },
         },
         computed: {
           ...mapGetters({
@@ -45,6 +62,7 @@
           this.FilterAuth();
           this.Localstor();
           this.OriginalGet();
+          this.chaqirish();
         }
       }
 </script>
@@ -56,28 +74,28 @@
           <div class="card-body">
             <div class="row">
               <div class="col-4 alert alert-primary text-center">
-                <h4>Savdo</h4>
-                {{ foyda.savdo | formatNumber }}
+                <h4>Торговы</h4>
+                {{ savdo }}
               </div>
               <div class="col-4 alert alert-danger text-center">
-                <h4>Rasxod</h4>
-                {{ foyda.rasxod | formatNumber }}
+                <h4>Расход</h4>
+                {{ rasxod }}
               </div>
               <div class="col-4 alert alert-danger text-center">
-                <h4>Chiqim qarz</h4>
-                {{ foyda.chiqishqarz | formatNumber }}
+                <h4>Выходная цена</h4>
+                {{ chiqishqarz }}
               </div>
               <div class="col-4 alert alert-danger text-center">
-                <h4>Qarz</h4>
-                {{ foyda.kirishqarz | formatNumber }}
+                <h4>Долг</h4>
+                {{ kirishqarz }}
               </div>
               <div class="col-4 alert alert-success text-center">
-                <h4>Foyda</h4>
-                {{ foyda.foyda | formatNumber }}
+                <h4>Прибл</h4>
+                {{ foyda1 }}
               </div>
               <div class="col-4 alert alert-success text-center">
-                <h4>Sqlad Summa</h4>
-                {{ foyda.sqlad | formatNumber }}
+                <h4>Склад сумма</h4>
+                {{ sqlad }}
               </div>
             </div>
           </div>

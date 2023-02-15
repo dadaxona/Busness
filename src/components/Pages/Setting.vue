@@ -274,14 +274,14 @@
                 <table class="tabl scroltab">
                     <thead>
                         <tr>
-                            <th>Imkoniyatlar</th>
-                            <th>Nastroyka</th>
+                            <th>Возможности</th>
+                            <th>Настройки</th>
                         </tr>
                     </thead>
                     <tbody>
                       <tr class="tir">                        
                           <td>
-                            Valyuta
+                            Валюта
                           </td>
                           <td v-if="pagas.val == null" class="mt-0">
                             <input type="checkbox" class="form-check-input tdp" v-on:click="jonatish('val', 1)">
@@ -293,7 +293,7 @@
                       </tr>
                       <tr class="tir">
                         <td>
-                          Tip
+                          Тип
                         </td>
                         <td v-if="pagas.tip == null" class="mt-0">
                           <input type="checkbox" class="form-check-input tdp" v-on:click="jonatish('tip', 1)">
@@ -305,7 +305,7 @@
                     </tr>
                     <tr class="tir">                        
                       <td>
-                        Yetkazuvchi
+                        Доставщик
                       </td>
                       <td v-if="pagas.yet == null" class="mt-0">
                         <input type="checkbox" class="form-check-input tdp" v-on:click="jonatish('yet', 1)">
@@ -318,7 +318,7 @@
 
                     <tr class="tir">                        
                       <td>
-                        Mijoz
+                        Слент
                       </td>
                       <td v-if="pagas.mij == null" class="mt-0">
                         <input type="checkbox" class="form-check-input tdp" v-on:click="jonatish('mij', 1)">
@@ -331,7 +331,7 @@
 
                     <tr class="tir">                        
                       <td>
-                        Sqlad
+                        Склад
                       </td>
                       <td v-if="pagas.sql == null" class="mt-0">
                         <input type="checkbox" class="form-check-input tdp" v-on:click="jonatish('sql', 1)">
@@ -344,7 +344,7 @@
 
                     <tr class="tir">                        
                       <td>
-                        Chiqim
+                        Расход
                       </td>
                       <td v-if="pagas.chiq == null" class="mt-0">
                         <input type="checkbox" class="form-check-input tdp" v-on:click="jonatish('chiq', 1)">
@@ -357,7 +357,7 @@
 
                     <tr class="tir">                        
                       <td>
-                        Foyda
+                        Прибл
                       </td>
                       <td v-if="pagas.foy == null" class="mt-0">
                         <input type="checkbox" class="form-check-input tdp" v-on:click="jonatish('foy', 1)">
@@ -378,18 +378,18 @@
     <div class="col-md-12 mb-3">
         <div class="card text-left">
             <div class="card-body">
-              <h4>User Profil</h4>
-               <button class="btn btn-primary" v-on:click="magazinfal(true)">Magazin: +{{ objectauth2.magazin.length }}</button>
-               <button class="btn btn-primary mx-1" v-on:click="magazinkassa(true)">Kassa: +{{ ishchila.length }}</button>
+              <h4>Слент</h4>
+               <button class="btn btn-primary" v-on:click="magazinfal(true)">Магазин: +{{ objectauth2.magazin.length }}</button>
+               <button class="btn btn-primary mx-1" v-on:click="magazinkassa(true)">Касса: +{{ ishchila.length }}</button>
                 <div class="table-responsive">
                   <div class="scroltab3">
                     <table class="tabl scroltab">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Login</th>
-                                <th>Biznes type</th>
-                                <th>Password</th>
+                                <th>Имя</th>
+                                <th>Логин</th>
+                                <th>Бизнес тип</th>
+                                <th>Парол</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -423,7 +423,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Modal Chiqim</h5>
+              <h5 class="modal-title">Слент</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" @click="showModal = false">&times;</span>
               </button>
@@ -431,26 +431,26 @@
             <div class="modal-body">
               <div class="row">
                 <div class="col-md-12 form-group mb-3">
-                    <label for="firstName1">First name</label>
+                    <label for="firstName1">Имя</label>
                     <input class="form-control" id="firstName1" type="text" v-model="name" placeholder="Enter name">
                 </div>
                 <div class="col-md-12 form-group mb-3">
-                    <label for="lastName1">Enter login</label>
+                    <label for="lastName1">Логин</label>
                     <input class="form-control" id="lastName1" type="text" v-model="login" placeholder="Enter login">
                 </div>
                 <div class="col-md-12 form-group mb-3">
-                    <label for="exampleInputEmail1">Enter bizness</label>
-                    <input class="form-control" id="exampleInputEmail1" type="email" v-model="biznes" placeholder="Enter bizness">
+                    <label for="exampleInputEmail1">Бизнес тип</label>
+                    <input class="form-control" id="exampleInputEmail1" type="email" v-model="biznes" placeholder="Enter bizness" disabled>
                 </div>
                 <div class="col-md-12 form-group mb-3">
-                    <label for="phone">Enter password</label>
+                    <label for="phone">Парол</label>
                     <input class="form-control" id="phone" type="text"  v-model="password" placeholder="Enter password">
                 </div>
             </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" @click="showModal = false">Close</button>
-              <button class="btn btn-primary" v-on:click="SubmiteForm">Save changes</button>
+              <button type="button" class="btn btn-secondary" @click="showModal = false">Назад</button>
+              <button class="btn btn-primary" v-on:click="SubmiteForm">Сохранить</button>
             </div>
           </div>
         </div>
@@ -466,7 +466,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title text-danger">Delete Profil</h5>
+              <h5 class="modal-title text-danger">Удалить</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" @click="showModalDel5 = false">&times;</span>
               </button>
@@ -478,8 +478,8 @@
               <input type="text" class="form-control" name="" v-model="pasw" placeholder="Password">
             </div>
             <div class="modal-body text-center">
-              <button type="button" class="btn btn-danger mx-2" @click="showModalDel5 = false">No</button>
-              <button type="button" class="btn btn-primary" v-on:click="UserProfilDel">Yes</button>
+              <button type="button" class="btn btn-danger mx-2" @click="showModalDel5 = false">Нет</button>
+              <button type="button" class="btn btn-primary" v-on:click="UserProfilDel">Да</button>
             </div>
           </div>
         </div>
@@ -494,14 +494,14 @@
           <span aria-hidden="true" v-on:click="showModalEditor = false">&times;</span>
       </button>
       <button class="btn btn-primary mx-2 mt-3" v-on:click="modalso(true)">
-        Qo`shish: +{{ objectauth2.magazin.length }}
+        Добавлять: +{{ objectauth2.magazin.length }}
       </button>
       <div class="table-responsive">
           <div class="scro mx-2">
               <table class="tabl scroltab">
                   <thead>
                       <tr>
-                          <th>Magazin</th>
+                          <th>Магазин</th>
                           <th>Action</th>
                       </tr>
                   </thead>
@@ -538,7 +538,7 @@
           <span aria-hidden="true" v-on:click="showModalEditor = false">&times;</span>
       </button>
       <button class="btn btn-primary mx-2 mt-3" v-on:click="modalsokass(true)">
-        Qo`shish: +{{ ishchila.length }}
+        Добавлять: +{{ ishchila.length }}
       </button>
       <h4 class="mx-2 mt-3">Kassir</h4>
       <div class="table-responsive">
@@ -546,12 +546,12 @@
               <table class="tabl scroltab mx-2">
                   <thead>
                       <tr>
-                          <th>Ismi</th>
-                          <th>Familiya</th>
-                          <th>Tel</th>
-                          <th>Login</th>
-                          <th>Parol</th>
-                          <th>Magazin</th>
+                          <th>Имя</th>
+                          <th>Фамилия</th>
+                          <th>Тел</th>
+                          <th>Логин</th>
+                          <th>Парол</th>
+                          <th>Магазин</th>
                           <th>Action</th>
                       </tr>
                   </thead>
@@ -599,8 +599,8 @@
       <span aria-hidden="true" v-on:click="showModalEditor = false">&times;</span>
   </button>
   <br>
-  <h4 class="text-center">Magazin qo`shish</h4>
-  <label for="" class="mx-3">Magazin</label>
+  <h4 class="text-center">Магазин добавлять</h4>
+  <label for="" class="mx-3">Магазин</label>
   <div class="col-12">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-database-fill-add position-fixed mt-2 ml-2" viewBox="0 0 16 16">
       <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0ZM8 1c-1.573 0-3.022.289-4.096.777C2.875 2.245 2 2.993 2 4s.875 1.755 1.904 2.223C4.978 6.711 6.427 7 8 7s3.022-.289 4.096-.777C13.125 5.755 14 5.007 14 4s-.875-1.755-1.904-2.223C11.022 1.289 9.573 1 8 1Z"/>
@@ -618,29 +618,29 @@
       <span aria-hidden="true" v-on:click="showModalEditor = false">&times;</span>
   </button>
   <br>
-  <h4 class="text-center">Ishchi qo`shosh</h4>
-  <label for="" class="mx-3">Ishchi Nomi</label>
+  <h4 class="text-center">Рабочий добавлять</h4>
+  <label for="" class="mx-3">Рабочий Имя</label>
   <div class="col-12">
       <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-person-fill position-fixed mt-2 ml-2" viewBox="0 0 16 16">
         <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
       </svg>
       <input type="text" name="" class="text-right form-control" v-model="kname">
   </div>
-  <label for="" class="mx-3">Ishchi Familiya</label>
+  <label for="" class="mx-3">Рабочий Фамилия</label>
   <div class="col-12">
     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-person-fill position-fixed mt-2 ml-2" viewBox="0 0 16 16">
       <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
   </svg>
       <input type="text" name="" class="text-right form-control" v-model="kfam">
   </div>
-  <label for="" class="mx-3">Telfon</label>
+  <label for="" class="mx-3">Тел</label>
   <div class="col-12">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill position-fixed mt-2 ml-2" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
       </svg>
       <input type="text" name="" class="text-right form-control" v-model="ktel">
   </div>
-  <label for="" class="mx-3">Login</label>
+  <label for="" class="mx-3">Логин</label>
   <div class="col-12">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-right position-fixed mt-2 ml-2" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0v-2z"/>
@@ -648,30 +648,30 @@
       </svg>
       <input type="text" name="" class="text-right form-control" v-model="klogin">
   </div>
-  <label for="" class="mx-3">Parol</label>
+  <label for="" class="mx-3">Парол</label>
   <div class="col-12">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-unlock-fill position-fixed mt-2 ml-2" viewBox="0 0 16 16">
         <path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2z"/>
       </svg>
       <input type="text" name="" class="text-right form-control" v-model="kpassword">
   </div>
-  <label for="" class="mx-3">Parol</label>
+  <label for="" class="mx-3">Парол</label>
   <div class="col-12">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-database-fill-add position-fixed mt-2 ml-2" viewBox="0 0 16 16">
         <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0ZM8 1c-1.573 0-3.022.289-4.096.777C2.875 2.245 2 2.993 2 4s.875 1.755 1.904 2.223C4.978 6.711 6.427 7 8 7s3.022-.289 4.096-.777C13.125 5.755 14 5.007 14 4s-.875-1.755-1.904-2.223C11.022 1.289 9.573 1 8 1Z"/>
         <path d="M2 7v-.839c.457.432 1.004.751 1.49.972C4.722 7.693 6.318 8 8 8s3.278-.307 4.51-.867c.486-.22 1.033-.54 1.49-.972V7c0 .424-.155.802-.411 1.133a4.51 4.51 0 0 0-4.815 1.843A12.31 12.31 0 0 1 8 10c-1.573 0-3.022-.289-4.096-.777C2.875 8.755 2 8.007 2 7Zm6.257 3.998L8 11c-1.682 0-3.278-.307-4.51-.867-.486-.22-1.033-.54-1.49-.972V10c0 1.007.875 1.755 1.904 2.223C4.978 12.711 6.427 13 8 13h.027a4.552 4.552 0 0 1 .23-2.002Zm-.002 3L8 14c-1.682 0-3.278-.307-4.51-.867-.486-.22-1.033-.54-1.49-.972V13c0 1.007.875 1.755 1.904 2.223C4.978 15.711 6.427 16 8 16c.536 0 1.058-.034 1.555-.097a4.507 4.507 0 0 1-1.3-1.905Z"/>
       </svg>
       <select name="" id="" class="form-control text-center" v-on:change="toogler(magazinname)" v-model="magazinname">
-        <option value="">--Magazin Tanlang--</option>
+        <option value="">--Магазин Выберите--</option>
         <option v-for="iteme in objectauth2.magazin" :value="iteme.id">{{ iteme.name }}</option>
       </select>
   </div>
 
   <div v-if="magazinname" class="col-12 mt-3 mb-4">
-    <button class="btn btn-success" style="width: 100%;" v-on:click="Saqlas_kassa">Saqlash</button>
+    <button class="btn btn-success" style="width: 100%;" v-on:click="Saqlas_kassa">Сохранить</button>
   </div>
   <div v-else class="col-12 mt-3 mb-4">
-    <button class="btn btn-light" style="width: 100%;">Saqlash</button>
+    <button class="btn btn-light" style="width: 100%;">Сохранить</button>
   </div>
 </div>
 
