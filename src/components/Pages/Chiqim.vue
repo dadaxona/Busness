@@ -72,15 +72,15 @@
                 });
               }
               this.OriginalMethodUrlPost({
-                  'method': 'post',
-                  'url2': 'post_update_chiqim_exsel',
-                  'url': 'chiqim_get',
-                  'massivname': this.excel,
-                  'login': this.login,
-                  'token': this.token,
-                  'magazinId': auth.method_id,
-                  'magazin': auth.method_name,
-                  'status': this.statustyp,
+                'method': 'post',
+                'url2': 'post_update_chiqim_exsel',
+                'url': 'chiqim_get',
+                'massivname': this.excel,
+                'login': this.login,
+                'token': this.token,
+                'magazinId': auth.method_id,
+                'magazin': auth.method_name,
+                'status': this.statustyp,
               });
             });
             this.excel = [];
@@ -160,9 +160,14 @@
             this.showModalDel = false
           },
           valyu_kurs(resu){
-            const val = this.valyudata.find(e => { if (e.name == resu) return e; });
-            this.kurs = val.summa;
-            this.valyuta = val.name;
+            if (resu) {
+              const val = this.valyudata.find(e => { if (e.name == resu) return e; });
+              this.kurs = val.summa;
+              this.valyuta = val.name;          
+            } else {
+              this.kurs = '';
+              this.valyuta = ''; 
+            }
           }
         },
         watch: {
@@ -201,7 +206,7 @@
     <div class="col-md-12 mb-3">
         <div class="card text-left">
             <div class="card-body">
-                <button class="btn btn-success mb-2" @click="showModal = true">Chiqim qo`shish</button>
+                <button class="btn btn-success mb-2" @click="showModal = true">Расход добавлять</button>
                 <input type="file" id="archiveExcel" v-on:change="subirExcel()">
                 <button class="btn btn-success mb-2 mx-3" v-on:click="clik">                  
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
@@ -219,29 +224,29 @@
                 <div class="table-responsive">
                   <div class="scroltab3">
                     <table class="tabl scroltab">
-                        <thead>
-                            <tr>
-                                <th>Где</th>
-                                <th>Проблем</th>
-                                <th>Сумма</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                          <tr v-for="item in Itemobjects" :key="item.id" class="tir">
-                            <td>{{ item.qayerga }}</td>
-                            <td>{{ item.sabap }}</td>
-                            <td>{{ item.summa }} {{ item.valyuta }}</td>
-                            <td>
-                              <a class="text-success mr-2" v-on:click="editchiqim(item)">
-                                <i class="nav-icon i-Pen-2 font-weight-bold"></i>
-                              </a>
-                              <a class="text-danger mr-2" v-on:click="deletchiqim(item.id)">
-                                <i class="nav-icon i-Close-Window font-weight-bold"></i>
-                              </a>
-                            </td>
+                      <thead>
+                          <tr>
+                              <th>Где</th>
+                              <th>Проблем</th>
+                              <th>Сумма</th>
+                              <th>Action</th>
                           </tr>
-                        </tbody>
+                      </thead>
+                      <tbody>
+                        <tr v-for="item in Itemobjects" :key="item.id" class="tir">
+                          <td>{{ item.qayerga }}</td>
+                          <td>{{ item.sabap }}</td>
+                          <td>{{ item.summa }} {{ item.valyuta }}</td>
+                          <td>
+                            <a class="text-success mr-2" v-on:click="editchiqim(item)">
+                              <i class="nav-icon i-Pen-2 font-weight-bold"></i>
+                            </a>
+                            <a class="text-danger mr-2" v-on:click="deletchiqim(item.id)">
+                              <i class="nav-icon i-Close-Window font-weight-bold"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
                     </table>
                   </div>
                 </div>

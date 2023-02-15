@@ -23,6 +23,8 @@
             showModalclm: false,
             showModalyedel: false,
             showModalye: false,
+            showModalDelchi: false,
+            showModalchiq: false,
             search: '',
             id:'',
             tip:'',
@@ -69,6 +71,7 @@
             torgostip: false,
             torgostclm: false,
             torgostye: false,
+            torgostchiq: false,
             databugun: new Date().toLocaleDateString('en-CA'),
             polni: {
               savdo: 0,
@@ -114,6 +117,15 @@
               valyuta: '',
             },
             yerkazse: '',
+            chiq: {
+              id: '',
+              qayerga: '',
+              sabap: '',
+              summa: '',
+              kurs: '',
+              valyuta: '',
+            },
+            chiqimse: '',
         }
     },
     methods: {
@@ -1091,11 +1103,11 @@
       valyu_kurs_pas(resu){
         if (resu) {
           const val = this.valyudata.find(e => { if (e.name == resu) return e; });
-          this.kurs = val.summa;
-          this.valyuta = val.name;          
+          this.yet.kurs = val.summa;
+          this.yet.valyuta = val.name;          
         } else {
-          this.kurs = '';
-          this.valyuta = ''; 
+          this.yet.kurs = '';
+          this.yet.valyuta = ''; 
         }
       },
 
@@ -1216,7 +1228,137 @@
         this.yet.id = '';
         this.showModalyedel = false;
       },
-
+      expchiq(){
+        saveExcel({
+          data: this.Itemobjects,
+          fileName: "Export",
+          columns: [
+            {field: 'id'},
+            {field: 'userId'},
+            {field: 'magazinId'},
+            {field: 'magazin'},
+            {field: 'qayerga'},
+            {field: 'sabap'},
+            {field: 'summa'},
+            {field: 'kurs'},
+            {field: 'valyuta'},
+          ]
+        });
+      },
+      clikchiq(){
+        document.getElementById("archiveExcel").click();
+      },
+      subirExcelchiq(){
+        const input = document.getElementById("archiveExcel");
+        readXisFile(input.files[0]).then((rows)=>{
+          for (let i = 1; i < rows.length; i++) {
+            this.excel.push({
+              'userId': rows[i][1],
+              'magazinId': rows[i][2],
+              'magazin': rows[i][3],
+              'qayerga': rows[i][4],
+              'sabap': rows[i][5],
+              'summa': rows[i][6],
+              'kurs': rows[i][7],
+              'valyuta': rows[i][8],
+            });
+          }
+          this.OriginalMethodUrlPost({
+            'method': 'post',
+            'url2': 'post_update_chiqim_exsel',
+            'url': 'chiqim_get',
+            'massivname': this.excel,
+            'login': this.login,
+            'token': this.token,
+            'magazinId': auth.method_id,
+            'magazin': auth.method_name,
+            'status': this.statustyp,
+          });
+        });
+        this.excel = [];
+        input.value = '';
+      },
+      CreateChiqim(){
+        const auth = JSON.parse(localStorage.getItem('auth'));
+        if (auth.method_id) {
+          this.OriginalMethodUrlPost({
+            'method': 'post',
+            'url2': 'chiqim_post_update',
+            'url': 'chiqim_get',
+            'id': this.chiq.id,
+            'qayerga': this.chiq.qayerga,
+            'sabap': this.chiq.sabap,
+            'summa': this.chiq.summa,
+            'kurs': this.chiq.kurs,
+            'valyuta': this.chiq.valyuta,
+            'login': this.login,
+            'token': this.token,
+            'magazinId': auth.method_id,
+            'magazin': auth.method_name,
+            'status': this.statustyp,
+          });
+          this.chiq.id = '';
+          this.chiq.qayerga = '';
+          this.chiq.sabap = '';
+          this.chiq.summa = '';
+          this.chiq.kurs = '',
+          this.chiq.valyuta = '',
+          this.showModalchiq = false;
+        }else{}
+      },
+      ChiqimDelet(){
+        this.OriginalMethodUrlPost({
+          'method': 'post',
+          'url2': 'chiqim_delet',
+          'url': 'chiqim_get',
+          'id': this.chiq.id,
+          'login': this.login,
+          'token': this.token,
+          'magazinId': auth.method_id,
+          'magazin': auth.method_name,
+          'status': this.statustyp,
+        });
+        this.chiq.id = '';
+        this.showModalDelchi = false;
+      },
+      getMethod(){
+        const auth = JSON.parse(localStorage.getItem('auth'));
+        if (auth.method_id) {
+          this.OriginalMethodUrlGet({
+            'method': 'post',
+            'url': 'chiqim_get',
+            'login': this.login,
+            'token': this.token,
+            'magazinId': auth.method_id,
+            'magazin': auth.method_name,
+            'status': this.statustyp,
+          });
+          this.torgostchiq = true;
+        }else{}
+      },
+      editchiqim(resu){
+        this.chiq.id = resu.id;
+        this.chiq.qayerga = resu.qayerga;
+        this.chiq.sabap = resu.sabap;
+        this.chiq.summa = resu.summa;
+        this.chiq.kurs = resu.kurs,
+        this.chiq.valyuta = resu.valyuta,
+        this.showModalchiq = true;
+      },
+      deletchiqim(id){
+        this.chiq.id = id;
+        this.showModalDelchi = true;
+      },
+      valyu_kurs_chiq(resu){
+        if (resu) {
+          const val = this.valyudata.find(e => { if (e.name == resu) return e; });
+          this.chiq.kurs = val.summa;
+          this.chiq.valyuta = val.name;          
+        } else {
+          this.chiq.kurs = '';
+          this.chiq.valyuta = ''; 
+        }
+      }
     },
     watch: {
       tovarsqlad(row){
@@ -1336,6 +1478,21 @@
           this.OriginalMethodUrlGet({
             'method': 'post',
             'url': 'getyetkaz',
+            'search': row,
+            'login': this.login,
+            'token': this.token,
+            'magazinId': auth.method_id,
+            'magazin': auth.method_name,
+            'status': this.statustyp,
+          });
+        }else{}
+      },
+      chiqimse(row){
+        const auth = JSON.parse(localStorage.getItem('auth'));
+        if (auth.method_id) {
+          this.OriginalMethodUrlGet({
+            'method': 'post',
+            'url': 'chiqim_get',
             'search': row,
             'login': this.login,
             'token': this.token,
@@ -1603,6 +1760,7 @@
               </svg>
               <br>
             Оплаты
+            <div class="suari"></div>
         </button>
         <button v-else class="diseg">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-back" viewBox="0 0 16 16">
@@ -1610,6 +1768,7 @@
             </svg>
             <br>
             Оплаты
+            <div class="suari"></div>
         </button>
         <button v-if="objectauth2.zaqaz.length >= 1" class="diseg3" v-on:click="otkrit_zaqaz(true)">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
@@ -1618,6 +1777,7 @@
               </svg>
               <br>          
           Приняти заказ
+        <div class="suari"></div>
         </button>
         <button v-else class="diseg">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
@@ -1626,34 +1786,39 @@
             </svg>
             <br>
           Приняти заказ
-      </button>
+      <div class="suari"></div>
+        </button>
       <button class="diseg" v-on:click="valyutatorgo(true)">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket-fill" viewBox="0 0 16 16">
             <path d="M5.071 1.243a.5.5 0 0 1 .858.514L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 6h1.717L5.07 1.243zM3.5 10.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3z"/>
           </svg>
           <br>
           Валюта
-    </button>
+    <div class="suari"></div>
+        </button>
         <button class="diseg" v-on:click="modalsokna3(true)">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket-fill" viewBox="0 0 16 16">
                 <path d="M5.071 1.243a.5.5 0 0 1 .858.514L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 6h1.717L5.07 1.243zM3.5 10.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3z"/>
               </svg>
               <br>
               Склад
-        </button>
+        <div class="suari"></div>
+            </button>
         <button class="diseg" v-on:click="OriginalGetclm">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
               <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
             </svg>
             <br>
             Слент
-        </button>
+        <div class="suari"></div>
+          </button>
         <button class="diseg" v-on:click="torgotip">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-folder-symlink-fill" viewBox="0 0 16 16">
             <path d="M13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2l.04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3zM2.19 3c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672a1 1 0 0 1 .707.293L7.586 3H2.19zm9.608 5.271-3.182 1.97c-.27.166-.616-.036-.616-.372V9.1s-2.571-.3-4 2.4c.571-4.8 3.143-4.8 4-4.8v-.769c0-.336.346-.538.616-.371l3.182 1.969c.27.166.27.576 0 .742z"/>
           </svg>
           <br>
           Тип
+        <div class="suari"></div>
         </button>
         <button class="diseg" v-on:click="getyed">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-folder-symlink-fill" viewBox="0 0 16 16">
@@ -1661,13 +1826,15 @@
           </svg>
           <br>
           Доставщик
+        <div class="suari"></div>
         </button>
-        <button class="diseg" v-on:click="adrtorgo">
+        <button class="diseg" v-on:click="getMethod">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-folder-symlink-fill" viewBox="0 0 16 16">
             <path d="M13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2l.04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3zM2.19 3c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672a1 1 0 0 1 .707.293L7.586 3H2.19zm9.608 5.271-3.182 1.97c-.27.166-.616-.036-.616-.372V9.1s-2.571-.3-4 2.4c.571-4.8 3.143-4.8 4-4.8v-.769c0-.336.346-.538.616-.371l3.182 1.969c.27.166.27.576 0 .742z"/>
           </svg>
           <br>
           Расход
+        <div class="suari"></div>
         </button>
         <button class="diseg" v-on:click="birgunlik">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
@@ -1676,7 +1843,8 @@
           </svg>
           <br>
           Выдать касса
-      </button>
+      <div class="suari"></div>
+        </button>
         <button class="diseg">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cash-coin" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0z"/>
@@ -1686,7 +1854,8 @@
               </svg>
               <br>
             Инкассация
-        </button>
+        <div class="suari"></div>
+          </button>
         <button class="diseg">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cash-coin" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0z"/>
@@ -1696,7 +1865,8 @@
               </svg>
               <br>
             Товарни отчет
-        </button>
+        <div class="suari"></div>
+          </button>
         <button class="diseg" v-on:click="polni_ochchot">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cash-coin" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0z"/>
@@ -1706,7 +1876,8 @@
               </svg>
               <br>
             Отчет о касса
-        </button>
+        <div class="suari"></div>
+          </button>
         <div class="row">
             <div class="tuggg pl-4 ">
                 <span class="bdfsdf555">Итого сумма</span><br>
@@ -2630,7 +2801,7 @@
                     </div>
                     <div class="col-md-12 form-group mb-3">
                       <label for="firstName1">Валюта</label>
-                      <select class="form-control" v-on:change="valyu_kurs(yet.valyuta)" v-model="yet.valyuta">
+                      <select class="form-control" v-on:change="valyu_kurs_pas(yet.valyuta)" v-model="yet.valyuta">
                         <option value="">----</option>
                         <option  v-for="itema in valyudata" :value="itema.name">{{itema.name}}</option>
                       </select>
@@ -2675,9 +2846,126 @@
       </transition>
     </div>
 
-    </template>
+    <div v-if="torgostchiq" class="torgosqlad">
+      <button type="button" class="close mb-3 mt-3 mr-3" @click="torgostchiq = false">
+        <span aria-hidden="true">&times;</span>
+    </button>
+      <div class="mt-3 p-2 border-bottom">
+        <button class="btn-success mb-2" @click="showModalchiq = true">Расход добавлять</button>
+        <input type="file" id="archiveExcel" v-on:change="subirExcelchiq()">
+        <button class="btn-success mb-2 mx-3" v-on:click="clikchiq">                  
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+          </svg>
+        </button>
+        <button class="btn-primary mb-2" v-on:click="expchiq">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+          </svg>
+        </button>
+        <input type='text' id="chiqim" class="inps1" v-model="chiqimse" />
+        </div>
+        <div class="table-responsive">
+          <div class="scroltab3">
+          <table class="tabl scroltabter">
+            <thead>
+                <tr>
+                    <th>Где</th>
+                    <th>Проблем</th>
+                    <th>Сумма</th>
+                    <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in Itemobjects" :key="item.id" class="tir">
+                  <td>{{ item.qayerga }}</td>
+                  <td>{{ item.sabap }}</td>
+                  <td>{{ item.summa }} {{ item.valyuta }}</td>
+                  <td>
+                    <a class="text-success mr-2" v-on:click="editchiqim(item)">
+                      <i class="nav-icon i-Pen-2 font-weight-bold"></i>
+                    </a>
+                    <a class="text-danger mr-2" v-on:click="deletchiqim(item.id)">
+                      <i class="nav-icon i-Close-Window font-weight-bold"></i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+    
+    <div v-if="showModalchiq">
+      <transition name="modal">
+        <div class="modal-mask">
+          <div class="modal-wrapper">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content basg">
+                <div class="modal-header">
+                  <h5 class="modal-title">Расход</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" @click="showModalchiq = false">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-md-12 form-group mb-3">
+                        <label for="firstName1">Где</label>
+                        <input class="form-control" id="firstName1" type="text" v-model="chiq.qayerga" placeholder="Qayerga">
+                    </div>
+                    <div class="col-md-12 form-group mb-3">
+                      <label for="firstName1">Проблем</label>
+                      <input class="form-control" id="firstName1" type="text" v-model="chiq.sabap" placeholder="Sabap">
+                  </div>
+                  <div class="col-md-12 form-group mb-3">
+                    <label for="firstName1">Сумма</label>
+                    <input class="form-control" id="firstName1" type="number" v-model="chiq.summa" placeholder="Summa">
+                  </div>
+                  <div class="col-md-12 form-group mb-3">
+                    <label for="firstName1">Валюта</label>
+                    <select class="form-control" v-on:change="valyu_kurs_chiq(chiq.valyuta)" v-model="chiq.valyuta">
+                      <option value="">----</option>
+                      <option  v-for="itema in valyudata" :value="itema.name">{{itema.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" @click="showModalchiq = false">Назад</button>
+                  <button type="button" class="btn btn-primary" v-on:click="CreateChiqim">Сохранить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </div>
 
-<style>
+    <div v-if="showModalDelchi">
+      <transition name="modal">
+        <div class="modal-mask">
+          <div class="modal-wrapper">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content basg">
+                <div class="modal-header">
+                  <h5 class="modal-title text-danger">Удалить</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" @click="showModalDelchi = false">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body text-center">
+                  <button type="button" class="btn btn-danger mx-2" @click="showModalDelchi = false">Нет</button>
+                  <button type="button" class="btn btn-primary" v-on:click="ChiqimDelet">Да</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </div>
 
 
-</style>
+</template>

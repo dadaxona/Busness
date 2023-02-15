@@ -589,6 +589,9 @@
     overflow-y: scroll;
     background: #fbfbfb;
 }
+.alert {
+    box-shadow: inset -1px 1px 3px 1px;
+}
 .diseg3{
     background-color: #b60000;
     color: white;
@@ -608,4 +611,53 @@
     100%{
         opacity:1;
     }
- }
+}
+
+.suari{
+    position: absolute;
+    top: 17px;
+    width: 8%;
+    height: 30%;
+    margin-left: -14px;
+}
+.suari::before{
+    content: '';
+    position: absolute;
+    left: 200%;
+    width: 123%;
+    height: 17px;
+    background: linear-gradient(180deg, rgb(255 255 255 / 0%), rgb(255 255 255) 40%, rgb(255 255 255 / 60%) 60%, rgb(255 255 255 / 0%));
+    opacity: .4;
+    transform: rotate(45deg);
+    animation: animat 5s linear infinite;
+    -webkit-animation-name: animat;
+    animation-name: animat;
+    -webkit-animation-duration: 3s;
+    animation-duration: 3s;
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+    -webkit-animation-timing-function: ease;
+    animation-timing-function: ease;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+
+    /* position: absolute;
+    left: 10px;
+    width: 123%;
+    height: 17px;
+    background: linear-gradient(rgba(255, 255, 255, 0), rgb(255, 255, 255) 40%, rgba(255, 255, 255, 0.6) 60%, rgba(255, 255, 255, 0));
+    opacity: 0.4;
+    transform: rotate(45deg);
+    animation: 3s ease 1s infinite normal none running animat; */
+
+}
+
+@keyframes  animat{
+    0%{
+        left: -300%;
+    }
+
+    100%{
+        left: 300%;
+    }
+}
