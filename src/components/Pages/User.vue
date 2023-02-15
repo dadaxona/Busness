@@ -176,9 +176,14 @@
             this.showModalDel = false
         }, 
         valyu_kurs(resu){
+          if (resu) {
           const val = this.valyudata.find(e => { if (e.name == resu) return e; });
           this.kurs = val.summa;
-          this.valyuta = val.name;
+          this.valyuta = val.name;          
+        } else {
+          this.kurs = '';
+          this.valyuta = ''; 
+        }
         }
       },
       watch: {
@@ -189,6 +194,8 @@
             'search': row,
             'login': this.login,
             'token': this.token,
+            'magazinId': auth.method_id,
+            'magazin': auth.method_name,
             'status': this.statustyp,
           });
         }
@@ -282,23 +289,23 @@
               <div class="row">
                 <div class="col-6 form-group mb-3">
                     <label for="firstName1">Имя</label>
-                    <input class="form-control" id="firstName1" type="text" v-model="name" placeholder="Enter name">
+                    <input class="form-control" id="firstName1" type="text" v-model="name" placeholder="Имя">
                 </div>
                 <div class="col-6 form-group mb-3">
                     <label for="lastName1">Офис или ИНН</label>
-                    <input class="form-control" id="lastName1" type="text" v-model="firma" placeholder="Enter firma">
+                    <input class="form-control" id="lastName1" type="text" v-model="firma" placeholder="Офис или ИНН">
                 </div>
                 <div class="col-6 form-group mb-3">
                     <label for="exampleInputEmail1">Тел</label>
-                    <input class="form-control" id="phone" type="text" v-model="tel" placeholder="Enter tel">
+                    <input class="form-control" id="phone" type="text" v-model="tel" placeholder="Тел">
                 </div>
                 <div class="col-6 form-group mb-3">
                     <label for="phone">Телеграм</label>
-                    <input class="form-control" id="telegram" type="text"  v-model="telegram" placeholder="Enter telegram">
+                    <input class="form-control" id="telegram" type="text"  v-model="telegram" placeholder="Телеграм">
                 </div>
                 <div class="col-6 form-group mb-3">
                   <label for="balans">Баланс</label>
-                  <input class="form-control" id="summa" type="text"  v-model="summa" placeholder="Balans">
+                  <input class="form-control" id="summa" type="text"  v-model="summa" placeholder="Баланс">
                 </div>
                 <div class="col-6 form-group mb-3">
                   <label for="firstName1">Валюта</label>

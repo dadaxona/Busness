@@ -10,7 +10,6 @@
               login:'',
               token:'',
               statustyp: '',
-              userdatatip: '',
               idtip: '',
               nametip: '',
               tiptov: '',
@@ -171,7 +170,7 @@
     <div class="col-md-12 mb-3">
         <div class="card text-left">
             <div class="card-body">
-                <button class="btn btn-success mb-2" v-on:click="showModal = true">Тип  добавлять</button>
+                <button class="btn btn-success mb-2" v-on:click="showModal = true">Тип добавлять</button>
                 <input type="file" id="archiveExcel" v-on:change="subirExcel()">
                 <button class="btn btn-success mb-2 mx-3" v-on:click="clik">                  
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">

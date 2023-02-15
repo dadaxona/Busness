@@ -540,6 +540,7 @@
     overflow-y: scroll;
     background: #eae9ea;
     box-shadow: inset 1px 0px 5px 1px;
+    margin-left: 5px;
 }
 
 .fc{

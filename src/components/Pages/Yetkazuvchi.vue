@@ -155,9 +155,14 @@
             this.showModalDel = false
           },
           valyu_kurs(resu){
-            const val = this.valyudata.find(e => { if (e.name == resu) return e; });
-            this.kurs = val.summa;
-            this.valyuta = val.name;
+            if (resu) {
+              const val = this.valyudata.find(e => { if (e.name == resu) return e; });
+              this.kurs = val.summa;
+              this.valyuta = val.name;          
+            } else {
+              this.kurs = '';
+              this.valyuta = ''; 
+            }
           }
         },
         watch: {
@@ -258,11 +263,11 @@
               <div class="row">
                 <div class="col-md-12 form-group mb-3">
                     <label for="firstName1">Имя Доставщик</label>
-                    <input class="form-control" id="firstName1" type="text" v-model="name" placeholder="Yetkazuvchi name">
+                    <input class="form-control" id="firstName1" type="text" v-model="name" placeholder="Имя Доставщик">
                 </div>
                 <div class="col-md-12 form-group mb-3">
                   <label for="firstName1">Сумма</label>
-                  <input class="form-control" id="firstName1" type="number" v-model="summa" placeholder="Summa">
+                  <input class="form-control" id="firstName1" type="number" v-model="summa" placeholder="Сумма">
                 </div>
                 <div class="col-md-12 form-group mb-3">
                   <label for="firstName1">Валюта</label>

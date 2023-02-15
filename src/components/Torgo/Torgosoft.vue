@@ -16,7 +16,13 @@
             showModal: false,
             showModalvaly: false,
             showModalDel: false,
+            showModalDalTip: false,
             showModalDelValyuta: false,
+            showModaltip: false,
+            showModalDelclm: false,
+            showModalclm: false,
+            showModalyedel: false,
+            showModalye: false,
             search: '',
             id:'',
             tip:'',
@@ -60,6 +66,9 @@
             plkassa: false,
             bir_kunki: false,
             torgosvaly: false,
+            torgostip: false,
+            torgostclm: false,
+            torgostye: false,
             databugun: new Date().toLocaleDateString('en-CA'),
             polni: {
               savdo: 0,
@@ -81,6 +90,30 @@
               summa: '',
             },
             valyutatorvaly: '',
+            tiptorgo2: {
+              idtip: '',
+              nametip: '',
+            },
+            tiptov: '',
+            cltorgosoft: {
+              id: '',
+              name: '',
+              firma: '',
+              tel: '',
+              telegram: '',
+              summa: 0,
+              kurs: '',
+              valyuta: '',
+            },
+            Searvh: '',
+            yet: {
+              id: '',
+              name: '',
+              summa: 0,
+              kurs: '',
+              valyuta: '',
+            },
+            yerkazse: '',
         }
     },
     methods: {
@@ -114,10 +147,10 @@
         this.statustyp = auth.action
       },
       vremya(){
-        setInterval(() => {
-          this.sana_data = new Date();
-          // new Date().toLocaleDateString('en-CA'),
-        }, 1000);
+        // setInterval(() => {
+        //   this.sana_data = new Date();
+        //   // new Date().toLocaleDateString('en-CA'),
+        // }, 1000);
       },
       exp(){
           saveExcel({
@@ -741,7 +774,6 @@
           
         }
       },
-
       expvalyuta(){
         saveExcel({
           data: this.Itemobjects,
@@ -812,7 +844,379 @@
         this.valyutator.id = '';
         this.valyutator.name = '';
         this.showModalDelValyuta = false;
-      }
+      },
+      torgotip(){
+        this.OriginalMethodUrlGet({
+          'method': 'post',
+          'url': 'gettip',
+          'login': this.login,
+          'token': this.token,
+          'magazinId': auth.method_id,
+          'magazin': auth.method_name,
+          'status': this.statustyp,
+        });
+        this.torgostip = true;
+      },
+      CreateTip(){
+        if (auth.method_id) {
+          this.OriginalMethodUrlPost({
+            'method': 'post',
+            'url2': 'post_update',
+            'url': 'gettip',
+            'id': this.tiptorgo2.idtip,
+            'name': this.tiptorgo2.nametip,
+            'login': this.login,
+            'token': this.token,
+            'status': this.statustyp,
+            'magazinId': auth.method_id,
+            'magazin': auth.method_name,
+          });
+          this.tiptorgo2.idtip = '';
+          this.tiptorgo2.nametip = '';
+          this.showModaltip = false;
+        } else {}
+      },
+      edittip(item){
+        this.tiptorgo2.idtip = item.id;
+        this.tiptorgo2.nametip = item.name;
+        this.showModaltip = true;
+      },
+      delettiptip(id, name){
+        this.tiptorgo2.idtip = id;
+        this.tiptorgo2.nametip = name;
+        this.showModalDalTip = true;
+      },
+      TipsDelet(){
+        this.OriginalMethodUrlPost({
+          'method': 'post',
+          'url2': 'tipsdelete',
+          'url': 'gettip',
+          'id': this.tiptorgo2.idtip,
+          'login': this.login,
+          'token': this.token,
+          'magazinId': auth.method_id,
+          'magazin': auth.method_name,
+          'status': this.statustyp,
+        });
+        this.tiptorgo2.idtip = '';
+        this.tiptorgo2.nametip = '';
+        this.showModalDalTip = false;
+      },
+      exptip(){
+        saveExcel({
+          data: this.Itemobjects,
+          fileName: "Export",
+          columns: [
+            {field: 'id'},
+            {field: 'userId'},
+            {field: 'magazinId'},
+            {field: 'magazin'},
+            {field: 'name'},
+          ]
+        });
+      },
+      cliktip(){
+        document.getElementById("archiveExcel").click();
+      },
+      subirExceltip(){
+        const input = document.getElementById("archiveExcel");
+        readXisFile(input.files[0]).then((rows)=>{
+          for (let i = 1; i < rows.length; i++) {
+            this.excel.push({
+              'userId': rows[i][1],
+              'magazinId': rows[i][2],
+              'magazin': rows[i][3],
+              'name': rows[i][4],
+            });                
+          }
+          this.OriginalMethodUrlPost({
+              'method': 'post',
+              'url2': 'post_tip_exsel',
+              'url': 'gettip',
+              'massivname': this.excel,
+              'login': this.login,
+              'token': this.token,
+              'status': this.statustyp,
+              'magazinId': auth.method_id,
+              'magazin': auth.method_name,
+          });
+        });
+        this.excel = [];
+        input.value = '';
+      },
+      deletmij(id, name){
+        this.cltorgosoft.id = id,
+        this.cltorgosoft.name = name,
+        this.showModalDelclm = true
+      },
+      expclm(){
+        saveExcel({
+          data: this.Itemobjects,
+          fileName: "Export",
+          columns: [
+            {field: 'id'},
+            {field: 'userId'},
+            {field: 'magazinId'},
+            {field: 'magazin'},
+            {field: 'name'},
+            {field: 'firma'},
+            {field: 'tel'},
+            {field: 'telegram'},
+            {field: 'karz'},
+            {field: 'summa'},
+            {field: 'kurs'},
+            {field: 'valyuta'},
+          ]
+        });
+      },
+      clikclm(){
+        document.getElementById("archiveExcel").click();
+      },
+      subirExcelclm(){
+        const input = document.getElementById("archiveExcel");
+        readXisFile(input.files[0]).then((rows)=>{
+          for (let i = 1; i < rows.length; i++) {
+            this.excel.push({
+              'userId': rows[i][1],
+              'magazinId': rows[i][2],
+              'magazin': rows[i][3],
+              'name': rows[i][4],
+              'firma': rows[i][5],
+              'tel': rows[i][6],
+              'telegram': rows[i][7],
+              'karz': rows[i][8],
+              'summa': rows[i][9],
+              'kurs': rows[i][10],
+              'valyuta': rows[i][11],
+            });                
+          }
+          this.OriginalMethodUrlPost({
+              'method': 'post',
+              'url2': 'post_update_mijoz_exsel',
+              'url': 'mijozget',
+              'massivname': this.excel,
+              'login': this.login,
+              'token': this.token,
+              'magazinId': auth.method_id,
+              'magazin': auth.method_name,
+              'status': this.statustyp,
+          });
+        });
+        this.excel = [];
+        input.value = '';
+      },
+      UserDeletclm(){
+        this.OriginalMethodUrlPost({
+          'method': 'post',
+          'url2': 'mijozdelete',
+          'url': 'mijozget',
+          'id': this.cltorgosoft.id,
+          'login': this.login,
+          'token': this.token,
+          'magazinId': auth.method_id,
+          'magazin': auth.method_name,
+          'status': this.statustyp,
+        });
+        this.showModalDelclm = false;
+      },
+      SaveUserclm(){
+        if (auth.method_id) {
+          this.OriginalMethodUrlPost({
+            'method': 'post',
+            'url2': 'mijozcreate',
+            'url': 'mijozget',
+            'id': this.cltorgosoft.id,
+            'login': this.login,
+            'token': this.token,
+            'magazinId': auth.method_id,
+            'magazin': auth.method_name,
+            'status': this.statustyp,
+            'name': this.cltorgosoft.name,
+            'firma': this.cltorgosoft.firma,
+            'tel': this.cltorgosoft.tel,
+            'telegram': this.cltorgosoft.telegram,
+            'summa': this.cltorgosoft.summa,
+            'kurs': this.cltorgosoft.kurs,
+            'valyuta': this.cltorgosoft.valyuta,
+          });
+          this.cltorgosoft.id = '',
+          this.cltorgosoft.name = '',
+          this.cltorgosoft.firma = '',
+          this.cltorgosoft.tel = '',
+          this.cltorgosoft.telegram = ''
+          this.cltorgosoft.summa = '',
+          this.cltorgosoft.kurs = '',
+          this.cltorgosoft.valyuta = '',
+          this.showModalclm = false
+        } else {
+          
+        }
+      },
+      OriginalGetclm(){
+        const auth = JSON.parse(localStorage.getItem('auth'));
+        if (auth.method_id) {
+          this.OriginalMethodUrlGet({
+            'method': 'post',
+            'url': 'mijozget',
+            'login': this.login,
+            'token': this.token,
+            'magazinId': auth.method_id,
+            'magazin': auth.method_name,
+            'status': this.statustyp,
+          });
+          this.torgostclm = true;
+        }else{}
+      },
+      editmijclm(item){
+        this.cltorgosoft.id = item.id,
+        this.cltorgosoft.name = item.name,
+        this.cltorgosoft.firma = item.firma,
+        this.cltorgosoft.tel = item.tel,
+        this.cltorgosoft.telegram = item.telegram
+        this.cltorgosoft.summa = item.summa,
+        this.cltorgosoft.kurs = item.kurs,
+        this.cltorgosoft.valyuta = item.valyuta,
+        this.showModalclm = true
+      },
+      valyu_kurs_us(resu){
+        if (resu) {
+          const val = this.valyudata.find(e => { if (e.name == resu) return e; });
+          this.cltorgosoft.kurs = val.summa;
+          this.cltorgosoft.valyuta = val.name;          
+        } else {
+          this.cltorgosoft.kurs = '';
+          this.cltorgosoft.valyuta = ''; 
+        }
+      },
+      valyu_kurs_pas(resu){
+        if (resu) {
+          const val = this.valyudata.find(e => { if (e.name == resu) return e; });
+          this.kurs = val.summa;
+          this.valyuta = val.name;          
+        } else {
+          this.kurs = '';
+          this.valyuta = ''; 
+        }
+      },
+
+      expye(){
+        saveExcel({
+          data: this.Itemobjects,
+          fileName: "Export",
+          columns: [
+            {field: 'id'},
+            {field: 'userId'},
+            {field: 'magazinId'},
+            {field: 'magazin'},
+            {field: 'name'},
+            {field: 'summa'},
+            {field: 'kurs'},
+            {field: 'valyuta'},                
+          ]
+        });
+      },
+      clikye(){
+        document.getElementById("archiveExcel").click();
+      },
+      subirExcelye(){
+        const input = document.getElementById("archiveExcel");
+        readXisFile(input.files[0]).then((rows)=>{
+          for (let i = 1; i < rows.length; i++) {
+            this.excel.push({
+              'userId': rows[i][1],
+              'magazinId': rows[i][2],
+              'magazin': rows[i][3],
+              'name': rows[i][4],
+              'summa': rows[i][5],
+              'kurs': rows[i][6],
+              'valyuta': rows[i][7],
+            });                
+          }
+          this.OriginalMethodUrlPost({
+              'method': 'post',
+              'url2': 'post_update_yetkaz_exsel',
+              'url': 'getyetkaz',
+              'massivname': this.excel,
+              'login': this.login,
+              'token': this.token,
+              'magazinId': auth.method_id,
+              'magazin': auth.method_name,
+              'status': this.statustyp,
+          });
+        });
+        this.excel = [];
+        input.value = '';
+      },
+      CreateYetkazuvchi(){
+        if (auth.method_id) {
+          this.OriginalMethodUrlPost({
+            'method': 'post',
+            'url2': 'post_update_yetkaz',
+            'url': 'getyetkaz',
+            'id': this.yet.id,
+            'name': this.yet.name,
+            'summa': this.yet.summa,
+            'kurs': this.yet.kurs,
+            'valyuta': this.yet.valyuta,
+            'login': this.login,
+            'token': this.token,
+            'magazinId': auth.method_id,
+            'magazin': auth.method_name,
+            'status': this.statustyp,
+          });
+          this.yet.id = '';
+          this.yet.name = '';
+          this.yet.summa = '';
+          this.yet.kurs = '';
+          this.yet.valyuta = '';
+          this.showModalye = false;
+        } else {
+          
+        }
+      },
+      editye(resu){
+        this.yet.id = resu.id;
+        this.yet.name = resu.name;
+        this.yet.summa = resu.summa;
+        this.yet.kurs = resu.kurs;
+        this.yet.valyuta = resu.valyuta;            
+        this.showModalye = true;
+      },
+      getyed(){
+        if (auth.method_id) {
+          this.OriginalMethodUrlGet({
+            'method': 'post',
+            'url': 'getyetkaz',
+            'login': this.login,
+            'token': this.token,
+            'magazinId': auth.method_id,
+            'magazin': auth.method_name,
+            'status': this.statustyp,
+          });
+          this.torgostye = true;
+        } else {}
+      },
+      deletye(id, name){
+        this.yet.id = id;
+        this.yet.name = name,
+        this.showModalyedel = true;
+      },
+      YetkazDelet(){
+        this.OriginalMethodUrlPost({
+          'method': 'post',
+          'url2': 'yetkaz_delete',
+          'url': 'getyetkaz',
+          'id': this.yet.id,
+          'login': this.login,
+          'token': this.token,
+          'magazinId': auth.method_id,
+          'magazin': auth.method_name,
+          'status': this.statustyp,
+        });
+        this.yet.id = '';
+        this.showModalyedel = false;
+      },
+
     },
     watch: {
       tovarsqlad(row){
@@ -890,6 +1294,48 @@
           this.OriginalMethodUrlGet({
             'method': 'post',
             'url': 'getvalyuta',
+            'search': row,
+            'login': this.login,
+            'token': this.token,
+            'magazinId': auth.method_id,
+            'magazin': auth.method_name,
+            'status': this.statustyp,
+          });
+        }else{}
+      },
+      tiptov(row){
+        const auth = JSON.parse(localStorage.getItem('auth'));
+          if (auth.method_id) {
+          this.OriginalMethodUrlGet({
+            'method': 'post',
+            'url': 'gettip',
+            'search': row,
+            'login': this.login,
+            'token': this.token,
+            'magazinId': auth.method_id,
+            'magazin': auth.method_name,
+            'status': this.statustyp,
+          });
+        } else {}
+      },
+      Searvh(row){
+        this.OriginalMethodUrlGet({
+          'method': 'post',
+          'url': 'mijozget',
+          'search': row,
+          'login': this.login,
+          'token': this.token,
+          'magazinId': auth.method_id,
+          'magazin': auth.method_name,
+          'status': this.statustyp,
+        });
+      },
+      yerkazse(row){
+        const auth = JSON.parse(localStorage.getItem('auth'));
+        if (auth.method_id) {
+          this.OriginalMethodUrlGet({
+            'method': 'post',
+            'url': 'getyetkaz',
             'search': row,
             'login': this.login,
             'token': this.token,
@@ -1195,21 +1641,21 @@
               <br>
               Склад
         </button>
-        <button class="diseg" v-on:click="kltorgo">
+        <button class="diseg" v-on:click="OriginalGetclm">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
               <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
             </svg>
             <br>
             Слент
         </button>
-        <button class="diseg" v-on:click="tiptorgo">
+        <button class="diseg" v-on:click="torgotip">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-folder-symlink-fill" viewBox="0 0 16 16">
             <path d="M13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2l.04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3zM2.19 3c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672a1 1 0 0 1 .707.293L7.586 3H2.19zm9.608 5.271-3.182 1.97c-.27.166-.616-.036-.616-.372V9.1s-2.571-.3-4 2.4c.571-4.8 3.143-4.8 4-4.8v-.769c0-.336.346-.538.616-.371l3.182 1.969c.27.166.27.576 0 .742z"/>
           </svg>
           <br>
           Тип
         </button>
-        <button class="diseg" v-on:click="adrtorgo">
+        <button class="diseg" v-on:click="getyed">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-folder-symlink-fill" viewBox="0 0 16 16">
             <path d="M13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2l.04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3zM2.19 3c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672a1 1 0 0 1 .707.293L7.586 3H2.19zm9.608 5.271-3.182 1.97c-.27.166-.616-.036-.616-.372V9.1s-2.571-.3-4 2.4c.571-4.8 3.143-4.8 4-4.8v-.769c0-.336.346-.538.616-.371l3.182 1.969c.27.166.27.576 0 .742z"/>
           </svg>
@@ -1864,6 +2310,371 @@
         </div>
       </transition>
     </div>
+
+    <div v-if="torgostip" class="torgosqlad">
+      <button type="button" class="close mb-3 mt-3 mr-3" @click="torgostip = false">
+          <span aria-hidden="true">&times;</span>
+      </button>
+      <div class="mt-3 p-2 border-bottom">
+        <button class="btn-success mb-2" v-on:click="showModaltip = true">Тип добавлять</button>
+        <input type="file" id="archiveExcel" v-on:change="subirExceltip">
+        <button class="btn-success mb-2 mx-3" v-on:click="cliktip">                  
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+          </svg>
+        </button>
+        <button class="btn-primary mb-2" v-on:click="exptip">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+          </svg>
+        </button>
+        <input type='text' id="tiptov" class="inps1" v-model="tiptov" />
+        </div>
+        <div class="table-responsive">
+          <div class="scroltab3">
+          <table class="tabl scroltabter">
+            <thead>
+              <tr>
+                  <th class="mx-2">Тип</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in Itemobjects" :key="item.id" class="tir">
+              <td>{{ item.name }}</td>
+              <td>
+                <a class="text-success mr-2" v-on:click="edittip(item)">
+                  <i class="nav-icon i-Pen-2 font-weight-bold"></i>
+                </a>
+                <a class="text-danger mr-2" v-on:click="delettiptip(item.id, item.name)">
+                  <i class="nav-icon i-Close-Window font-weight-bold"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+          </table>
+          </div>
+      </div>
+  </div>
+
+  <div v-if="showModaltip">
+    <transition name="modal">
+      <div class="modal-mask">
+        <div class="modal-wrapper">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content basg">
+              <div class="modal-header">
+                <h5 class="modal-title">Тип</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true" v-on:click="showModaltip = false">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-md-12 form-group mb-3">
+                    <label for="firstName1">Тип</label>
+                    <input class="form-control" id="firstName1" type="text" v-model="tiptorgo2.nametip" placeholder="Tip name">
+                </div>
+              </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger mx-3" v-on:click="showModaltip = false">Отмена</button>
+                <button type="button" class="btn btn-primary" v-on:click="CreateTip">Сохранить</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+  </div>
+  
+    <div v-if="showModalDalTip">
+      <transition name="modal">
+        <div class="modal-mask">
+          <div class="modal-wrapper">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content basg">
+                <div class="modal-header">
+                  <h5 class="modal-title text-danger">Удалить</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" @click="showModalDalTip = false">&times;</span>
+                  </button>
+                </div>
+                  <input type="hidden" name="" id="" v-model="tiptorgo2.id">
+                  <div class="col-md-12 form-group mb-3">
+                    <input class="form-control text-center" type="text"  v-model="tiptorgo2.nametip" disabled>
+                </div>
+                <div class="modal-body text-center">
+                  <button type="button" class="btn btn-danger mx-2" @click="showModalDalTip = false">Нет</button>
+                  <button type="button" class="btn btn-primary" v-on:click="TipsDelet">Да</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </div>
+
+    <div v-if="torgostclm" class="torgosqlad">
+      <button type="button" class="close mb-3 mt-3 mr-3" @click="torgostclm = false">
+        <span aria-hidden="true">&times;</span>
+    </button>
+      <div class="mt-3 p-2 border-bottom">
+        <button class="btn-success mb-2" v-on:click="showModalclm = true">Слент добавлять</button>
+        <input type="file" id="archiveExcel" v-on:change="subirExcelclm()">
+        <button class="btn-success mb-2 mx-3" v-on:click="clikclm">                  
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+          </svg>
+        </button>
+        <button class="btn-primary mb-2" v-on:click="expclm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+          </svg>
+        </button>
+        <input type='text' id="usersearch" class="inps1" v-model="Searvh"/>
+        </div>
+        <div class="table-responsive">
+          <div class="scroltab3">
+          <table class="tabl scroltabter">
+            <thead>
+              <tr>
+                  <th>Имя</th>
+                  <th>Офис или ИНН</th>
+                  <th>Тел</th>
+                  <th>Телеграм</th>
+                  <th>Баланс</th>
+                  <th>Долг</th>
+                  <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in Itemobjects" :key="item.id" class="tir">
+                <td>{{ item.name }}</td>
+                <td>{{ item.firma }}</td>
+                <td>{{ item.tel }}</td>
+                <td>{{ item.telegram }}</td>
+                <td class="text-success">{{ item.summa }}  {{ item.valyuta }}</td>
+                <td class="text-danger">{{ item.karz }}</td>
+                <td>
+                  <a class="text-success mr-2" v-on:click="editmijclm(item)">
+                    <i class="nav-icon i-Pen-2 font-weight-bold"></i>
+                  </a>
+                  <a class="text-danger mr-2" v-on:click="deletmij(item.id, item.name)">
+                    <i class="nav-icon i-Close-Window font-weight-bold"></i>
+                  </a>
+                </td>
+              </tr>    
+            </tbody>
+          </table>
+          </div>
+      </div>
+    </div>
+
+    <div v-if="showModalclm">
+      <transition name="modal">
+        <div class="modal-mask">
+          <div class="modal-wrapper">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content basg">
+                <div class="modal-header">
+                  <h5 class="modal-title">Слент</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" @click="showModalclm = false">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-6 form-group mb-3">
+                        <label for="firstName1">Имя</label>
+                        <input class="form-control" id="firstName1" type="text" v-model="cltorgosoft.name" placeholder="Имя">
+                    </div>
+                    <div class="col-6 form-group mb-3">
+                        <label for="lastName1">Офис или ИНН</label>
+                        <input class="form-control" id="lastName1" type="text" v-model="cltorgosoft.firma" placeholder="Офис или ИНН">
+                    </div>
+                    <div class="col-6 form-group mb-3">
+                        <label for="exampleInputEmail1">Тел</label>
+                        <input class="form-control" id="phone" type="text" v-model="cltorgosoft.tel" placeholder="Тел">
+                    </div>
+                    <div class="col-6 form-group mb-3">
+                        <label for="phone">Телеграм</label>
+                        <input class="form-control" id="telegram" type="text"  v-model="cltorgosoft.telegram" placeholder="Телеграм">
+                    </div>
+                    <div class="col-6 form-group mb-3">
+                      <label for="balans">Баланс</label>
+                      <input class="form-control" id="summa" type="text"  v-model="cltorgosoft.summa" placeholder="Баланс">
+                    </div>
+                    <div class="col-6 form-group mb-3">
+                      <label for="firstName1">Валюта</label>
+                      <select class="form-control" v-on:change="valyu_kurs_us(cltorgosoft.valyuta)" v-model="cltorgosoft.valyuta">
+                        <option value="">----</option>
+                        <option  v-for="itema in valyudata" :value="itema.name">{{itema.name}}</option>
+                      </select>
+                    </div>
+                </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" @click="showModalclm = false">Назад</button>
+                  <button type="button" class="btn btn-primary" v-on:click="SaveUserclm">Сохранить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </div>
+    
+    <div v-if="showModalDelclm">
+      <transition name="modal">
+        <div class="modal-mask">
+          <div class="modal-wrapper">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content basg">
+                <div class="modal-header">
+                  <h5 class="modal-title text-danger">Удалить</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" @click="showModalDelclm = false">&times;</span>
+                  </button>
+                </div>
+                  <input type="hidden" name="" id="" v-model="cltorgosoft.id">
+                  <div class="col-md-12 form-group mb-3">
+                    <input class="form-control text-center" type="text"  v-model="cltorgosoft.name" disabled>
+                </div>
+                <div class="modal-body text-center">
+                  <button type="button" class="btn btn-danger mx-2" @click="showModalDelclm = false">Нет</button>
+                  <button type="button" class="btn btn-primary" v-on:click="UserDeletclm">Да</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </div>
+
+    <div v-if="torgostye" class="torgosqlad">
+      <button type="button" class="close mb-3 mt-3 mr-3" @click="torgostye = false">
+        <span aria-hidden="true">&times;</span>
+    </button>
+      <div class="mt-3 p-2 border-bottom">
+        <button class="btn-success mb-2" @click="showModalye = true">Доставщик добавлять</button>
+        <input type="file" id="archiveExcel" v-on:change="subirExcelye()">
+        <button class="btn-success mb-2 mx-3" v-on:click="clikye">                  
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+          </svg>
+        </button>
+        <button class="btn-primary mb-2" v-on:click="expye">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+          </svg>
+        </button>
+        <input type='text' id="yerkaz" class="inps1" v-model="yerkazse" />
+        </div>
+        <div class="table-responsive">
+          <div class="scroltab3">
+          <table class="tabl scroltabter">
+            <thead>
+              <tr>
+                  <th>Доставщик</th>
+                  <th>Сумма</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in Itemobjects" :key="item.id" class="tir">
+              <td>{{ item.name }}</td>
+              <td>{{ item.summa }} {{ item.valyuta }}</td>
+              <td>
+                <a class="text-success mr-2" v-on:click="editye(item)">
+                  <i class="nav-icon i-Pen-2 font-weight-bold"></i>
+                </a>
+                <a class="text-danger mr-2" v-on:click="deletye(item.id, item.name)">
+                  <i class="nav-icon i-Close-Window font-weight-bold"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+          </table>
+          </div>
+      </div>
+    </div>
+
+    <div v-if="showModalye">
+      <transition name="modal">
+        <div class="modal-mask">
+          <div class="modal-wrapper">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content basg">
+                <div class="modal-header">
+                  <h5 class="modal-title">Доставщик</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" @click="showModalye = false">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-md-12 form-group mb-3">
+                        <label for="firstName1">Имя Доставщик</label>
+                        <input class="form-control" id="firstName1" type="text" v-model="yet.name" placeholder="Имя Доставщик">
+                    </div>
+                    <div class="col-md-12 form-group mb-3">
+                      <label for="firstName1">Сумма</label>
+                      <input class="form-control" id="firstName1" type="number" v-model="yet.summa" placeholder="Сумма">
+                    </div>
+                    <div class="col-md-12 form-group mb-3">
+                      <label for="firstName1">Валюта</label>
+                      <select class="form-control" v-on:change="valyu_kurs(yet.valyuta)" v-model="yet.valyuta">
+                        <option value="">----</option>
+                        <option  v-for="itema in valyudata" :value="itema.name">{{itema.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" @click="showModalye = false">Назад</button>
+                  <button type="button" class="btn btn-primary" v-on:click="CreateYetkazuvchi">Сохранить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </div>
+
+    <div v-if="showModalyedel">
+      <transition name="modal">
+        <div class="modal-mask">
+          <div class="modal-wrapper">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content basg">
+                <div class="modal-header">
+                  <h5 class="modal-title text-danger">Удалить</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" @click="showModalyedel = false">&times;</span>
+                  </button>
+                </div>
+                  <input type="hidden" name="" id="" v-model="yet.id">
+                  <div class="col-md-12 form-group mb-3">
+                    <input class="form-control text-center" type="text"  v-model="yet.name" disabled>
+                </div>
+                <div class="modal-body text-center">
+                  <button type="button" class="btn btn-danger mx-2" @click="showModalyedel = false">Нет</button>
+                  <button type="button" class="btn btn-primary" v-on:click="YetkazDelet">Да</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </div>
+
     </template>
 
 <style>
