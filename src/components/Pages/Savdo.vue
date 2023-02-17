@@ -5,6 +5,7 @@
   const auth = JSON.parse(localStorage.getItem('auth'));
   const kurs = JSON.parse(localStorage.getItem('Kurs'));
   import { saveExcel } from '@progress/kendo-vue-excel-export';
+  import printJS from 'print-js'
   const format = new Intl.NumberFormat();
   export default {
     data() {
@@ -37,6 +38,7 @@
         Kamentariya2: '',
         showModalEditor: false,
         ModalOplate: false,
+        someJSONdata: []
       }
     },
     methods: {
@@ -519,7 +521,7 @@
           <div class="card-body">
             <div v-if="tog">
               <button class="btn btn-success btn-sm m-1" v-on:click="exportExcel" type="button">Ехсел</button>
-              <button class="btn btn-primary btn-sm m-1" type="button">Пдф</button>
+              <button class="btn btn-primary btn-sm m-1" onclick="createpdf('myDiv')" type="button">Пдф</button>
               <button class="btn btn-danger btn-sm m-1" type="button" v-on:click="deletStor">Удалить</button>
             </div>
             <div v-else>

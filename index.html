@@ -11,11 +11,60 @@
     <link href="/src/assets/lite-purple.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/src/assets/base.css">
     <title>ID Group</title>
+    <style>
+      #myDiv{
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <div id="app"></div>
     <!-- <div class="suari"></div> -->
+
+    <div id="myDiv">
+      <h3>Расходная накладная №<span id="lengcount"></span>  от <span id="snaqsana"></span></h3>
+        <div style="width: 130px; height: 110px; position: absolute; top: 0%; right: 19%;">
+          <span style="font-family: sans-serif; margin-left: 30px; position: absolute; top: 2%">Instagram</span>
+          <img style="width: 100%; height: 100%; margin-top: 12px; margin-bottom: -10px;" src="/src/assets/ins.jpg">
+          <p style="font-size: 12px; position: absolute; margin-left: 28px; margin-top: -6;">exson_magazin</p>
+        </div>
+        <div style="width: 123px; height: 72px; position: absolute; top: 0%; right: 3%;">
+          <span style="font-family: sans-serif; margin-left: 28px; position: absolute; top: 2%">Telegram</span>
+          <img style="width: 100%; height: 100%; margin-top: 35px; margin-bottom: 9px;" src="/src/assets/th.jfif">
+          <p style="font-size: 9px; position: absolute; margin-left: 20px; margin-top: -6;">@EXSON_DOKON</p>
+        </div>
+
+      <p>Отправитель: <span style="
+        margin-left: 31px;
+      " id="clentnamea"></span></p>
+      <p style="
+        margin-top: -17px;
+        margin-bottom: 39px;
+      ">Получатель: <span style="
+           margin-left: 37px;
+      ">ПОКУПАТЕЛЬ</span></p>
+      <table id="tttab" class="mb-5" style="width: 100%; border: 1px solid #cbcbcb;">
+        <tr style="font-size: unset; font-family: sans-serif; font-weight: 700;">
+          <td>№</td>
+          <td>Название</td>
+          <td>Кол-во</td>
+          <td>Цена <br> прайса</td>
+          <td>Цена</td>
+          <td>Сумма</td>
+        </tr>
+        <tbody id="tablitsa">
+          <!-- <tr style="border-bottom: 1px solid #aaaaaa;">  </tr> -->
+        </tbody>
+      </table>
+      <h4 style="text-align: right; padding-right: 7%; font-family: sans-serif;">
+        <span id="skidka"></span><br>
+        <span id="JamiItog"></span>
+      </h4>
+      <span>Отпустил     __________________</span>
+      <span style="margin-left: 30%;">Принял     __________________</span>
+    </div>
     <script type="module" src="/src/main.js"></script>
+    <script src="/src/assets/print.min.js"></script>
     <script src="/src/assets/klavish.js"></script>
     <script src="/src/assets/Pleshol.js"></script>
     <script src="/src/assets/jquery-3.3.1.min.js"></script>
