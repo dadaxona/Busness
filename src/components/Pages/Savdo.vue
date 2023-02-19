@@ -7,6 +7,16 @@
   import { saveExcel } from '@progress/kendo-vue-excel-export';
   import printJS from 'print-js'
   const format = new Intl.NumberFormat();
+  var dateObj = new Date();
+  var month = dateObj.getUTCMonth() + 1;
+  var day = dateObj.getUTCDate();
+  var year = dateObj.getUTCFullYear();
+  var monh = '';
+  if (month < 10) {
+    monh = '0' + month;
+  } else {
+    monh = month;
+  }
   export default {
     data() {
       return {
@@ -29,10 +39,14 @@
         plastik: '',
         bank: '',
         karz: '',
+        qaytim: '',
+        controlkarz: '',
         srok: '',
         drive: '',
         mijozsumma: '',
-        date: new Date().toLocaleDateString('en-CA'),
+        clentsumma: '',
+        clentkarz: '',
+        date:  year + "-" + monh + "-" + day,
         chesxbox: '',
         Kamentariya: '',
         Kamentariya2: '',
@@ -56,7 +70,8 @@
         'Valyuta_Kurs',
         'Oplata_Start_Action',
         'Driver_Act',
-        'Delet_Stor_act'
+        'Delet_Stor_act',
+        'OriginalM'
       ]),
       Localstor(){
         this.login = auth.login,
@@ -197,6 +212,7 @@
         this.skidka = '',
         this.Jamisum = '',
         this.mijozs = '',
+        this.qaytim = '',
         this.naqt = '',
         this.plastik = '',
         this.bank = '',
@@ -206,6 +222,8 @@
         this.chesxbox = '',
         this.Kamentariya = '',
         this.Kamentariya2 = '',
+        this.clentsumma = '';
+        this.clentkarz = '';
         this.showModalEditor = false,
         this.ModalOplate = false
       },
@@ -262,12 +280,12 @@
         if (kur) {
           this.kurs = JSON.parse(localStorage.getItem('Kurs')).uid;
         } else {
-          localStorage.setItem('Kurs',  JSON.stringify({'u': 99999, 'uid': '',  'un': ''}));
+          localStorage.setItem('Kurs',  JSON.stringify({'u': '1', 'uid': '99999',  'un': ''}));
           this.kurs = 99999;
         }
       },
       checkedTyp(foo){
-        localStorage.setItem('Checked',  JSON.stringify({'chesked': foo}));          
+        localStorage.setItem('Checked',  JSON.stringify({'chesked': foo}));
         this.checkedTyp3();
       },     
       checkedTyp3(){
@@ -285,35 +303,97 @@
         this.Jamisum = this.JamiSumma2;
         this.karz = this.JamiSumma2;
       },
+      clentsummafn(row){
+        this.karz = this.JamiSumma2;
+        this.qaytim = '';
+        var kur =JSON.parse(localStorage.getItem('Kurs'));
+        if (kur.uid === 99999) {
+          var clm = this.MijozSelect.find(e => { if (e.id === row) return e; });
+          if (clm) {
+            if (clm.valyuta) {
+              this.controlkarz = clm.summa * clm.kurs;
+              if (this.karz <= this.controlkarz) {
+                this.qaytim = this.controlkarz - this.karz;
+                this.karz = 0;
+              } else {
+                this.karz = this.karz - this.controlkarz;
+              }
+              this.clentsumma = '$ + '+ format.format(clm.summa * clm.kurs);
+              this.clentkarz = '$ + ' + format.format(clm.karz * clm.kurs);
+            } else {
+              this.controlkarz = clm.summa;
+              if (this.karz <= this.controlkarz) {
+                this.qaytim = this.controlkarz - this.karz;
+                this.karz = 0;
+              } else {
+                this.karz = this.karz - this.controlkarz;
+              }
+              this.clentsumma = '$ + '+ format.format(clm.summa);
+              this.clentkarz = '$ + ' + format.format(clm.karz);
+            }
+          } else {
+            this.clentsumma = '';
+            this.clentkarz = '';
+          }
+        } else {
+          var clm = this.MijozSelect.find(e => { if (e.id === row) return e; });
+          if (clm) {
+            if (clm.valyuta) {
+              this.controlkarz = clm.summa * clm.kurs / kur.u;
+              if (this.karz <= this.controlkarz) {
+                this.qaytim = this.controlkarz - this.karz;
+                this.karz = 0;
+              } else {
+                this.karz = this.karz - this.controlkarz;
+              }
+              this.clentsumma = '$ + '+ format.format(clm.summa * clm.kurs / kur.u);
+              this.clentkarz = '$ + ' + format.format(clm.karz * clm.kurs / kur.u);
+            } else {
+              this.controlkarz = clm.summa / kur.u;
+              if (this.karz <= this.controlkarz) {
+                this.qaytim = this.controlkarz - this.karz;
+                this.karz = 0;
+              } else {
+                this.karz = this.karz - this.controlkarz;
+              }
+              this.clentsumma = '$ + '+ format.format(clm.summa / kur.u); 
+              this.clentkarz = '$ + ' + format.format(clm.karz / kur.u);
+            }
+          } else {
+            this.clentsumma = '';
+            this.clentkarz = '';
+          }
+        }
+      },
       naqt1(valyu){
         this.JamiSum = parseFloat(this.JamiSumma2) - parseFloat(valyu) - this.plastik - this.bank;
-        this.karz = this.JamiSum;
+        this.karz = this.JamiSum - this.controlkarz;
       },
       plastik1(valyu){
         this.JamiSum = parseFloat(this.JamiSumma2) - parseFloat(valyu) - this.naqt - this.bank;
-        this.karz = this.JamiSum;
+        this.karz = this.JamiSum - this.controlkarz;
       },
       bank1(valyu){
         this.JamiSum = parseFloat(this.JamiSumma2) - parseFloat(valyu) - this.plastik - this.naqt;
-        this.karz = this.JamiSum;
+        this.karz = this.JamiSum - this.controlkarz;
       },
       naqinp(){
         this.plastik = '';
         this.bank = '';
         this.karz = 0;
-        this.naqt = this.JamiSumma2;
+        this.naqt = this.JamiSumma2 - this.controlkarz;
       },
       plasinp(){
         this.naqt = '';
         this.bank = '';
         this.karz = 0;
-        this.plastik = this.JamiSumma2;
+        this.plastik = this.JamiSumma2 - this.controlkarz;
       },
       bankinp(){
         this.naqt = '';
         this.plastik = '';
         this.karz = 0;
-        this.bank = this.JamiSumma2;
+        this.bank = this.JamiSumma2 - this.controlkarz;
       },
       OplataStart(){
         if (auth.method_id) {
@@ -343,6 +423,7 @@
               'plastik': this.plastik,
               'bank': this.bank,
               'karz': this.karz,
+              'qaytim': this.qaytim,
               'srok': this.srok,
               'sana': this.date,
               'vid': kurs2.uid,
@@ -465,6 +546,26 @@
             ]
           });
       },
+
+      suniyIntel(){
+        const auth = JSON.parse(localStorage.getItem('auth'));
+        if (auth.method_id) {
+          this.OriginalM({
+              'method': 'post',
+              'url': 'mijozget',
+              'login': this.login,
+              'token': this.token,
+              'magazinId': auth.method_id,
+              'magazin': auth.method_name,
+              'status': this.statustyp,
+          });
+        }else{}
+      },            
+      IntervalData(){
+          setInterval(() => {
+              this.suniyIntel();
+          }, 5000);
+      }
     },
     watch: {
       search(row){
@@ -488,7 +589,7 @@
         } else {
           this.Kamentariya2 = 0;
         }
-      }
+      },
     },
     computed: {
       ...mapGetters({
@@ -501,7 +602,7 @@
         tog: 'tog',
         drive: 'drive',
         objectauth2: 'objectauth2',
-        codecler: 'code'
+        codecler: 'code',
       }),
     },
     mounted() {
@@ -511,6 +612,7 @@
       this.toogler2();
       this.driverpMount();
       this.checkedTyp3();
+      this.IntervalData();
     }
   }
 </script>
@@ -619,7 +721,7 @@
         </div>
         <div class="row border-bottom mt-3 pb-3">
           <select class="form-control text-center" v-on:change="toogler(kurs)" v-model="kurs">
-            <option :value="99999">--Tanlang--</option>
+            <option :value="99999">--Выбирать--</option>
             <option v-for="iteme in valyudata" :value="iteme.id">{{ iteme.name }}</option>
           </select>
         </div>
@@ -695,7 +797,7 @@
         <div v-else>
           <div class="row">
             <button class="btn btn-light mt-2 widt">
-              Оплата       
+              Оплата
             </button>
           </div>
         </div>
@@ -750,26 +852,26 @@
               <div class="modal-body">
                 <div class="row">
                   <div class="col-md-6 form-group mb-3">
-                      <label for="firstName1">Soni</label>
+                      <label for="firstName1">Количество</label>
                       <input class="form-control" type="number" v-on:keyup="sonival(soni)" v-model="soni">
                   </div>
                   <div class="col-md-6 form-group mb-3">
-                    <label for="firstName1">Summa</label>
+                    <label for="firstName1">Сумма</label>
                     <input class="form-control" type="text" v-on:keyup="summaval(summa)" v-model="summa">
                   </div>
                   <div class="col-md-12 form-group mb-3">
-                    <label for="firstName1">Jami</label>
+                    <label for="firstName1">Итого</label>
                     <input class="form-control" type="text" v-on:keyup="jamival(jami)" v-model="jami">
                   </div>
                   <div class="col-md-12 form-group mb-3">
-                    <label for="firstName1">Chrgirma</label>
+                    <label for="firstName1">Скидки</label>
                     <input class="form-control" type="text" v-on:keyup="skidkaval(skidka)" v-model="skidka">
                   </div>
               </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" v-on:click="showModalEditor = false">Close</button>
-                <button type="button" class="btn btn-primary" v-on:click="CreateEdit">Save changes</button>
+                <button type="button" class="btn btn-secondary" v-on:click="showModalEditor = false">Назад</button>
+                <button type="button" class="btn btn-primary" v-on:click="CreateEdit">Сохранить</button>
               </div>
             </div>
           </div>
@@ -781,8 +883,7 @@
   <div v-if="ModalOplate" class="modal_okn">
     <div class="modal_okna">
       <div class="modal-header">
-        <h5 class="modal-title mt-0">Sotish Oynasi</h5>
-        {{mijozsumma}}
+        <h5 class="modal-title mt-0">Окно продаж</h5>
         <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true" v-on:click="ModalOplate = false">&times;</span>
         </button>
@@ -790,18 +891,20 @@
       <div class="modal-body mt-0">
         <div class="row mt-0">
           <div class="col-md-6 form-group mt-0">
-              <label for="firstName1">Jami Summa</label>
+              <label for="firstName1">Итого Сумма</label>
               <input class="form-control" type="text" v-model="JamiSumma" disabled>
           </div>
           <div class="col-md-6 form-group mt-0">
-            <label for="firstName1">Mijozni tanlang</label>
-            <select class="form-control" name="" id="" v-model="mijozs">
-              <option value="">--Tanlang--</option>
+            <label for="firstName1">Слент выбирать</label>
+            <select class="form-control" v-on:change="clentsummafn(mijozs)" v-model="mijozs">
+              <option value="">-- Выбирать --</option>
               <option v-for="itema in MijozSelect" :value="itema.id">{{ itema.name }}</option>
             </select>
+            <span class="text-primary position-absolute">{{ clentsumma }}</span>
+            <span class="text-danger mt-3 position-absolute">{{ clentkarz }}</span>
           </div>
           <div class="col-md-12 form-group mt-0">
-            <label for="firstName1">Naqt</label>
+            <label for="firstName1">Наличные</label>
             <div class="row">
               <div class="col-10">
                 <input class="form-control" type="text" v-on:keyup="naqt1(naqt)" v-model="naqt">
@@ -817,7 +920,7 @@
             </div>
           </div>
           <div class="col-md-12 form-group mt-0">
-            <label for="firstName1">Karta</label>
+            <label for="firstName1">Карта</label>
             <div class="row">
               <div class="col-10">
                 <input class="form-control" type="text" v-on:keyup="plastik1(plastik)" v-model="plastik">
@@ -833,7 +936,7 @@
             </div>
           </div>
           <div class="col-md-12 form-group mt-0">
-            <label for="firstName1">Bank</label>
+            <label for="firstName1">Банк</label>
             <div class="row">
               <div class="col-10">
                 <input class="form-control" type="text" v-on:keyup="bank1(bank)" v-model="bank">
@@ -849,11 +952,11 @@
             </div>
           </div>
           <div class="col-md-12 form-group mt-0">
-            <label>Karz</label>
+            <label>Долг</label>
             <input class="form-control" type="text" v-model="karz" disabled>
           </div>
           <div class="col-md-12 form-group mt-0">
-            <label>Zaqazga olish</label>
+            <label>Cохранить заказ</label>
             <div class="row text-right">
               <div class="col-1">
                 <input class="form-check-input" type="checkbox" v-on:click="chesx">
@@ -866,23 +969,23 @@
           <div v-if="karz == 0">
           </div>
           <div v-else class="col-md-12 form-group mt-0">
-            <label class="text-danger">Data Crok</label>
+            <label class="text-danger">Срок дата</label>
             <input class="form-control border-danger" type="date" v-model="srok">
           </div>
         </div>
       </div>
       <div class="col-md-12 border-top">
         <div v-if="karz == 0" class="mt-4 mb-4 text-right">
-          <button type="button" class="btn btn-success" v-on:click="OplataStart">Save changes</button>
+          <button type="button" class="btn btn-success" v-on:click="OplataStart">Сохранить</button>
         </div>
         <div v-else-if="chesxbox == 1 && Kamentariya2" class="mt-4 mb-4 text-right">
-          <button type="button" class="btn btn-success" v-on:click="OplataStart">Save changes</button>
+          <button type="button" class="btn btn-success" v-on:click="OplataStart">Сохранить</button>
         </div>
         <div v-else-if="srok && mijozs" class="mt-4 mb-4 text-right">
-          <button type="button" class="btn btn-success" v-on:click="OplataStart">Save changes</button>
+          <button type="button" class="btn btn-success" v-on:click="OplataStart">Сохранить</button>
         </div>
         <div v-else class="mt-4 mb-4 text-right">
-          <button type="button" class="btn btn-light">Save changes</button>
+          <button type="button" class="btn btn-light">Сохранить</button>
         </div>
       </div>
     </div>

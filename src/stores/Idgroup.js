@@ -2,6 +2,16 @@ import axios from 'axios';
 // const http_url = 'https://biznes.5858.uz/api/';
 // const http_url = 'https://uz.idsoft.uz/api/';
 const http_url = 'http://localhost:1122/api/';
+var dateObj = new Date();
+var month = dateObj.getUTCMonth() + 1;
+var day = dateObj.getUTCDate();
+var year = dateObj.getUTCFullYear();
+var monh = '';
+if (month < 10) {
+  monh = '0' + month;
+} else {
+  monh = month;
+}
 const idgroup = {
     state: {
         objectauth2: {
@@ -35,12 +45,14 @@ const idgroup = {
         objects5: [],
         objects6: [],
         objecfiltr: [],
+        MijozTel: [],
         status: '',
         jami: '',
         togl: '',
-        date: new Date().toLocaleDateString('en-CA'),
+        date: year + "-" + monh + "-" + day,
         savdoobj: [],
         ishchila: [],
+        Item2: [],
         code: true,
         
     },
@@ -78,10 +90,11 @@ const idgroup = {
                                             'auth': true,
                                             'username': data.data.user.username ,
                                             'login': data.data.user.login, 
-                                            'biznesty': data.data.user.biznes, 
+                                            'biznesty': data.data.user.biznes,
                                             'token': data.data.user.token,
                                             'method_id': auth.method_id,
                                             'method_name': auth.method_name,
+                                            'method_chat': auth.method_chat,
                                             'action': data.data.user.status
                                         }));  
                                     } else {
@@ -103,6 +116,7 @@ const idgroup = {
                                         'token': data.data.user.token,
                                         'method_id': data.data.user.magazinId,
                                         'method_name': data.data.user.magazin,
+                                        'method_chat': data.data.user.telegram,
                                         'action': data.data.user.status
                                     }));  
                                 }
@@ -150,6 +164,7 @@ const idgroup = {
                             "token": data.data.data.token,
                             'method_id': data.data.data.magazinId,
                             'method_name': data.data.data.magazin,
+                            'method_chat': data.data.data.telegram,
                             'action': data.data.data.status
                         }));
                         window.location.href="/treding";
@@ -199,6 +214,7 @@ const idgroup = {
             });
         },
         Live_Telegram_Chet: (state ,request) => {
+            const auth = JSON.parse(localStorage.getItem('auth'));
             var formatter = new Intl.NumberFormat();
             var s = request.plastik + request.naqt + request.bank;
             var mijoz = state.objects6.find(e => { if (e.id === request.mijozId) return e; });
@@ -228,16 +244,21 @@ const idgroup = {
                 k3+= "Жами карзинггиз" + " , " + formatter.format(mijoz.karz);
                 k3+= "\n";
                 k3+= "\n";
-                k3+= "Хурмат билан << ID Group >>";
+                k3+= `Хурмат билан << ${auth.method_name} >>`;
                 if (mijoz.telegram) {
-                    axios({
-                        method: 'post',
-                        url: "https://api.telegram.org/bot5654991728:AAFmwykYzSKGqTdZL5HT-JwyRHTJUGN7Cac/sendMessage",
-                        data: {
-                            chat_id: mijoz.telegram,
-                            text: k3
-                        },
-                    });
+                    const auth = JSON.parse(localStorage.getItem('auth'));
+                    if (auth.method_chat) {
+                        axios({
+                            method: 'post',
+                            url: "https://api.telegram.org/bot" + auth.method_chat + "/sendMessage",
+                            data: {
+                                chat_id: mijoz.telegram,
+                                text: k3
+                            },
+                        });
+                    } else {
+                        
+                    }
                 } else {
                     
                 }
@@ -588,13 +609,19 @@ const idgroup = {
                         son = state.objectauth2.karzina[i].soni;
                     }
                     var sql = {
-                        'id': sq.id,
-                        'name': state.objectauth2.karzina[i].name,
-                        'sotilish': state.objectauth2.karzina[i].sotilish,
-                        'soni': son,
-                        'soni2': sq.soni,
-                        'chegirma': cheg,
-                        'jami': state.objectauth2.karzina[i].jami
+                        "id": sq.id,
+                        "name": state.objectauth2.karzina[i].name,
+                        "shtrix": state.objectauth2.karzina[i].shtrix,
+                        "olinish": state.objectauth2.karzina[i].olinish,
+                        "soni": son,
+                        "soni2": sq.soni,
+                        "chegirma": cheg,
+                        "sotilish": state.objectauth2.karzina[i].sotilish,
+                        "sotilish_prise": state.objectauth2.karzina[i].sotilish,
+                        "skidka": state.objectauth2.karzina[i].skidka,
+                        "jami": state.objectauth2.karzina[i].jami,
+                        "summa": state.objectauth2.karzina[i].kurs,
+                        "valyuta": state.objectauth2.karzina[i].valyuta,
                     };
                     if (local) {
                         var fin = local.find(e => { if (e.id === sql.id) return e; })
@@ -682,10 +709,11 @@ const idgroup = {
                 data: request
             }).then(data => {
                 if (data.data == 200) {
+                    const auth = JSON.parse(localStorage.getItem('auth'));
                     if (request.driver == 1) {
                         var s = request.plastik + request.naqt + request.bank;
                         var k= "";
-                        k+= "             " + " << ID Group >> ";
+                        k+= "             " + ` << ${auth.method_name} >> `;
                         k+= " \n";
                         k+= "________________________________________________";
                         k+= " \n";
@@ -713,7 +741,7 @@ const idgroup = {
                         k+= ";\n";
                         k+= "------------------------------------------------";
                         k+= ";\n";
-                        k+= "          Хурмат билан << ID Group >>";
+                        k+= `          Хурмат билан << ${auth.method_name} >>`;
                         axios({
                             method: 'post',
                             url: "http://printer/api/printer",
@@ -722,10 +750,10 @@ const idgroup = {
                                 text: k
                             }
                         });
-                    } else {
+                    } else if (request.driver == 2) {
                         var s2 = request.plastik + request.naqt + request.bank;
                         var k2= "";
-                        k2+= "      " + " << ID Group >> ";
+                        k2+= "      " + ` << ${auth.method_name} >> `;
                         k2+= " \n";
                         k2+= "________________________________";
                         k2+= " \n";
@@ -753,7 +781,7 @@ const idgroup = {
                         k2+= ";\n";
                         k2+= "--------------------------------";
                         k+= ";\n";
-                        k2+= "Хурмат билан << ID Group >>";
+                        k2+= `Хурмат билан << ${auth.method_name} >>`;
                         axios({
                             method: 'post',
                             url: "http://printer/api/printer",
@@ -762,7 +790,7 @@ const idgroup = {
                                 text: k2
                             }
                         });
-                    }
+                    } else {}
                     if (request.mijozId) {
                         context.commit('Live_Telegram_Chet', request);              
                     } else { }
@@ -845,6 +873,44 @@ const idgroup = {
                 method: request.method,
                 url: http_url + request.url,
                 data: request.item,
+            });
+        },
+        OriginalTelV: ({state}, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url,
+                data: request,
+            }).then(data => {
+                state.Item2 = data.data;
+            });
+        },
+        ClentGets: ({state}, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url,
+                data: request,
+            }).then(data => {
+                state.MijozTel = data.data;
+            });
+        },
+        OriginalM: ({state}, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url,
+                data: request,
+            }).then(data => {
+                state.objects6 = data.data.obj;
+            });
+        },
+        suniyIntelAC: (context, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url,
+                data: request,
+            }).then(data => {
+                if (data.data == 200) {
+                    context('FilterAuthMut');
+                } else { }
             });
         }
     },
@@ -963,6 +1029,12 @@ const idgroup = {
         },
         code(state){
             return state.code;
+        },
+        Item2(state){
+            return state.Item2;
+        },
+        MijozTel(state){
+            return state.MijozTel;
         }
     },
 };

@@ -2,6 +2,16 @@
     import { RouterLink } from 'vue-router'
     import { mapState, mapGetters, mapMutations, mapActions} from 'vuex'
     const auth = JSON.parse(localStorage.getItem('auth'));
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1;
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+    var monh = '';
+    if (month < 10) {
+        monh = '0' + month;
+    } else {
+        monh = month;
+    }
     export default {
         data() {
             return {
@@ -20,17 +30,19 @@
                 oknamodzaqaz: false,
                 oknaSavdo: false,
                 oknaSavdo2: false,
-                kabinet1: false
+                kabinet1: false,
+                date:  year + "-" + monh + "-" + day,
             }
         },
-
         methods: {
             ...mapActions([
                 'FilterAuthAc',
                 'Tolov_Avt',
                 'Zaqaz_Olish_Ac',
                 'SavdoBut_Ac',
-                'Savdo2_ac'
+                'Savdo2_ac',
+                'suniyIntelAC',
+                'OriginalMethodUrlGet'
             ]),
             kabinet2(typ){
                 this.kabinet1 = typ;
@@ -41,6 +53,11 @@
             Logaut_user(){
                 localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '','method_id': '', 'action': ''}));
                 this.FilterAuth();
+            },
+            Localstor(){
+                this.login = auth.login,
+                this.token = auth.token,
+                this.statustyp = auth.action
             },
             modalsokna(typ){
                 this.okna = typ;
@@ -82,15 +99,20 @@
                 }
             },
             tolov_action(){
-                this.Tolov_Avt({
-                    'method': 'post',
-                    'url': 'tolovpost',
-                    'id': this.id,
-                    'qarz': this.qarz,
-                    'tolov': this.tolov,
-                    'srok': this.muddatdate
-                });
-                this.clr();
+                const auth = JSON.parse(localStorage.getItem('auth'));
+                if (auth.method_id) {
+                    this.Tolov_Avt({
+                        'method': 'post',
+                        'url': 'tolovpost',
+                        'id': this.id,
+                        'qarz': this.qarz,
+                        'tolov': this.tolov,
+                        'srok': this.muddatdate,
+                        'magazin': auth.method_name,
+                        'telegram': auth.method_chat
+                    });
+                    this.clr();
+                }
             },
             clr(){
                 this.id = '';
@@ -142,21 +164,20 @@
                 this.maga = auth.method_id;
             },
             magarew(maga){
+                const auth = JSON.parse(localStorage.getItem('auth'));
                 var mid = this.objectauth2.magazin.find(e => { return e.id == maga });
                 if (mid) {
                     auth.method_id = mid.id;
-                    auth.method_name = mid.name;                  
+                    auth.method_name = mid.name;
+                    auth.method_chat = mid.telegram;
                 } else {
                     auth.method_id = '';
-                    auth.method_name = '';  
+                    auth.method_name = '';
+                    auth.method_chat = '';
                 }
                 localStorage.setItem('auth', JSON.stringify(auth));
-                // this.FilterAuth();
                 window.location.reload(true)
             },
-            kabinet2(typ){
-                this.kabinet1 = typ;
-            }
         },
         computed: {
           ...mapGetters({
@@ -168,6 +189,7 @@
         },
         mounted() {
             this.FilterAuth();
+            this.Localstor();
             this.autherMethod();
         }
     }
@@ -244,6 +266,7 @@
                                 <div class="dropdown-header">
                                     <i class="i-Lock-User mr-1"></i> {{ authtenticat.login }}
                                 </div>
+                                <RouterLink class="dropdown-item" to="/tel">Версия Телефон </RouterLink>
                                 <RouterLink v-if="authtenticat.status == 'brend'" class="dropdown-item" to="/setting">Профил Настройки </RouterLink>
                                 <a class="dropdown-item" v-on:click="Logaut_user">Выход</a>
                             </div>
@@ -614,23 +637,6 @@
                                     {{ item.sotivchi }}
                                 </td>
                             </tr>
-                            <!-- { "id": 4,
-                             "userId": 1,
-                             "magazinId": 1,
-                             "magazin": "Dokon",
-                             "sotivchi": "Dadaxon",
-                             "savdoId": 3,
-                             "tovar": 2,
-                             "name": "Hd 555",
-                             "shtrix": "3464354",
-                             "olinish": "25",
-                             "soni": "1",
-                             "sotilish": "33.333333333333336",
-                             "chegrma": "0",
-                             "skidka": "0 %",
-                             "jami": "33.333333333333336",
-                             "kurs": "USD",
-                             "valyuta": "12000" -->
                         </tbody>
                     </table>
                 </div>

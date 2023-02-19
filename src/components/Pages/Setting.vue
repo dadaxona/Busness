@@ -17,6 +17,7 @@
               statustyp: '',
 
               magname: '',
+              mtelegram: '',
               magid: '',
 
               kid: '',
@@ -80,6 +81,8 @@
             this.name = result.name,
             this.login2 = result.login,
             this.biznes = result.biznes,
+            this.tel = result.tel,
+            this.telegram = result.telegram,
             this.password = result.password,
             this.showModal = true
           },
@@ -93,6 +96,8 @@
               'login2': this.login2,
               'biznes': this.biznes,
               'password': this.password,
+              'tel': this.tel,
+              'telegram': this.telegram,
               'login': this.login,
               'token': this.token,
               'status': this.statustyp,
@@ -121,6 +126,8 @@
             this.name = '',
             this.login2 = '',
             this.biznes = '',
+            this.tel = '',
+            this.telegram = '',
             this.password = '',
             this.showModal = false,
             this.showModalDel5 = false
@@ -195,6 +202,7 @@
           magedit(item){
             this.magid = item.id;
             this.magname = item.name;
+            this.mtelegram = item.telegram;
             this.okna2 = true;
           },
 
@@ -205,12 +213,14 @@
                 'url': 'magazin_creat',
                 'id': this.magid,
                 'name': this.magname,
+                'telegram': this.mtelegram,
                 'login': this.login,
                 'token': this.token,
                 'status': this.statustyp,
               });
               this.magid = '';
               this.magname = '';
+              this.mtelegram = '',
               this.okna2 = false;
             } else {
               
@@ -389,6 +399,8 @@
                                 <th>Имя</th>
                                 <th>Логин</th>
                                 <th>Бизнес тип</th>
+                                <th>Тел</th>
+                                <th>Телеграм</th>
                                 <th>Парол</th>
                                 <th>Action</th>
                             </tr>
@@ -398,6 +410,8 @@
                             <td>{{ item.name }}</td>
                             <td>{{ item.login }}</td>
                             <td>{{ item.biznes }}</td>
+                            <td>{{ item.tel }}</td>
+                            <td>{{ item.telegram }}</td>
                             <td>{{ item.password }}</td>
                             <td>
                               <a class="text-success mr-2" v-on:click="edirer(item)">
@@ -432,19 +446,27 @@
               <div class="row">
                 <div class="col-md-12 form-group mb-3">
                     <label for="firstName1">Имя</label>
-                    <input class="form-control" id="firstName1" type="text" v-model="name" placeholder="Enter name">
+                    <input class="form-control" id="firstName1" type="text" v-model="name" placeholder="Имя">
                 </div>
                 <div class="col-md-12 form-group mb-3">
                     <label for="lastName1">Логин</label>
-                    <input class="form-control" id="lastName1" type="text" v-model="login" placeholder="Enter login">
+                    <input class="form-control" id="lastName1" type="text" v-model="login" placeholder="Логин">
                 </div>
                 <div class="col-md-12 form-group mb-3">
                     <label for="exampleInputEmail1">Бизнес тип</label>
-                    <input class="form-control" id="exampleInputEmail1" type="email" v-model="biznes" placeholder="Enter bizness" disabled>
+                    <input class="form-control" id="exampleInputEmail1" type="email" v-model="biznes" placeholder="Бизнес тип" disabled>
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                  <label for="lastName1">Тел</label>
+                  <input class="form-control" id="lastName1" type="text" v-model="tel" placeholder="Тел">
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                  <label for="lastName1">Телеграм</label>
+                  <input class="form-control" id="lastName1" type="text" v-model="telegram" placeholder="Телеграм">
                 </div>
                 <div class="col-md-12 form-group mb-3">
                     <label for="phone">Парол</label>
-                    <input class="form-control" id="phone" type="text"  v-model="password" placeholder="Enter password">
+                    <input class="form-control" id="phone" type="text"  v-model="password" placeholder="Парол">
                 </div>
             </div>
             </div>
@@ -501,21 +523,23 @@
               <table class="tabl scroltab">
                   <thead>
                       <tr>
+                          <th>Ваш ID</th>
                           <th>Магазин</th>
+                          <th>Магазин Чат</th>
                           <th>Action</th>
                       </tr>
                   </thead>
                   <tbody>
-                    <tr class="tir" v-for="item in objectauth2.magazin" :key="item.id">                        
-                        <td> 
-                            <!-- <span style="color: #2b64e2;">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-database-fill-add position-fixed mt-2 ml-2" viewBox="0 0 16 16">
-                                <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0ZM8 1c-1.573 0-3.022.289-4.096.777C2.875 2.245 2 2.993 2 4s.875 1.755 1.904 2.223C4.978 6.711 6.427 7 8 7s3.022-.289 4.096-.777C13.125 5.755 14 5.007 14 4s-.875-1.755-1.904-2.223C11.022 1.289 9.573 1 8 1Z"/>
-                                <path d="M2 7v-.839c.457.432 1.004.751 1.49.972C4.722 7.693 6.318 8 8 8s3.278-.307 4.51-.867c.486-.22 1.033-.54 1.49-.972V7c0 .424-.155.802-.411 1.133a4.51 4.51 0 0 0-4.815 1.843A12.31 12.31 0 0 1 8 10c-1.573 0-3.022-.289-4.096-.777C2.875 8.755 2 8.007 2 7Zm6.257 3.998L8 11c-1.682 0-3.278-.307-4.51-.867-.486-.22-1.033-.54-1.49-.972V10c0 1.007.875 1.755 1.904 2.223C4.978 12.711 6.427 13 8 13h.027a4.552 4.552 0 0 1 .23-2.002Zm-.002 3L8 14c-1.682 0-3.278-.307-4.51-.867-.486-.22-1.033-.54-1.49-.972V13c0 1.007.875 1.755 1.904 2.223C4.978 15.711 6.427 16 8 16c.536 0 1.058-.034 1.555-.097a4.507 4.507 0 0 1-1.3-1.905Z"/>
-                              </svg>
-                            </span> -->
-                            {{ item.name }}
-                        </td>
+                    <tr class="tir" v-for="item in objectauth2.magazin" :key="item.id">
+                      <td>
+                        {{ item.id }}
+                      </td>
+                      <td>
+                          {{ item.name }}
+                      </td>
+                      <td>
+                        {{ item.telegram }}
+                      </td>
                         <td>
                           <button class="btn btn-success pt-0 pb-0" v-on:click="magedit(item)">
                             <i class="nav-icon i-Pen-2 font-weight-bold"></i>
@@ -607,6 +631,13 @@
       <path d="M2 7v-.839c.457.432 1.004.751 1.49.972C4.722 7.693 6.318 8 8 8s3.278-.307 4.51-.867c.486-.22 1.033-.54 1.49-.972V7c0 .424-.155.802-.411 1.133a4.51 4.51 0 0 0-4.815 1.843A12.31 12.31 0 0 1 8 10c-1.573 0-3.022-.289-4.096-.777C2.875 8.755 2 8.007 2 7Zm6.257 3.998L8 11c-1.682 0-3.278-.307-4.51-.867-.486-.22-1.033-.54-1.49-.972V10c0 1.007.875 1.755 1.904 2.223C4.978 12.711 6.427 13 8 13h.027a4.552 4.552 0 0 1 .23-2.002Zm-.002 3L8 14c-1.682 0-3.278-.307-4.51-.867-.486-.22-1.033-.54-1.49-.972V13c0 1.007.875 1.755 1.904 2.223C4.978 15.711 6.427 16 8 16c.536 0 1.058-.034 1.555-.097a4.507 4.507 0 0 1-1.3-1.905Z"/>
     </svg>
       <input type="text" name="" class="text-right form-control" v-model="magname">
+  </div>
+  <label for="" class="mx-3">Телеграм Бот</label>
+  <div class="col-12">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telegram position-fixed mt-2 ml-2" viewBox="0 0 16 16">
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.287 5.906c-.778.324-2.334.994-4.666 2.01-.378.15-.577.298-.595.442-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294.26.006.549-.1.868-.32 2.179-1.471 3.304-2.214 3.374-2.23.05-.012.12-.026.166.016.047.041.042.12.037.141-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8.154 8.154 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629.093.06.183.125.27.187.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.426 1.426 0 0 0-.013-.315.337.337 0 0 0-.114-.217.526.526 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09z"/>
+    </svg>
+      <input type="text" name="" class="text-right form-control" v-model="mtelegram">
   </div>
   <div class="col-12 mt-3 mb-4">
     <button class="btn btn-success" style="width: 100%;" v-on:click="Saqlas_action">Saqlash</button>

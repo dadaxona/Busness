@@ -155,7 +155,7 @@
     cursor: pointer;
 }
 .searchbar {
-    width: 300px;
+    width: 210px;
     padding: 5px;
 }
 .usersearch{
@@ -273,11 +273,21 @@
 }
 .alre{
     border-radius: 5px;
-    border: 2px solid rgb(1, 164, 1);
+    /* border: 2px solid rgb(1, 164, 1);
     color: rgb(0, 70, 0);
-    background-color: rgb(86, 255, 86);
+    background-color: rgb(86, 255, 86); */
     animation: shuu 1s infinite;
 }
+.alre2{
+    position: absolute;
+    margin-left: 8px;
+    margin-top: 9px;
+    width: 14px;
+    height: 14px;
+    text-align: center;
+    cursor: pointer;
+    animation: shuu 1s infinite;
+ }
 @keyframes shuu{
     0%{
       opacity:1;
@@ -291,7 +301,8 @@
     }
  }
 
- .aaaaa1{
+
+.aaaaa1{
     position: fixed;
     width: 100%;
     height: 100%;
@@ -333,7 +344,32 @@
     box-shadow: 1px -1px;
     height: 23px;
 }
+.teldisegn{
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100vh;
+    padding: 0px 5px 0px 14px;
+    background: white;
 
+}
+.vidge{
+    font-weight: 800;
+}
+.scrtel{
+    height: 97vh;
+}
+.scroltel{
+    width: 150%;
+    overflow-y: scroll;
+}
+.oplatit{
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    background-color: #ffffff;
+}
 .dasd1{
     width: 30%;
     box-shadow: inset -1px -1px;

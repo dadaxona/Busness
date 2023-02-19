@@ -1,5 +1,5 @@
 <script>
-  import { RouterLink, RouterView } from 'vue-router'
+  import { RouterLink } from 'vue-router'
   import { mapState, mapGetters, mapActions} from 'vuex'
   import readXisFile from "read-excel-file"
   import { saveExcel } from '@progress/kendo-vue-excel-export';
