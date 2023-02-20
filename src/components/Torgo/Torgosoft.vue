@@ -6,6 +6,16 @@
   const auth = JSON.parse(localStorage.getItem('auth'));
   const kurs = JSON.parse(localStorage.getItem('Kurs'));
   const format = new Intl.NumberFormat();
+  var dateObj = new Date();
+  var month = dateObj.getUTCMonth() + 1;
+  var day = dateObj.getUTCDate();
+  var year = dateObj.getUTCFullYear();
+  var monh = '';
+  if (month < 10) {
+    monh = '0' + month;
+  } else {
+    monh = month;
+  }
   export default {
     data() {
         return {
@@ -73,7 +83,10 @@
             torgostye: false,
             torgostchiq: false,
             toxtatish: false,
-            databugun: new Date().toLocaleDateString('en-CA'),
+            qaytim: '',
+            controlkarz: '',
+            date:  year + "-" + monh + "-" + day,
+            databugun: year + "-" + monh + "-" + day,
             polni: {
               savdo: 0,
               rasxod: 0,
@@ -127,6 +140,17 @@
               valyuta: '',
             },
             chiqimse: '',
+            arx: {
+              id: '',
+              name: '',
+              soni: '',
+              summa: '',
+            },
+            arxivyid: '',
+            arxivsana: '',
+            arxivModal: false,
+            arxivModaledit: false,
+            glavniclick: false
         }
     },
     methods: {
@@ -150,7 +174,9 @@
         'Foyda_Act_bugun',
         'OriginalMethodUrlGet',
         'OriginalMethodUrlPost',
-        'VariantAct'
+        'VariantAct',
+        'GetyArxive',
+        'UpdateArxivAct'
       ]),
       FilterAuth(){
         this.FilterAuthAc();
@@ -242,7 +268,7 @@
           this.valyuta=item.valyuta;
           this.showModal = true;
         },
-        CreateSqlad(){
+        CreateSqladtor(){
           if (auth.method_id) {
             this.SqladMethodUrlPost({
               'method': 'post',
@@ -259,6 +285,7 @@
               'sotilish2': this.sotilish2,
               'valyuta': this.valyuta,
               'kod': this.shtrix,
+              'date': this.date,
               'login': this.login,
               'token': this.token,
               'status': this.statustyp,
@@ -314,6 +341,7 @@
           this.shtrix='';
           this.shtrix='';
           this.Jamisum = '',
+          this.qaytim = '',
           this.mijozs = 'Имя нет',
           this.CreateSqlad = 'Имя нет',
           this.mijozs_savdo = '',
@@ -326,7 +354,8 @@
           this.Kamentariya2 = '',
           this.showModal = false,
           this.showModalDel = false,
-          this.ModalOplate = false
+          this.ModalOplate = false,
+          this.glavniclick = false;
         },
         updatekeyup(item){
           this.Update_Ky({
@@ -598,38 +627,104 @@
       },
       oplate(typ){
         this.ModalOplate = typ;
-        this.Jamisum = this.JamiSumma2;
+        if (this.glavniclick) {
+
+        } else {
+          this.Jamisum = this.JamiSumma2;
+          this.karz = this.JamiSumma2;          
+        }
+      },
+      clentsummafn(row){
         this.karz = this.JamiSumma2;
+        this.qaytim = '';
+        var kur =JSON.parse(localStorage.getItem('Kurs'));
+        if (kur.uid === 99999) {
+          var clm = this.MijozSelect.find(e => { if (e.id === row) return e; });
+          if (clm) {
+            if (clm.valyuta) {
+              this.controlkarz = clm.summa * clm.kurs;
+              if (this.karz <= this.controlkarz) {
+                this.qaytim = this.controlkarz - this.karz;
+                this.karz = 0;
+              } else {
+                this.karz = this.karz - this.controlkarz;
+              }
+              this.clentsumma = '$ + '+ format.format(clm.summa * clm.kurs);
+              this.clentkarz = '$ + ' + format.format(clm.karz * clm.kurs);
+            } else {
+              this.controlkarz = clm.summa;
+              if (this.karz <= this.controlkarz) {
+                this.qaytim = this.controlkarz - this.karz;
+                this.karz = 0;
+              } else {
+                this.karz = this.karz - this.controlkarz;
+              }
+              this.clentsumma = '$ + '+ format.format(clm.summa);
+              this.clentkarz = '$ + ' + format.format(clm.karz);
+            }
+          } else {
+            this.clentsumma = '';
+            this.clentkarz = '';
+          }
+        } else {
+          var clm = this.MijozSelect.find(e => { if (e.id === row) return e; });
+          if (clm) {
+            if (clm.valyuta) {
+              this.controlkarz = clm.summa * clm.kurs / kur.u;
+              if (this.karz <= this.controlkarz) {
+                this.qaytim = this.controlkarz - this.karz;
+                this.karz = 0;
+              } else {
+                this.karz = this.karz - this.controlkarz;
+              }
+              this.clentsumma = '$ + '+ format.format(clm.summa * clm.kurs / kur.u);
+              this.clentkarz = '$ + ' + format.format(clm.karz * clm.kurs / kur.u);
+            } else {
+              this.controlkarz = clm.summa / kur.u;
+              if (this.karz <= this.controlkarz) {
+                this.qaytim = this.controlkarz - this.karz;
+                this.karz = 0;
+              } else {
+                this.karz = this.karz - this.controlkarz;
+              }
+              this.clentsumma = '$ + '+ format.format(clm.summa / kur.u);
+              this.clentkarz = '$ + ' + format.format(clm.karz / kur.u);
+            }
+          } else {
+            this.clentsumma = '';
+            this.clentkarz = '';
+          }
+        }
       },
       naqt1(valyu){
         this.JamiSum = parseFloat(this.JamiSumma2) - parseFloat(valyu) - this.plastik - this.bank;
-        this.karz = this.JamiSum;
+        this.karz = this.JamiSum - this.controlkarz;
       },
       plastik1(valyu){
         this.JamiSum = parseFloat(this.JamiSumma2) - parseFloat(valyu) - this.naqt - this.bank;
-        this.karz = this.JamiSum;
+        this.karz = this.JamiSum - this.controlkarz;
       },
       bank1(valyu){
         this.JamiSum = parseFloat(this.JamiSumma2) - parseFloat(valyu) - this.plastik - this.naqt;
-        this.karz = this.JamiSum;
+        this.karz = this.JamiSum - this.controlkarz;
       },
       naqinp(){
         this.plastik = '';
         this.bank = '';
         this.karz = 0;
-        this.naqt = this.JamiSumma2;
+        this.naqt = this.JamiSumma2 - this.controlkarz;
       },
       plasinp(){
         this.naqt = '';
         this.bank = '';
         this.karz = 0;
-        this.plastik = this.JamiSumma2;
+        this.plastik = this.JamiSumma2 - this.controlkarz;
       },
       bankinp(){
         this.naqt = '';
         this.plastik = '';
         this.karz = 0;
-        this.bank = this.JamiSumma2;
+        this.bank = this.JamiSumma2 - this.controlkarz;
       },
       OplataStart(){
         if (auth.method_id) {
@@ -659,6 +754,7 @@
               'plastik': this.plastik,
               'bank': this.bank,
               'karz': this.karz,
+              'qaytim': this.qaytim,
               'srok': this.srok,
               'sana': this.date,
               'vid': kurs.uid,
@@ -687,6 +783,7 @@
         this.oknamodzaqaz2 = false;
       },
       mijozs_torgso(obj){
+        this.glavniclick = true;
         this.dolgi = 0;
         this.balanse = 0;
         this.ohirgis = 0;
@@ -713,7 +810,7 @@
             this.ohirgis = 0;
             this.mijozs_savdo = 0;  
         }
-        console.log(result, mijozm, this.mijozs_savdo)
+       this.clentsummafn(obj)
       },
       exportExcel () {
         saveExcel({
@@ -1394,6 +1491,61 @@
           });
           this.toxtatish = true;
         }else{}
+      },
+      arxiv(id){
+        this.arxivsana = '';
+        this.arxivyid = id;
+        this.GetyArxive({
+          'method': 'post',
+          'url': 'getyarxive',
+          'yetkazuvchiId': this.arxivyid,
+          'login': this.login,
+          'token': this.token,
+          'magazinId': auth.method_id,
+          'magazin': auth.method_name,
+          'status': this.statustyp,
+        });
+        this.arxivModal = true;
+      },
+      arxivdate(date){
+        this.GetyArxive({
+          'method': 'post',
+          'url': 'getyarxive',
+          'yetkazuvchiId': this.arxivyid,
+          'sana': date,
+          'login': this.login,
+          'token': this.token,
+          'magazinId': auth.method_id,
+          'magazin': auth.method_name,
+          'status': this.statustyp,
+        });
+      },
+      editarxiv(item){
+        this.arx.id = item.id;
+        this.arx.name = item.name;
+        this.arx.soni = item.soni;
+        this.arx.summa = item.summa;
+        this.arxivModaledit = true;
+      },
+      UpdateArxiv(){
+        this.UpdateArxivAct({
+          'method': 'post',
+          'url': 'update_arxive',
+          'id': this.arx.id,
+          'soni': this.arx.soni,
+          'summa': this.arx.summa,
+          'yetkazuvchiId': this.arxivyid,
+          'login': this.login,
+          'token': this.token,
+          'magazinId': auth.method_id,
+          'magazin': auth.method_name,
+          'status': this.statustyp,
+        });
+        this.arx.id = '';
+        this.arx.name = '';
+        this.arx.soni = '';
+        this.arx.summa = '';
+        this.arxivModaledit = false;
       }
     },
     watch: {
@@ -1559,7 +1711,7 @@
         foyda: 'foyda',
         nbir: 'nbir',
         Itemobjects: 'Itemobjects',
-        option: 'option'
+        arxive: 'arxive',
       }),
     },
     mounted() {
@@ -1716,15 +1868,21 @@
         <input type="text" disabled class="derfderer text-center" v-model="JamiSummaTorgo.chegir">
         <button v-if="tog" class="btn btn-success pl-2 pr-2 pt-0 pb-0 mx-2" v-on:click="exportExcel" type="button">Excel</button>
         <button v-else class="btn btn-dark pl-2 pr-2 pt-0 pb-0 mx-2" type="button">Excel</button>
-        <svg v-if="tog" xmlns="http://www.w3.org/2000/svg" onclick="createpdf('myDiv')" width="20" height="20" fill="currentColor" class="bi bi-printer-fill cursor-pointer text-primary " viewBox="0 0 16 16">
-          <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
-          <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
-        </svg>
-        <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-printer-fill cursor-pointer" viewBox="0 0 16 16">
-          <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
-          <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
-        </svg>
-        <span class="bnos pl-1">Товары Принт</span>
+        <span v-if="tog" onclick="createpdf('myDiv')" class="cursor-pointer text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
+            <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
+            <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+          </svg>
+          <span class="bnos pl-1">Товары Принт</span>
+        </span>
+        <span v-else>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
+            <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
+            <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+          </svg>
+          <span class="bnos pl-1">Товары Принт</span>
+        </span>
+        
     </div>
     <div class="hed5">
       <div class="table-responsive">
@@ -2148,7 +2306,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-danger mx-3" v-on:click="showModal = false">Отмена</button>
-                  <button type="button" class="btn btn-primary" v-on:click="CreateSqlad">Сохранить</button>
+                  <button type="button" class="btn btn-primary" v-on:click="CreateSqladtor">Сохранить</button>
                 </div>
               </div>
             </div>
@@ -2225,28 +2383,28 @@
       <div class="modal_okna_torgo">
           <h5 class="text-center mt-3">Оплата</h5>
           <div class="row mt-0">
-            <div class="mt-0 mx-2">
+            <div class="col-5 mt-0 mx-2">
               <label for="firstName1">Итого сумма</label>
-              <input class="form-control " type="text" v-model="JamiSumma" disabled>
+              <input class="form-control" type="text" v-model="JamiSumma" disabled>
               <label for="firstName1">Клент Выберите</label>
-              <select class="form-control " name="" id="" v-model="mijozs">
+              <select class="form-control" v-on:change="clentsummafn(mijozs)" v-model="mijozs">
                 <option value="">--Выберите--</option>
                 <option v-for="itema in MijozSelect" :value="itema.id">{{ itema.name }}</option>
               </select>
               <div v-if="karz == 0">
-                <label class=" tex text-success">Долг</label>
+                <label class="text-success">Долг</label>
                 <input class="form-control border-success " type="text" v-model="karz" disabled>
                 <label>Дата срок</label>
                 <input class="form-control " type="date" disabled>
               </div>
               <div v-else class="mt-0">
-                <label class=" tex text-danger">Долг</label>
+                <label class="text-danger">Долг</label>
                 <input class="form-control  border-danger " type="text" v-model="karz" disabled>
                 <label class="text-danger ">Дата срок</label>
                 <input class="form-control  border-danger" type="date" v-model="srok">
               </div>
             </div>
-            <div class="mt-0">
+            <div class="col-5 mt-0">
               <label for="firstName1" class="mx-4">Налични</label>
               <div class="row">
                 <div class="col-10">
@@ -2363,7 +2521,6 @@
           </div>
       </div>
   </div>
-
 
   <div v-if="plkassa" class="div1">
     <div class="div2torgo">
@@ -2540,7 +2697,7 @@
         </div>
       </transition>
     </div>
-
+    
     <div v-if="torgostip" class="torgosqlad">
       <button type="button" class="close mb-3 mt-3 mr-3" @click="torgostip = false">
           <span aria-hidden="true">&times;</span>
@@ -2828,12 +2985,101 @@
                 <a class="text-danger mr-2" v-on:click="deletye(item.id, item.name)">
                   <i class="nav-icon i-Close-Window font-weight-bold"></i>
                 </a>
+                <a class="text-primary" v-on:click="arxiv(item.id)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-clipboard2-data-fill mt-0" style="cursor: pointer; margin-top: -5px !important;" viewBox="0 0 16 16">
+                    <path d="M10 .5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5V2a.5.5 0 0 0 .5.5h5A.5.5 0 0 0 11 2v-.5a.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5Z"/>
+                    <path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585c.055.156.085.325.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5c0-.175.03-.344.085-.5ZM10 7a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0V7Zm-6 4a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1Zm4-3a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0V9a1 1 0 0 1 1-1Z"/>
+                  </svg>
+                </a>
               </td>
             </tr>
           </tbody>
           </table>
           </div>
       </div>
+    </div>
+    <div v-if="arxivModal" class="div1">
+      <div class="div25457torgo">
+          <button type="button" class="close mb-3 mt-3 mr-3" v-on:click="arxivModal = false">
+              <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="mx-2 mt-3">Jami Summa: $ +{{ arxive.JamisummaSotuv }}</h4>
+          <div class="table-responsive">
+              <div class="scro">
+                  <table class="tabl scroltabr4torg">
+                      <thead>
+                          <tr>
+                              <th>Доставщик</th>
+                              <th>Кол-во</th>
+                              <th>Покупка</th>
+                              <th>Итого</th>
+                              <th><input type="date" v-on:change="arxivdate(arxivsana)" v-model="arxivsana" style="background: border-box;"></th>
+                              <th>Обновлять</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr class="tir" v-for="item in arxive.obj" :key="item.id">
+                              <td>
+                                  {{ item.name }}
+                              </td>
+                              <td>
+                                  {{ item.soni }}
+                              </td>
+                              <td>
+                                  {{ item.summa | formatNumber }}
+                              </td>
+                              <td>
+                                  {{ item.jami | formatNumber }} {{ item.valyuta }}
+                              </td>
+                              <td>
+                                {{ item.sana }}
+                            </td>
+                              <td>
+                                <a class="cursor-pointer text-success" v-on:click="editarxiv(item)">
+                                  <i class="nav-icon i-Pen-2 font-weight-bold"></i>
+                                </a>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+    </div>
+    
+    <div v-if="arxivModaledit">
+      <transition name="modal">
+        <div class="modal-mask">
+          <div class="modal-wrapper">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content basg">
+                <div class="modal-header">
+                  <h5 class="modal-title">{{ arx.name }}</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" v-on:click="arxivModaledit = false">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-md-12 form-group mb-3">
+                      <label for="firstName1">Шт</label>
+                      <input class="form-control" type="number" v-model="arx.soni" placeholder="Шт">
+                    </div>
+                    <div class="col-md-12 form-group mb-3">
+                      <label for="firstName1">Сумма</label>
+                      <input class="form-control" type="text" v-model="arx.summa" placeholder="Сумма">
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" v-on:click="arxivModaledit = false">Назад</button>
+                  <button type="button" class="btn btn-primary" v-on:click="UpdateArxiv">Сохранить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
     </div>
 
     <div v-if="showModalye">

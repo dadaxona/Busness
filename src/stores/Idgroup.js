@@ -931,6 +931,16 @@ const idgroup = {
                 state.option = data.data;
             });
         },
+        VazvredClickAct: (context, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url2,
+                data: request
+            }).then(data => {
+                context.commit('SavdoBut_Mut', request);
+                // state.savdoobj = data.data;
+            });  
+        },
         suniyIntelAC: (context, request) => {
             axios({
                 method: request.method,

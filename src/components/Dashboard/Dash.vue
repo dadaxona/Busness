@@ -31,7 +31,15 @@
                 oknaSavdo: false,
                 oknaSavdo2: false,
                 kabinet1: false,
+                vazvratModal: false,
                 date:  year + "-" + monh + "-" + day,
+                vaz: {
+                    savdoId: '',
+                    id: '',
+                    name: '',
+                    soni: '',
+                    soni2: '',
+                }
             }
         },
         methods: {
@@ -42,7 +50,8 @@
                 'SavdoBut_Ac',
                 'Savdo2_ac',
                 'suniyIntelAC',
-                'OriginalMethodUrlGet'
+                'OriginalMethodUrlGet',
+                'VazvredClickAct',
             ]),
             kabinet2(typ){
                 this.kabinet1 = typ;
@@ -112,7 +121,7 @@
                         'telegram': auth.method_chat
                     });
                     this.clr();
-                }
+                }else{}
             },
             clr(){
                 this.id = '';
@@ -151,15 +160,6 @@
                     'typ': typ
                 });
             },
-            SavdoBut222(item){
-                this.SavdoBut_Ac({
-                    'method': 'post',
-                    'url': 'sotuv_post_id',
-                    'id': item.id,
-                    'savdoId': 2
-                });
-                this.oknaSavdo2 = true;
-            },
             autherMethod(){
                 this.maga = auth.method_id;
             },
@@ -180,6 +180,41 @@
             },
             obnovleniya(){
                 window.location.reload(true);
+            },
+            vazwrad(item){
+                this.vaz.savdoId = item.savdoId;
+                this.vaz.id = item.id;
+                this.vaz.name = item.name;
+                this.vaz.soni = item.soni;
+                this.vaz.soni2 = '';
+                this.vazvratModal = true;
+            },
+            vazkeyup(row){
+                if (parseFloat(row) > parseFloat(this.vaz.soni)) {
+                    this.vaz.soni2 = this.vaz.soni;
+                } else {
+                    this.vaz.soni2 = row;
+                }
+            },
+            vazvredClick(){
+                const auth = JSON.parse(localStorage.getItem('auth'));
+                if (auth.method_id) {
+                    this.VazvredClickAct({
+                        'method': 'post',
+                        'url2': 'vazvrad_post',
+                        'url': 'sotuv_post_id',
+                        'id': this.vaz.savdoId,
+                        'id2': this.vaz.id,
+                        'soni2': this.vaz.soni2,
+                        'savdoId': 1
+                    });
+                    this.vaz.savdoId = '';
+                    this.vaz.id = '';
+                    this.vaz.name = '';
+                    this.vaz.soni = '';
+                    this.vaz.soni2 = '';
+                    this.vazvratModal = false;
+                }else{}
             }
         },
         computed: {
@@ -643,6 +678,15 @@
                                 <td>
                                     {{ item.sotivchi }}
                                 </td>
+                                <td>
+                                    <button class="btn-danger" v-on:click="vazwrad(item)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
+                                            <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z"/>
+                                        </svg>
+                                        Возврат
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -888,6 +932,41 @@
         <div v-else>
             <div class="col-12 mt-3 mb-4">
                 <button class="btn btn-light" style="width: 100%;">Платить</button>                
+            </div>
+        </div>
+    </div>
+
+    <div v-if="vazvratModal" class="oknamodal">
+        <button type="button" class="close mb-3 mt-3 mr-3" v-on:click="vazvratModal = false">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <br>
+        <h4 class="text-center">{{ vaz.name }}</h4>
+        <label for="" class="mx-3">Шт</label>
+        <div class="col-12">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stack-overflow position-fixed mt-2 ml-2" viewBox="0 0 16 16">
+                <path d="M12.412 14.572V10.29h1.428V16H1v-5.71h1.428v4.282h9.984z"/>
+                <path d="M3.857 13.145h7.137v-1.428H3.857v1.428zM10.254 0 9.108.852l4.26 5.727 1.146-.852L10.254 0zm-3.54 3.377 5.484 4.567.913-1.097L7.627 2.28l-.914 1.097zM4.922 6.55l6.47 3.013.603-1.294-6.47-3.013-.603 1.294zm-.925 3.344 6.985 1.469.294-1.398-6.985-1.468-.294 1.397z"/>
+            </svg>
+            <input type="text" name="" class="text-right form-control" v-model="vaz.soni" disabled>
+        </div>
+        <label for="" class="mx-3 mt-2">Возврат шт</label>
+        <div class="col-12">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-coin position-fixed mt-2 ml-2 pt-1" viewBox="0 0 16 16">
+                <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
+            </svg>
+            <input type="text" name="" class="text-right form-control" v-model="vaz.soni2" v-on:keyup="vazkeyup(vaz.soni2)" placeholder="To`lov summa">
+        </div>
+        <div v-if="vaz.soni2">
+            <div class="col-12 mt-3 mb-4">
+                <button class="btn btn-success" style="width: 100%;" v-on:click="vazvredClick">Возврат</button>
+            </div>
+        </div>
+        <div v-else>
+            <div class="col-12 mt-3 mb-4">
+                <button class="btn btn-light" style="width: 100%;">Возврат</button>                
             </div>
         </div>
     </div>

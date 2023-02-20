@@ -578,7 +578,20 @@
     box-shadow: inset 1px 0px 5px 1px;
     margin-left: 5px;
 }
-
+.div25457torgo{
+    position: absolute;
+    background-color: #eae9ea;
+    width: 85%;
+    height: 100vh;
+    right: 0;
+    top: 0%;
+}
+.scroltabr4torg{
+    overflow-y: scroll;
+    background: #efefef;
+    box-shadow: inset 1px 0px 5px 1px;
+    margin-left: 5px;
+}
 .fc{
     box-shadow: inset 2px 1px #878787;
     background: #dddddd;
