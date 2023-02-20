@@ -396,7 +396,7 @@
                     <table class="tabl scroltab">
                         <thead>
                             <tr>
-                                <th>Имя</th>
+                                <th>Имя или Фамилия</th>
                                 <th>Логин</th>
                                 <th>Бизнес тип</th>
                                 <th>Тел</th>

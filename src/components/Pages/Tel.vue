@@ -42,6 +42,7 @@
             qaytim: '',
             controlkarz: '',
             clentsumma: '',
+            clentkarz: '',
             checke: '',
             statustyp: '',
             showModalEditor: false,
@@ -229,7 +230,8 @@
                   } else {
                     this.karz = this.karz - this.controlkarz;
                   }
-                  this.clentsumma = '$ + '+ format.format(clm.summa * clm.kurs);            
+                  this.clentsumma = '$ + '+ format.format(clm.summa * clm.kurs);
+                  this.clentkarz = '$ + ' + format.format(clm.karz * clm.kurs);
                 } else {
                   this.controlkarz = clm.summa;
                   if (this.karz <= this.controlkarz) {
@@ -238,10 +240,12 @@
                   } else {
                     this.karz = this.karz - this.controlkarz;
                   }
-                  this.clentsumma = '$ + '+ format.format(clm.summa); 
+                  this.clentsumma = '$ + '+ format.format(clm.summa);
+                  this.clentkarz = '$ + ' + format.format(clm.karz);
                 }
               } else {
                 this.clentsumma = '';
+                this.clentkarz = '';
               }
             } else {
               var clm = this.MijozTel.find(e => { if (e.id === row) return e; });
@@ -254,7 +258,8 @@
                   } else {
                     this.karz = this.karz - this.controlkarz;
                   }
-                  this.clentsumma = '$ + '+ format.format(clm.summa * clm.kurs / kur.u);            
+                  this.clentsumma = '$ + '+ format.format(clm.summa * clm.kurs / kur.u);
+                  this.clentkarz = '$ + ' + format.format(clm.karz * clm.kurs / kur.u);
                 } else {
                   this.controlkarz = clm.summa / kur.u;
                   if (this.karz <= this.controlkarz) {
@@ -263,10 +268,12 @@
                   } else {
                     this.karz = this.karz - this.controlkarz;
                   }
-                  this.clentsumma = '$ + '+ format.format(clm.summa / kur.u); 
+                  this.clentsumma = '$ + '+ format.format(clm.summa / kur.u);
+                  this.clentkarz = '$ + ' + format.format(clm.karz / kur.u);
                 }
               } else {
                 this.clentsumma = '';
+                this.clentkarz = '';
               }
             }
           },
@@ -405,6 +412,8 @@
             this.karz = '';
             this.mijozs = '',
             this.qaytim = '',
+            this.clentsumma = '';
+            this.clentkarz = '';
             localStorage.removeItem('Jami');
             localStorage.removeItem('sotuv');
             this.funFor();
@@ -635,12 +644,13 @@
             <option v-for="itema in MijozTel" :value="itema.id">{{ itema.name }}</option>
           </select>
           <span class="text-primary position-absolute">{{ clentsumma }}</span>
+          <span class="text-danger position-absolute" style="right: 5%;">{{ clentkarz }}</span>
         </div>
-        <div class="col-md-12 form-group mt-0">
-          <label for="firstName1">Наличные</label>
+        <div class="col-md-12 form-group mt-2">
+          <!-- <label for="firstName1">Наличные</label> -->
           <div class="row">
             <div class="col-9">
-              <input class="form-control" type="text" v-on:keyup="naqt1(naqt)" v-model="naqt">
+              <input class="form-control" type="text" v-on:keyup="naqt1(naqt)" v-model="naqt" placeholder="Наличные">
             </div>
             <div class="col-1">
               <button class="btn btn-success" v-on:click="naqinp">
@@ -653,10 +663,10 @@
           </div>
         </div>
         <div class="col-md-12 form-group mt-0">
-          <label for="firstName1">Карта</label>
+          <!-- <label for="firstName1">Карта</label> -->
           <div class="row">
             <div class="col-9">
-              <input class="form-control" type="text" v-on:keyup="plastik1(plastik)" v-model="plastik">
+              <input class="form-control" type="text" v-on:keyup="plastik1(plastik)" v-model="plastik" placeholder="Карта">
             </div>
             <div class="col-1">
               <button class="btn btn-success" v-on:click="plasinp">
@@ -669,10 +679,10 @@
           </div>
         </div>
         <div class="col-md-12 form-group mt-0">
-          <label for="firstName1">Банк</label>
+          <!-- <label for="firstName1">Банк</label> -->
           <div class="row">
             <div class="col-9">
-              <input class="form-control" type="text" v-on:keyup="bank1(bank)" v-model="bank">
+              <input class="form-control" type="text" v-on:keyup="bank1(bank)" v-model="bank" placeholder="Банк">
             </div>
             <div class="col-1">
               <button class="btn btn-success" v-on:click="bankinp">

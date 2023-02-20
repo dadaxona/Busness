@@ -18,14 +18,26 @@
               login:'',
               token:'',
               statustyp: '',
-              excel: []
+              excel: [],
+              arx: {
+                id: '',
+                name: '',
+                soni: '',
+                summa: '',
+              },
+              arxivyid: '',
+              arxivsana: '',
+              arxivModal: false,
+              arxivModaledit: false,
             }
         },
         methods: {
           ...mapActions([
             'FilterAuthAc',
             'OriginalMethodUrlGet',
-            'OriginalMethodUrlPost'
+            'OriginalMethodUrlPost',
+            'GetyArxive',
+            'UpdateArxivAct'
           ]),
           FilterAuth(){
             this.FilterAuthAc();
@@ -163,6 +175,61 @@
               this.kurs = '';
               this.valyuta = ''; 
             }
+          },
+          arxiv(id){
+            this.arxivsana = '';
+            this.arxivyid = id;
+            this.GetyArxive({
+              'method': 'post',
+              'url': 'getyarxive',
+              'yetkazuvchiId': this.arxivyid,
+              'login': this.login,
+              'token': this.token,
+              'magazinId': auth.method_id,
+              'magazin': auth.method_name,
+              'status': this.statustyp,
+            });
+            this.arxivModal = true;
+          },
+          arxivdate(date){
+            this.GetyArxive({
+              'method': 'post',
+              'url': 'getyarxive',
+              'yetkazuvchiId': this.arxivyid,
+              'sana': date,
+              'login': this.login,
+              'token': this.token,
+              'magazinId': auth.method_id,
+              'magazin': auth.method_name,
+              'status': this.statustyp,
+            });
+          },
+          editarxiv(item){
+            this.arx.id = item.id;
+            this.arx.name = item.name;
+            this.arx.soni = item.soni;
+            this.arx.summa = item.summa;
+            this.arxivModaledit = true;
+          },
+          UpdateArxiv(){
+            this.UpdateArxivAct({
+              'method': 'post',
+              'url': 'update_arxive',
+              'id': this.arx.id,
+              'soni': this.arx.soni,
+              'summa': this.arx.summa,
+              'yetkazuvchiId': this.arxivyid,
+              'login': this.login,
+              'token': this.token,
+              'magazinId': auth.method_id,
+              'magazin': auth.method_name,
+              'status': this.statustyp,
+            });
+            this.arx.id = '';
+            this.arx.name = '';
+            this.arx.soni = '';
+            this.arx.summa = '';
+            this.arxivModaledit = false;
           }
         },
         watch: {
@@ -185,7 +252,8 @@
         computed: {
           ...mapGetters({
             Itemobjects: 'Itemobjects',
-            valyudata: 'valyudata'
+            valyudata: 'valyudata',
+            arxive: 'arxive',
           }),
         },
         mounted() {
@@ -231,11 +299,17 @@
                             <td>{{ item.name }}</td>
                             <td>{{ item.summa }} {{ item.valyuta }}</td>
                             <td>
-                              <a class="text-success mr-2" v-on:click="edittip(item)">
+                              <a class="cursor-pointer text-success" v-on:click="edittip(item)">
                                 <i class="nav-icon i-Pen-2 font-weight-bold"></i>
                               </a>
-                              <a class="text-danger mr-2" v-on:click="delettip(item.id, item.name)">
+                              <a class="cursor-pointer text-danger mx-3" v-on:click="delettip(item.id, item.name)">
                                 <i class="nav-icon i-Close-Window font-weight-bold"></i>
+                              </a>
+                              <a class="text-primary" v-on:click="arxiv(item.id)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-clipboard2-data-fill mt-0" style="cursor: pointer; margin-top: -5px !important;" viewBox="0 0 16 16">
+                                  <path d="M10 .5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5V2a.5.5 0 0 0 .5.5h5A.5.5 0 0 0 11 2v-.5a.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5Z"/>
+                                  <path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585c.055.156.085.325.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5c0-.175.03-.344.085-.5ZM10 7a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0V7Zm-6 4a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1Zm4-3a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0V9a1 1 0 0 1 1-1Z"/>
+                                </svg>
                               </a>
                             </td>
                           </tr>
@@ -315,4 +389,89 @@
     </div>
   </transition>
 </div>
+
+<div v-if="arxivModal" class="div1">
+  <div class="div25457">
+      <button type="button" class="close mb-3 mt-3 mr-3" v-on:click="arxivModal = false">
+          <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="mx-2 mt-3">Jami Summa: $ +{{ arxive.JamisummaSotuv }}</h4>
+      <div class="table-responsive">
+          <div class="scro">
+              <table class="tabl scroltab">
+                  <thead>
+                      <tr>
+                          <th>Доставщик</th>
+                          <th>Кол-во</th>
+                          <th>Покупка</th>
+                          <th>Итого</th>
+                          <th><input type="date" v-on:change="arxivdate(arxivsana)" v-model="arxivsana"></th>
+                          <th>Обновлять</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr class="tir" v-for="item in arxive.obj" :key="item.id">
+                          <td>
+                              {{ item.name }}
+                          </td>
+                          <td>
+                              {{ item.soni }}
+                          </td>
+                          <td>
+                              {{ item.summa | formatNumber }}
+                          </td>
+                          <td>
+                              {{ item.jami | formatNumber }} {{ item.valyuta }}
+                          </td>
+                          <td>
+                            {{ item.sana }}
+                        </td>
+                          <td>
+                            <a class="cursor-pointer text-success" v-on:click="editarxiv(item)">
+                              <i class="nav-icon i-Pen-2 font-weight-bold"></i>
+                            </a>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div v-if="arxivModaledit">
+  <transition name="modal">
+    <div class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">{{ arx.name }}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" v-on:click="arxivModaledit = false">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-12 form-group mb-3">
+                  <label for="firstName1">Шт</label>
+                  <input class="form-control" type="number" v-model="arx.soni" placeholder="Шт">
+                </div>
+                <div class="col-md-12 form-group mb-3">
+                  <label for="firstName1">Сумма</label>
+                  <input class="form-control" type="text" v-model="arx.summa" placeholder="Сумма">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" v-on:click="arxivModaledit = false">Назад</button>
+              <button type="button" class="btn btn-primary" v-on:click="UpdateArxiv">Сохранить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+
 </template>

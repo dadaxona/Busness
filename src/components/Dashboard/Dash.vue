@@ -176,8 +176,11 @@
                     auth.method_chat = '';
                 }
                 localStorage.setItem('auth', JSON.stringify(auth));
-                window.location.reload(true)
+                window.location.reload(true);
             },
+            obnovleniya(){
+                window.location.reload(true);
+            }
         },
         computed: {
           ...mapGetters({
@@ -243,6 +246,10 @@
             <div class="logo"><img src="../../assets/logo.png" alt="" /></div>         
                 <div style="margin: auto"></div>                    
                     <div class="header-part-right">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" v-on:click="obnovleniya" class="bi bi-arrow-clockwise mr-2 cursor-pointer" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                    </svg>
                     <div v-if="authtenticat.status == 'brend'">
                         <select name="" id="" v-on:change="magarew(maga)" v-model="maga" class="ffdd">
                             <option value="">Магазин</option>
@@ -596,7 +603,7 @@
     <div v-if="oknaSavdo2" class="div1">
         <div class="div25457">
             <button type="button" class="close mb-3 mt-3 mr-3" v-on:click="oknaSavdobut2(false)">
-                <span aria-hidden="true" v-on:click="showModalEditor = false">&times;</span>
+                <span aria-hidden="true" v-on:click="oknaSavdo2 = false">&times;</span>
             </button>
             <h4 class="mx-2 mt-3">Jami Summa: $ +{{ JamisummaSotuv }}</h4>
             <div class="table-responsive">

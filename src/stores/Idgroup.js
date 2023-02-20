@@ -49,6 +49,8 @@ const idgroup = {
         status: '',
         jami: '',
         togl: '',
+        option: '',
+        arxive: [],
         date: year + "-" + monh + "-" + day,
         savdoobj: [],
         ishchila: [],
@@ -902,6 +904,33 @@ const idgroup = {
                 state.objects6 = data.data.obj;
             });
         },
+        GetyArxive: ({state}, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url,
+                data: request,
+            }).then(data => {
+                state.arxive = data.data;
+            });
+        },
+        UpdateArxivAct: ({state}, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url,
+                data: request,
+            }).then(data => {
+                state.arxive = data.data;
+            });
+        },
+        VariantAct: ({state}, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url,
+                data: request,
+            }).then(data => {
+                state.option = data.data;
+            });
+        },
         suniyIntelAC: (context, request) => {
             axios({
                 method: request.method,
@@ -1035,6 +1064,24 @@ const idgroup = {
         },
         MijozTel(state){
             return state.MijozTel;
+        },
+        arxive(state){
+            var summa = 0;
+            for (let i = 0; i < state.arxive.length; i++) {
+                if (state.arxive[i].valyuta) {
+                    summa += parseFloat(state.arxive[i].soni) * parseFloat(state.arxive[i].summa) * parseFloat(state.arxive[i].kurs);
+                } else {
+                    summa += state.arxive[i].soni * state.arxive[i].summa;
+                }
+            }
+            return {
+                obj: state.arxive,
+                JamisummaSotuv: new Intl.NumberFormat().format(summa)
+
+            };
+        },
+        option(state){
+            return state.option;
         }
     },
 };

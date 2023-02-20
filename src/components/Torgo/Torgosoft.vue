@@ -72,6 +72,7 @@
             torgostclm: false,
             torgostye: false,
             torgostchiq: false,
+            toxtatish: false,
             databugun: new Date().toLocaleDateString('en-CA'),
             polni: {
               savdo: 0,
@@ -148,7 +149,8 @@
         'Foyda_Act',
         'Foyda_Act_bugun',
         'OriginalMethodUrlGet',
-        'OriginalMethodUrlPost'
+        'OriginalMethodUrlPost',
+        'VariantAct'
       ]),
       FilterAuth(){
         this.FilterAuthAc();
@@ -225,6 +227,20 @@
           });
           this.excel = [];
           input.value = '';
+        },
+        editsq(item){
+          this.id=item.id;
+          this.tip=item.tip;
+          this.adress=item.adress;
+          this.name=item.name;
+          this.ogoh=item.ogoh;
+          this.soni=item.soni;
+          this.olinish=item.olinish;
+          this.sotilish=item.sotilish;
+          this.sotilish2=item.sotilish2;
+          this.shtrix=item.kod;
+          this.valyuta=item.valyuta;
+          this.showModal = true;
         },
         CreateSqlad(){
           if (auth.method_id) {
@@ -1358,6 +1374,26 @@
           this.chiq.kurs = '';
           this.chiq.valyuta = ''; 
         }
+      },
+      valpush(item){
+        this.tip = item.name;
+        this.toxtatish = false;
+      },
+      tipkey(row){
+        const auth = JSON.parse(localStorage.getItem('auth'));
+          if (auth.method_id) {
+          this.VariantAct({
+            'method': 'post',
+            'url': 'variant',
+            'tip': row,
+            'login': this.login,
+            'token': this.token,
+            'magazinId': auth.method_id,
+            'magazin': auth.method_name,
+            'status': this.statustyp,
+          });
+          this.toxtatish = true;
+        }else{}
       }
     },
     watch: {
@@ -1522,7 +1558,8 @@
         savdoobj: 'savdoobj',
         foyda: 'foyda',
         nbir: 'nbir',
-        Itemobjects: 'Itemobjects'
+        Itemobjects: 'Itemobjects',
+        option: 'option'
       }),
     },
     mounted() {
@@ -1679,11 +1716,11 @@
         <input type="text" disabled class="derfderer text-center" v-model="JamiSummaTorgo.chegir">
         <button v-if="tog" class="btn btn-success pl-2 pr-2 pt-0 pb-0 mx-2" v-on:click="exportExcel" type="button">Excel</button>
         <button v-else class="btn btn-dark pl-2 pr-2 pt-0 pb-0 mx-2" type="button">Excel</button>
-        <svg v-if="tog" xmlns="http://www.w3.org/2000/svg" v-on:click="pdef" width="20" height="20" fill="currentColor" class="bi bi-printer-fill cursor-pointer text-primary " viewBox="0 0 16 16">
+        <svg v-if="tog" xmlns="http://www.w3.org/2000/svg" onclick="createpdf('myDiv')" width="20" height="20" fill="currentColor" class="bi bi-printer-fill cursor-pointer text-primary " viewBox="0 0 16 16">
           <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
           <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
         </svg>
-        <svg v-else xmlns="http://www.w3.org/2000/svg" v-on:click="pdef" width="20" height="20" fill="currentColor" class="bi bi-printer-fill cursor-pointer" viewBox="0 0 16 16">
+        <svg v-else xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-printer-fill cursor-pointer" viewBox="0 0 16 16">
           <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
           <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
         </svg>
@@ -2008,9 +2045,12 @@
                     </select>
                 </td>
                 <td>
-                    <a class="text-danger mr-2" v-on:click="delettip(item.id, item.name)">
+                  <a class="text-success mx-3 cursor-pointer" v-on:click="editsq(item)">
+                    <i class="nav-icon i-Pen-2 font-weight-bold"></i>
+                  </a>
+                  <a class="text-danger mr-2" v-on:click="delettip(item.id, item.name)">
                     <i class="nav-icon i-Close-Window font-weight-bold"></i>
-                    </a>
+                  </a>
                 </td>
                 </tr>
             </tbody>
@@ -2033,13 +2073,32 @@
                 </div>
                 <div class="modal-body">
                   <div class="row">
-                    <div class="col-md-6 form-group mb-3">
+                    <!-- <div class="col-md-6 form-group mb-3">
                       <label for="firstName1">Тип</label>
                       <select class="form-control fc" v-model="tip" name="tip" id="tip">
                         <option v-for="item in tipdata">
                             {{item.name}}
                         </option>
                       </select>
+                    </div> -->
+                    <div class="col-md-6 form-group mb-3">
+                      <label for="firstName1">Тип</label>
+                      <input type="text" class="form-control fc" v-on:keyup="tipkey(tip)" v-model="tip">
+                       <div v-if="toxtatish" 
+                        style="
+                          position: absolute;
+                          background-color: #000000;
+                          width: 100%;
+                          width: 87%;
+                          z-index: 2;
+                          border: 1px solid #c0c0c0;
+                        ">
+                        <option v-for="item in option" :value="item.name"
+                          class="cursor-pointer ho" v-on:click="valpush(item)">
+                          {{item.name}}
+                        </option>
+                      </div>
+                      <div v-else></div>
                     </div>
                     <div class="col-md-6 form-group mb-3">
                       <label for="firstName1">Адрес</label>

@@ -648,7 +648,10 @@
         opacity:1;
     }
 }
-
+.ho:hover{
+    background-color: #7b7b7b;
+    color: white;
+}
 .suari{
     position: absolute;
     top: 17px;
@@ -676,16 +679,6 @@
     animation-timing-function: ease;
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite;
-
-    /* position: absolute;
-    left: 10px;
-    width: 123%;
-    height: 17px;
-    background: linear-gradient(rgba(255, 255, 255, 0), rgb(255, 255, 255) 40%, rgba(255, 255, 255, 0.6) 60%, rgba(255, 255, 255, 0));
-    opacity: 0.4;
-    transform: rotate(45deg);
-    animation: 3s ease 1s infinite normal none running animat; */
-
 }
 
 @keyframes  animat{

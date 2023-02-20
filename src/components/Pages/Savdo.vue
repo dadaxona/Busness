@@ -356,7 +356,7 @@
               } else {
                 this.karz = this.karz - this.controlkarz;
               }
-              this.clentsumma = '$ + '+ format.format(clm.summa / kur.u); 
+              this.clentsumma = '$ + '+ format.format(clm.summa / kur.u);
               this.clentkarz = '$ + ' + format.format(clm.karz / kur.u);
             }
           } else {
@@ -560,12 +560,7 @@
               'status': this.statustyp,
           });
         }else{}
-      },            
-      IntervalData(){
-          setInterval(() => {
-              this.suniyIntel();
-          }, 5000);
-      }
+      },
     },
     watch: {
       search(row){
@@ -612,7 +607,7 @@
       this.toogler2();
       this.driverpMount();
       this.checkedTyp3();
-      this.IntervalData();
+      this.suniyIntel();
     }
   }
 </script>

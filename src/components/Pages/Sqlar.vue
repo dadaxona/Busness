@@ -4,6 +4,16 @@
   import readXisFile from "read-excel-file"
   import { saveExcel } from '@progress/kendo-vue-excel-export';
   const auth = JSON.parse(localStorage.getItem('auth'));
+  var dateObj = new Date();
+  var month = dateObj.getUTCMonth() + 1;
+  var day = dateObj.getUTCDate();
+  var year = dateObj.getUTCFullYear();
+  var monh = '';
+  if (month < 10) {
+    monh = '0' + month;
+  } else {
+    monh = month;
+  }
   export default {
         data() {
             return {
@@ -26,7 +36,9 @@
               login:'',
               token:'',
               statustyp: '',
-              excel: []
+              date:  year + "-" + monh + "-" + day,
+              excel: [],
+              toxtatish: false
             }
         },
         methods: {
@@ -35,7 +47,8 @@
             'SqladMethodUrlPost',
             'SqladDB',
             'Fil_Ac',
-            'Update_Ky'
+            'Update_Ky',
+            'VariantAct'
           ]),
           FilterAuth(){
             this.FilterAuthAc();
@@ -124,6 +137,7 @@
                 'sotilish2': this.sotilish2,
                 'valyuta': this.valyuta,
                 'kod': this.shtrix,
+                'date': this.date,
                 'login': this.login,
                 'token': this.token,
                 'status': this.statustyp,
@@ -133,7 +147,7 @@
               this.Clears();
             } else {}
           },
-          edittip(item){
+          editsq(item){
             this.id=item.id;
             this.tip=item.tip;
             this.adress=item.adress;
@@ -221,6 +235,26 @@
           },
           obnovit(){
             this.getSqlad();
+          },
+          valpush(item){
+            this.tip = item.name;
+            this.toxtatish = false;
+          },
+          tipkey(row){
+            const auth = JSON.parse(localStorage.getItem('auth'));
+              if (auth.method_id) {
+              this.VariantAct({
+                'method': 'post',
+                'url': 'variant',
+                'tip': row,
+                'login': this.login,
+                'token': this.token,
+                'magazinId': auth.method_id,
+                'magazin': auth.method_name,
+                'status': this.statustyp,
+              });
+              this.toxtatish = true;
+            }else{}
           }
         },
         watch: {
@@ -278,7 +312,8 @@
             tipdata: 'tipdata',
             adressdata: 'adressdata',
             valyudata: 'valyudata',
-            itogaTorgo: 'itogaTorgo'
+            itogaTorgo: 'itogaTorgo',
+            option: 'option'
           }),
         },
         mounted() {
@@ -329,7 +364,7 @@
                   Сумма: $ +{{ itogaTorgo.summa }}
                 </span>
                 <span class="border-bottom mx-4">
-                  Количество: {{ itogaTorgo.koli }}
+                  Тип: {{ itogaTorgo.koli }}
                 </span>
                 <span class="border-bottom mx-4">
                   Шт: {{ itogaTorgo.sht }}
@@ -392,7 +427,10 @@
                                 <option  v-for="itema in valyudata" :value="itema.name">{{itema.name}}</option>
                               </select>
                             </td>
-                            <td>
+                            <td>                              
+                              <a class="text-success mx-3 cursor-pointer" v-on:click="editsq(item)">
+                                <i class="nav-icon i-Pen-2 font-weight-bold"></i>
+                              </a>
                               <a class="text-danger mr-2" v-on:click="delettip(item.id, item.name)">
                                 <i class="nav-icon i-Close-Window font-weight-bold"></i>
                               </a>
@@ -422,11 +460,22 @@
               <div class="row">
                 <div class="col-md-6 form-group mb-3">
                   <label for="firstName1">Тип</label>
-                  <select class="form-control" v-model="tip" name="tip" id="tip">
-                    <option v-for="item in tipdata">
-                        {{item.name}}
+                  <input type="text" class="form-control" v-on:keyup="tipkey(tip)" v-model="tip">
+                   <div v-if="toxtatish" 
+                    style="
+                      position: absolute;
+                      background-color: white;
+                      width: 100%;
+                      width: 87%;
+                      z-index: 2;
+                      border: 1px solid #c0c0c0;
+                    ">
+                    <option v-for="item in option" :value="item.name"
+                      class="cursor-pointer ho" v-on:click="valpush(item)">
+                      {{item.name}}
                     </option>
-                  </select>
+                  </div>
+                  <div v-else></div>
                 </div>
                 <div class="col-md-6 form-group mb-3">
                   <label for="firstName1">Адрес</label>
