@@ -154,7 +154,8 @@
         },
         computed: {
           ...mapGetters({
-            Itemobjects: 'Itemobjects'
+            Itemobjects: 'Itemobjects',
+            valyudata: 'valyudata'
           }),
         },
         mounted() {

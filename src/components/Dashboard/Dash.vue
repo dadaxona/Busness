@@ -215,6 +215,22 @@
                     this.vaz.soni2 = '';
                     this.vazvratModal = false;
                 }else{}
+            },
+            intervals(){
+                const auth = JSON.parse(localStorage.getItem('auth'));
+                if (auth.method_id) {
+                    setInterval(() => {
+                        this.suniyIntelAC({
+                            'method': 'post',
+                            'url': 'dolgicilent',
+                            'login': this.login,
+                            'token': this.token,
+                            'magazinId': auth.method_id,
+                            'magazin': auth.method_name,
+                            'status': this.statustyp,
+                        });                        
+                    }, 5000);
+                }
             }
         },
         computed: {
@@ -229,6 +245,7 @@
             this.FilterAuth();
             this.Localstor();
             this.autherMethod();
+            this.intervals();
         }
     }
 </script>

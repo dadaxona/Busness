@@ -1,8 +1,10 @@
 import axios from 'axios';
 // const http_url = 'http://biznes.5858.uz/api/';
 // const http_url = 'https://biznes.5858.uz/api/';
-// const http_url = 'https://uz.idsoft.uz/api/';
-const http_url = 'http://localhost:1122/api/';
+// const http_url = 'https://control.idsoft.uz/api/';
+// const http_url = 'http://localhost:1122/api/';
+const http_url = 'http://beckendm/api/';
+
 var dateObj = new Date();
 var month = dateObj.getUTCMonth() + 1;
 var day = dateObj.getUTCDate();
@@ -598,7 +600,7 @@ const idgroup = {
             const local = JSON.parse(localStorage.getItem('sotuv'));
             for (let i = 0; i < state.objectauth2.karzina.length; i++) {
                 if (state.objectauth2.karzina[i].zaqazId == request.id) {
-                    var sq = state.Items.find(e => { if (e.id === state.objectauth2.karzina[i].tovar) return e; });
+                    var sq = state.Itemsfiltr.find(e => { if (e.id === parseInt(state.objectauth2.karzina[i].tovar)) return e; });
                     var cheg = '';
                     var son = '';
                     if (state.objectauth2.karzina[i].chegrma) {

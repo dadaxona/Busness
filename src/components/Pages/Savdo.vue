@@ -435,7 +435,7 @@
               'magazin': auth.method_name,
               'status': this.statustyp,
               'local': JSON.parse(localStorage.getItem('sotuv'))
-            });              
+            });
           }
           this.Clears();
         } else {}
