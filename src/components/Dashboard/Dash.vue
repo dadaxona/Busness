@@ -229,7 +229,7 @@
                             'magazin': auth.method_name,
                             'status': this.statustyp,
                         });                        
-                    }, 5000);
+                    }, 3600000);
                 }
             }
         },

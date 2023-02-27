@@ -19,7 +19,7 @@
               magname: '',
               mtelegram: '',
               magid: '',
-
+              rend: '',
               kid: '',
               magazinname: '',
               kname: '',
@@ -167,7 +167,7 @@
           },
 
           Saqlas_kassa(){
-            var rend = Math.random().toString(36).substr(2);
+            this.rend = Math.random().toString(36).substr(2);
             this.Saqlas_Kassa_Ac({
               'method': 'post',
               'url2': 'kassa_creat',
@@ -179,13 +179,14 @@
               'tel': this.ktel,
               'login2': this.klogin,
               'password': this.kpassword,
-              'token2': rend,
+              'token2': this.rend,
               'status2': 'ish',
               'login': this.login,
               'token': this.token,
               'status': this.statustyp,
             });
             this.kid = '',
+            this.rend = '',
             this.magazinname = '',
             this.kname = '',
             this.kfam = '',
