@@ -1,8 +1,8 @@
 import axios from 'axios';
-// const http_url = 'http://biznes.5858.uz/api/';
-const http_url = 'https://uz.idsoft.uz/api/';
+// const http_url = 'https://node.5858.uz/api/';
+// const http_url = 'https://uz.idsoft.uz/api/';
 // const http_url = 'https://control.idsoft.uz/api/';
-// const http_url = 'http://localhost:1122/api/';
+const http_url = 'http://localhost:1122/api/';
 // const http_url = 'http://beckendm/api/';
 
 var dateObj = new Date();
@@ -52,7 +52,7 @@ const idgroup = {
         status: '',
         jami: '',
         togl: '',
-        option: '',
+        option: [],
         arxive: [],
         date: year + "-" + monh + "-" + day,
         savdoobj: [],
@@ -926,13 +926,17 @@ const idgroup = {
             });
         },
         VariantAct: ({state}, request) => {
-            axios({
-                method: request.method,
-                url: http_url + request.url,
-                data: request,
-            }).then(data => {
-                state.option = data.data;
-            });
+            if (request.tip) {
+                state.option =  state.objects1.filter((item) => item.name.toLowerCase().includes(request.tip));
+            } else {
+                axios({
+                    method: request.method,
+                    url: http_url + request.url,
+                    data: request,
+                }).then(data => {
+                    state.option = data.data;
+                });                
+            }
         },
         VazvredClickAct: (context, request) => {
             axios({
@@ -1093,7 +1097,7 @@ const idgroup = {
 
             };
         },
-        option(state){
+        option1(state){
             return state.option;
         }
     },

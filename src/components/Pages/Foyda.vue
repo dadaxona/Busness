@@ -50,7 +50,7 @@
               this.kirishqarz = format.format(this.foyda.kirishqarz);
               this.foyda1 = format.format(this.foyda.foyda);
               this.sqlad = format.format(this.foyda.sqlad);              
-            }, 1000);
+            }, 5000);
           },
         },
         computed: {
