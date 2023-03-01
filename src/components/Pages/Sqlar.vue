@@ -313,7 +313,7 @@
             adressdata: 'adressdata',
             valyudata: 'valyudata',
             itogaTorgo: 'itogaTorgo',
-            option: 'option'
+            option1: 'option1'
           }),
         },
         mounted() {
@@ -470,7 +470,7 @@
                       z-index: 2;
                       border: 1px solid #c0c0c0;
                     ">
-                    <option v-for="item in option" :value="item.name"
+                    <option v-for="item in option1" :value="item.name"
                       class="cursor-pointer ho" v-on:click="valpush(item)">
                       {{item.name}}
                     </option>
