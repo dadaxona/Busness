@@ -9,13 +9,19 @@
   const format = new Intl.NumberFormat();
   var dateObj = new Date();
   var month = dateObj.getUTCMonth() + 1;
-  var day = dateObj.getUTCDate();
+  var day1 = dateObj.getUTCDate();
   var year = dateObj.getUTCFullYear();
   var monh = '';
+  var day = '';
   if (month < 10) {
     monh = '0' + month;
   } else {
     monh = month;
+  }
+  if (day1 < 10) {
+    day = '0' + day1;
+  } else {
+    day = day1;
   }
   export default {
     data() {
@@ -561,6 +567,9 @@
           });
         }else{}
       },
+      dadadadad(){
+        console.log(this.date)
+      }
     },
     watch: {
       search(row){
@@ -622,7 +631,7 @@
               <button class="btn btn-danger btn-sm m-1" type="button" v-on:click="deletStor">Удалить</button>
             </div>
             <div v-else>
-              <button class="btn btn-light btn-sm m-1" type="button">Ехсел</button>
+              <button class="btn btn-light btn-sm m-1" type="button" v-on:click="dadadadad">Ехсел</button>
               <button class="btn btn-light btn-sm m-1" type="button">Пдф</button>
               <button class="btn btn-light btn-sm m-1" type="button">Удалить</button>
             </div>

@@ -8,13 +8,19 @@
   const format = new Intl.NumberFormat();
   var dateObj = new Date();
   var month = dateObj.getUTCMonth() + 1;
-  var day = dateObj.getUTCDate();
+  var day1 = dateObj.getUTCDate();
   var year = dateObj.getUTCFullYear();
   var monh = '';
+  var day = '';
   if (month < 10) {
     monh = '0' + month;
   } else {
     monh = month;
+  }
+  if (day1 < 10) {
+    day = '0' + day1;
+  } else {
+    day = day1;
   }
   export default {
     data() {
