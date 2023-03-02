@@ -6,16 +6,22 @@
   const auth = JSON.parse(localStorage.getItem('auth'));
   const kurs = JSON.parse(localStorage.getItem('Kurs'));
   const format = new Intl.NumberFormat();
-  var dateObj = new Date();
-  var month = dateObj.getUTCMonth() + 1;
-  var day = dateObj.getUTCDate();
-  var year = dateObj.getUTCFullYear();
-  var monh = '';
-  if (month < 10) {
-    monh = '0' + month;
-  } else {
-    monh = month;
-  }
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1;
+    var day1 = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+    var monh = '';
+    var day = '';
+    if (month < 10) {
+        monh = '0' + month;
+    } else {
+        monh = month;
+    }
+    if (day1 < 10) {
+        day = '0' + day1;
+    } else {
+        day = day1;
+    }
   export default {
     data() {
         return {
@@ -743,6 +749,9 @@
               'local': JSON.parse(localStorage.getItem('sotuv'))
             }); 
           } else {
+            if (this.mijozs == "Имя нет") {
+              this.mijozs = '';
+            } else { }
             this.Oplata_Start_Action({
               'method': 'post',
               'url2': 'oplata',
@@ -2004,7 +2013,7 @@
               <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
             </svg>
             <br>
-            Слент
+            Клент
         <div class="suari"></div>
           </button>
         <button class="diseg" v-on:click="torgotip">
@@ -2809,7 +2818,7 @@
         <span aria-hidden="true">&times;</span>
     </button>
       <div class="mt-3 p-2 border-bottom">
-        <button class="btn-success mb-2" v-on:click="showModalclm = true">Слент добавлять</button>
+        <button class="btn-success mb-2" v-on:click="showModalclm = true">Клент добавлять</button>
         <input type="file" id="archiveExcel" v-on:change="subirExcelclm()">
         <button class="btn-success mb-2 mx-3" v-on:click="clikclm">                  
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
@@ -2869,7 +2878,7 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content basg">
                 <div class="modal-header">
-                  <h5 class="modal-title">Слент</h5>
+                  <h5 class="modal-title">Клент</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" @click="showModalclm = false">&times;</span>
                   </button>

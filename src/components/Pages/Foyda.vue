@@ -9,12 +9,12 @@
               login: '',
               token: '',
               statustyp: '',
-              savdo: 0,
-              rasxod: 0,
-              chiqishqarz: 0,
-              kirishqarz: 0,
-              foyda1: 0,
-              sqlad: 0,
+              savdo: '',
+              rasxod: '',
+              chiqishqarz: '',
+              kirishqarz: '',
+              foyda1: '',
+              sqlad: '',
             }
         },
         methods: {
@@ -50,7 +50,7 @@
               this.kirishqarz = format.format(this.foyda.kirishqarz);
               this.foyda1 = format.format(this.foyda.foyda);
               this.sqlad = format.format(this.foyda.sqlad);              
-            }, 5000);
+            }, 3000);
           },
         },
         computed: {

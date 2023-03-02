@@ -4,13 +4,19 @@
     const auth = JSON.parse(localStorage.getItem('auth'));
     var dateObj = new Date();
     var month = dateObj.getUTCMonth() + 1;
-    var day = dateObj.getUTCDate();
+    var day1 = dateObj.getUTCDate();
     var year = dateObj.getUTCFullYear();
     var monh = '';
+    var day = '';
     if (month < 10) {
         monh = '0' + month;
     } else {
         monh = month;
+    }
+    if (day1 < 10) {
+        day = '0' + day1;
+    } else {
+        day = day1;
     }
     export default {
         data() {
@@ -50,6 +56,7 @@
                 'SavdoBut_Ac',
                 'Savdo2_ac',
                 'suniyIntelAC',
+                'suniyIntelACzaqaz',
                 'OriginalMethodUrlGet',
                 'VazvredClickAct',
             ]),
@@ -150,7 +157,7 @@
                 this.SavdoBut_Ac({
                     'method': 'post',
                     'url': 'sotuv_post_id',
-                    'id': item.id,
+                    'id': item,
                     'savdoId': 1
                 });
                 this.oknaSavdo2 = true;
@@ -225,11 +232,38 @@
                             'url': 'dolgicilent',
                             'login': this.login,
                             'token': this.token,
+                            'date': this.date,
                             'magazinId': auth.method_id,
                             'magazin': auth.method_name,
                             'status': this.statustyp,
-                        });                        
-                    }, 3600000);
+                        });
+                    }, 120000);
+                    this.suniyIntelAC({
+                        'method': 'post',
+                        'url': 'dolgicilent',
+                        'login': this.login,
+                        'token': this.token,
+                        'date': this.date,
+                        'magazinId': auth.method_id,
+                        'magazin': auth.method_name,
+                        'status': this.statustyp,
+                    });
+                }
+            },
+            intervals2(){
+                const auth = JSON.parse(localStorage.getItem('auth'));
+                if (auth.method_id) {
+                    setInterval(() => {
+                        this.suniyIntelACzaqaz({
+                            'method': 'post',
+                            'url': 'zaqazlar',
+                            'login': this.login,
+                            'token': this.token,
+                            'magazinId': auth.method_id,
+                            'magazin': auth.method_name,
+                            'status': this.statustyp,
+                        });
+                    }, 5000);
                 }
             }
         },
@@ -238,7 +272,8 @@
             authtenticat:'authtenticat',
             objectauth2: 'objectauth2',
             savdoobj: 'savdoobj',
-            JamisummaSotuv: 'JamisummaSotuv'
+            JamisummaSotuv: 'JamisummaSotuv',
+            tablestyil: 'tablestyil'
           }),
         },
         mounted() {
@@ -246,6 +281,7 @@
             this.Localstor();
             this.autherMethod();
             this.intervals();
+            this.intervals2();
         }
     }
 </script>
@@ -365,7 +401,7 @@
                                 <li>
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Слент</label><RouterLink to="user"><i class="nav-icon mr-2 i-Computer-Secure"></i> Слент</RouterLink>
+                                            <label class="toggle" for="drop-2">Клент</label><RouterLink to="user"><i class="nav-icon mr-2 i-Computer-Secure"></i> Клент</RouterLink>
                                         </div>
                                     </div>
                                 </li>
@@ -436,7 +472,7 @@
                                 <li v-if="authtenticat.mijoz == 1">
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Слент</label><RouterLink to="user"><i class="nav-icon mr-2 i-Computer-Secure"></i> Слент</RouterLink>
+                                            <label class="toggle" for="drop-2">Клент</label><RouterLink to="user"><i class="nav-icon mr-2 i-Computer-Secure"></i> Клент</RouterLink>
                                         </div>
                                     </div>
                                 </li>
@@ -497,7 +533,7 @@
                                 <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                                     <div class="card-body text-center"><i class="i-Add-User"></i>
                                         <div class="content">
-                                            <p class="text-muted mt-2 mb-0">Слент</p>
+                                            <p class="text-muted mt-2 mb-0">Клент</p>
                                             <p class="text-primary text-24 line-height-1 mb-2">{{ objectauth2.mijoz.length }}</p>
                                         </div>
                                     </div>
@@ -551,7 +587,7 @@
                     <table class="tabl scroltab">
                         <thead>
                             <tr>
-                                <th>Слент</th>
+                                <th>Клент</th>
                                 <th>Торговы</th>
                                 <th>Налични</th>
                                 <th>Карта</th>
@@ -561,90 +597,7 @@
                                 <th>Дата</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr class="tir" v-for="item in objectauth2.tugl" :key="item.id" v-on:click="SavdoBut(item)">
-                                <td> 
-                                    <span style="color: #2b64e2;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-                                        </svg>
-                                    </span>
-                                    {{ item.mijoz }}
-                                </td>
-                                <td>
-                                    <span style="color: #6363ff;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
-                                            <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
-                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                            <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
-                                        </svg>
-                                    </span>
-                                    {{ item.jamisumma | formatNumber }} {{ item.valyuta }}
-                                </td>
-
-                                <td>
-                                    <span style="color: #6363ff;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
-                                            <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
-                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                            <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
-                                        </svg>
-                                    </span>
-                                    {{ item.naqt | formatNumber }}
-                                </td>
-
-                                <td>
-                                    <span style="color: #6363ff;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
-                                            <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
-                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                            <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
-                                        </svg>
-                                    </span>
-                                    {{ item.plastik | formatNumber }}
-                                </td>
-
-                                       <td>
-                                    <span style="color: #6363ff;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
-                                            <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
-                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                            <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
-                                        </svg>
-                                    </span>
-                                    {{ item.bank | formatNumber }}
-                                </td>
-                                <td>
-                                    <span style="color: #d34e15;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-currency-dollar" viewBox="0 0 16 16">
-                                            <path d="M4 10.781c.148 1.667 1.513 2.85 3.591 3.003V15h1.043v-1.216c2.27-.179 3.678-1.438 3.678-3.3 0-1.59-.947-2.51-2.956-3.028l-.722-.187V3.467c1.122.11 1.879.714 2.07 1.616h1.47c-.166-1.6-1.54-2.748-3.54-2.875V1H7.591v1.233c-1.939.23-3.27 1.472-3.27 3.156 0 1.454.966 2.483 2.661 2.917l.61.162v4.031c-1.149-.17-1.94-.8-2.131-1.718H4zm3.391-3.836c-1.043-.263-1.6-.825-1.6-1.616 0-.944.704-1.641 1.8-1.828v3.495l-.2-.05zm1.591 1.872c1.287.323 1.852.859 1.852 1.769 0 1.097-.826 1.828-2.2 1.939V8.73l.348.086z"/>
-                                        </svg>-
-                                    </span>
-                                    <span class="text-danger">
-                                        {{ item.karz | formatNumber }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span style="color: #1538d3;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
-                                            <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"/>
-                                            <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-                                          </svg>
-                                    </span>
-                                    <span class="mx-2">
-                                        {{ item.sotivchi }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span style="color:green">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-calendar-date-fill" viewBox="0 0 16 16">
-                                            <path d="M4 .5a.5.5 0 0 0-1 0V1H2a2 2 0 0 0-2 2v1h16V3a2 2 0 0 0-2-2h-1V.5a.5.5 0 0 0-1 0V1H4V.5zm5.402 9.746c.625 0 1.184-.484 1.184-1.18 0-.832-.527-1.23-1.16-1.23-.586 0-1.168.387-1.168 1.21 0 .817.543 1.2 1.144 1.2z"/>
-                                            <path d="M16 14V5H0v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2zm-6.664-1.21c-1.11 0-1.656-.767-1.703-1.407h.683c.043.37.387.82 1.051.82.844 0 1.301-.848 1.305-2.164h-.027c-.153.414-.637.79-1.383.79-.852 0-1.676-.61-1.676-1.77 0-1.137.871-1.809 1.797-1.809 1.172 0 1.953.734 1.953 2.668 0 1.805-.742 2.871-2 2.871zm-2.89-5.435v5.332H5.77V8.079h-.012c-.29.156-.883.52-1.258.777V8.16a12.6 12.6 0 0 1 1.313-.805h.632z"/>
-                                        </svg>
-                                    </span>
-                                    {{ item.sana }}
-                                </td>
-                            </tr>
+                        <tbody v-html="tablestyil">
                         </tbody>
                     </table>
                 </div>
@@ -722,7 +675,7 @@
                     <table class="tabl scroltab">
                         <thead>
                             <tr>
-                                <th>Слент</th>
+                                <th>Клент</th>
                                 <th>Торговы</th>
                                 <th>Срок</th>
                                 <th>Долг</th>
@@ -794,7 +747,7 @@
                     <table class="tabl scroltab">
                         <thead>
                             <tr>
-                                <th>Слент</th>
+                                <th>Клент</th>
                                 <th>Торговы</th>
                                 <th>Срок</th>
                                 <th>Долг</th>

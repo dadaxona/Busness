@@ -26,6 +26,7 @@
           ...mapActions([
             'FilterAuthAc',
             'OriginalMethodUrlGet',
+            'OriginalMethodUrlGetCiqim',
             'OriginalMethodUrlPost'
           ]),
           FilterAuth(){
@@ -174,7 +175,7 @@
           chiqimse(row){
             const auth = JSON.parse(localStorage.getItem('auth'));
             if (auth.method_id) {
-              this.OriginalMethodUrlGet({
+              this.OriginalMethodUrlGetCiqim({
                 'method': 'post',
                 'url': 'chiqim_get',
                 'search': row,

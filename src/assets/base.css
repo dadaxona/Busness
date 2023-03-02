@@ -73,7 +73,12 @@
     width: 100%;
 }
 .tir{
-    border-bottom: 1px solid rgb(227, 227, 227);
+    border-bottom: 1px solid #e3e3e3;
+}
+.tir2{
+    border-top: 2px solid #a2a2a2;
+    border-bottom: 2px solid #a2a2a2;
+    font-weight: 800;
 }
 .tipse{
     width: 15%;

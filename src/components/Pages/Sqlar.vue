@@ -244,14 +244,7 @@
             const auth = JSON.parse(localStorage.getItem('auth'));
               if (auth.method_id) {
               this.VariantAct({
-                'method': 'post',
-                'url': 'variant',
                 'tip': row,
-                'login': this.login,
-                'token': this.token,
-                'magazinId': auth.method_id,
-                'magazin': auth.method_name,
-                'status': this.statustyp,
               });
               this.toxtatish = true;
             }else{}
@@ -388,7 +381,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="item in objects3" :key="item.id" class="tir">
+                          <tr v-for="item in objects3" :key="item.id" class="tir" >
                             <!-- {{item}}  -->
                             <td>
                               <select class="keyinp2" v-on:change="updatechangeTip(item)" v-model="item.tip">
@@ -404,7 +397,8 @@
                               <input type="text" class="keyinp" v-on:keyup="updatekeyup(item)" v-model="item.name">
                             </td>
                             <td>
-                              <input type="text" class="keyinp" v-on:keyup="updatekeyup(item)" v-model="item.ogoh">
+                              <input type="text" class="keyinp" v-on:keyup="updatekeyup(item)" v-model="item.ogoh"  v-if="item.ogoh > item.soni" style="background: red;">
+                              <input type="text" class="keyinp" v-on:keyup="updatekeyup(item)" v-model="item.ogoh"  v-else>
                             </td>
                             <td>
                               <input type="text" class="keyinp" v-on:keyup="updatekeyup(item)" v-model="item.kod">

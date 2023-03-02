@@ -161,7 +161,6 @@
                 var sss = format.format(ddd)
                 e.skidka = sss + ' %';
                 e.jami = pris - e.chegirma;
-                // e.jami = this.jami;
               }else{} 
             });
             localStorage.setItem('sotuv', JSON.stringify(local));

@@ -4,18 +4,23 @@
   const local = JSON.parse(localStorage.getItem('sotuv'))
   const auth = JSON.parse(localStorage.getItem('auth'));
   const kurs = JSON.parse(localStorage.getItem('Kurs'));
-  import { saveExcel } from '@progress/kendo-vue-excel-export';
-  import printJS from 'print-js'
   const format = new Intl.NumberFormat();
+  import { saveExcel } from '@progress/kendo-vue-excel-export';
   var dateObj = new Date();
   var month = dateObj.getUTCMonth() + 1;
-  var day = dateObj.getUTCDate();
+  var day1 = dateObj.getUTCDate();
   var year = dateObj.getUTCFullYear();
   var monh = '';
+  var day = '';
   if (month < 10) {
-    monh = '0' + month;
+      monh = '0' + month;
   } else {
-    monh = month;
+      monh = month;
+  }
+  if (day1 < 10) {
+      day = '0' + day1;
+  } else {
+      day = day1;
   }
   export default {
     data() {
