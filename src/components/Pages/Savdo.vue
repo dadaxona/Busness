@@ -13,14 +13,14 @@
   var monh = '';
   var day = '';
   if (month < 10) {
-      monh = '0' + month;
+    monh = '0' + month;
   } else {
-      monh = month;
+    monh = month;
   }
   if (day1 < 10) {
-      day = '0' + day1;
+    day = '0' + day1;
   } else {
-      day = day1;
+    day = day1;
   }
   export default {
     data() {
