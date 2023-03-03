@@ -24,13 +24,24 @@
                 okna: false,
                 okna2: false,
                 muddat: true,
-                id: '',
-                name: '',
                 qarz: '',
                 muddatdate: '',
                 tolov: '',
                 dinamik: '',
                 maga: '',
+
+                id: '',
+                tip:'',
+                adress:'',
+                name: '',
+                ogoh:'',
+                soni:'',
+                olinish:'',
+                sotilish:'',
+                sotilish2:'',
+                valyuta:'',
+                shtrix: '',
+                toxtatish: '',
                 filtretr: false,
                 oknamod: false,
                 oknamodzaqaz: false,
@@ -38,6 +49,9 @@
                 oknaSavdo2: false,
                 kabinet1: false,
                 vazvratModal: false,
+                showModal: false,
+                showModalDel: false,
+                otprov2: false,
                 date:  year + "-" + monh + "-" + day,
                 vaz: {
                     savdoId: '',
@@ -59,6 +73,10 @@
                 'suniyIntelACzaqaz',
                 'OriginalMethodUrlGet',
                 'VazvredClickAct',
+                'Olishfn',
+                'VariantAct',
+                'CreateSqladdbAc',
+                'SqladMethoddb',
             ]),
             kabinet2(typ){
                 this.kabinet1 = typ;
@@ -267,6 +285,119 @@
                     }, 5000);
                 }
             },
+            modalsoknadb(typ){
+                const auth = JSON.parse(localStorage.getItem('auth'));
+                if (auth.method_id) {
+                    this.Olishfn({
+                        'method': 'post',
+                        'url2': 'olishdb',
+                        'url': 'getdb',
+                        'login': this.login,
+                        'token': this.token,
+                        'magazinId': auth.method_id,
+                        'magazin': auth.method_name,
+                        'status': this.statustyp,
+                    });
+                }
+                this.otprov2 = typ;
+            },
+            editsqdb(item){
+                this.id=item.id;
+                this.tip=item.tip;
+                this.adress=item.adress;
+                this.name=item.name;
+                this.ogoh=item.ogoh;
+                this.soni=item.soni;
+                this.olinish=item.olinish;
+                this.sotilish=item.sotilish;
+                this.sotilish2=item.sotilish2;
+                this.shtrix=item.kod;
+                this.valyuta=item.valyuta;
+                this.showModal = true;
+            },
+            delettipdb(id, name){
+                this.id = id;
+                this.name = name,
+                this.showModalDel = true;
+            },
+            valpush(item){
+                this.tip = item.name;
+                this.toxtatish = false;
+            },
+            tipkey(row){
+                const auth = JSON.parse(localStorage.getItem('auth'));
+                if (auth.method_id) {
+                this.VariantAct({
+                    'tip': row,
+                });
+                this.toxtatish = true;
+                }else{}
+            },
+            CreateSqladdb(){
+                if (auth.method_id) {
+                    this.CreateSqladdbAc({
+                        'method': 'post',
+                        'url': 'sqlad_dbpost',
+                        'id': this.id,
+                        'tip': this.tip,
+                        'adress': this.adress,
+                        'name': this.name,
+                        'ogoh': this.ogoh,
+                        'soni': this.soni,
+                        'olinish': this.olinish,
+                        'sotilish': this.sotilish,
+                        'sotilish2': this.sotilish2,
+                        'valyuta': this.valyuta,
+                        'kod': this.shtrix,
+                        'date': this.date,
+                        'login': this.login,
+                        'token': this.token,
+                        'status': this.statustyp,
+                        'magazinId': auth.method_id,
+                        'magazin': auth.method_name,
+                    });
+                    this.Clears();
+                } else {}
+            },
+            Clears(){
+                this.id='';
+                this.tip='';
+                this.adress='';
+                this.name='';
+                this.ogoh='';
+                this.soni='';
+                this.olinish='';
+                this.sotilish='';
+                this.sotilish2='';
+                this.valyuta='';
+                this.shtrix='';
+                this.showModal = false,
+                this.showModalDel = false
+            },
+            SqladDeletdb(){
+                this.SqladMethoddb({
+                    'method': 'post',
+                    'url': 'sqlad_deletedb',
+                    'id': this.id,
+                    'login': this.login,
+                    'token': this.token,
+                    'magazinId': auth.method_id,
+                    'magazin': auth.method_name,
+                    'status': this.statustyp,              
+                });
+                this.Clears();
+            },
+            saxranit(){
+                this.SqladMethoddb({
+                    'method': 'post',
+                    'url': 'sqldbpost',
+                    'login': this.login,
+                    'token': this.token,
+                    'magazinId': auth.method_id,
+                    'magazin': auth.method_name,
+                    'status': this.statustyp,              
+                });
+            }
         },
         computed: {
           ...mapGetters({
@@ -274,7 +405,10 @@
             objectauth2: 'objectauth2',
             savdoobj: 'savdoobj',
             JamisummaSotuv: 'JamisummaSotuv',
-            tablestyil: 'tablestyil'
+            tablestyil: 'tablestyil',
+            dbitms: 'dbitms',
+            option1: 'option1',
+            valyudata: 'valyudata',
           }),
         },
         mounted() {
@@ -352,11 +486,21 @@
                     </div>
                     <i class="i-Full-Screen header-icon d-none d-sm-inline-block" data-fullscreen=""></i>
                     <div class="dropdown" v-on:click="modalsokna(true)">
-                        <div class="badge-top-container">
-                            <span v-if="objectauth2.srok.length" class="badge badge-primary alre">{{ objectauth2.srok.length }}</span>
-                            <span v-else></span>
+                        <div v-if="objectauth2.srok.length" class="badge-top-container">
+                            <span class="badge badge-primary alre">{{ objectauth2.srok.length }}</span>
                             <i class="i-Bell text-muted header-icon"></i>
                         </div>
+                        <div v-else></div>
+                    </div>
+                    <div class="dropdown" v-on:click="modalsoknadb(true)">
+                        <div v-if="objectauth2.jonatma.length" class="badge-top-container alre22 cursor-pointer">
+                            <!-- <span class="badge badge-primary mr-1 mt-0">{{ objectauth2.jonatma.length }}</span> -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-database-down ml-3" viewBox="0 0 16 16">
+                                <path d="M12.5 9a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Zm.354 5.854 1.5-1.5a.5.5 0 0 0-.708-.708l-.646.647V10.5a.5.5 0 0 0-1 0v2.793l-.646-.647a.5.5 0 0 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0Z"/>
+                                <path d="M12.096 6.223A4.92 4.92 0 0 0 13 5.698V7c0 .289-.213.654-.753 1.007a4.493 4.493 0 0 1 1.753.25V4c0-1.007-.875-1.755-1.904-2.223C11.022 1.289 9.573 1 8 1s-3.022.289-4.096.777C2.875 2.245 2 2.993 2 4v9c0 1.007.875 1.755 1.904 2.223C4.978 15.71 6.427 16 8 16c.536 0 1.058-.034 1.555-.097a4.525 4.525 0 0 1-.813-.927C8.5 14.992 8.252 15 8 15c-1.464 0-2.766-.27-3.682-.687C3.356 13.875 3 13.373 3 13v-1.302c.271.202.58.378.904.525C4.978 12.71 6.427 13 8 13h.027a4.552 4.552 0 0 1 0-1H8c-1.464 0-2.766-.27-3.682-.687C3.356 10.875 3 10.373 3 10V8.698c.271.202.58.378.904.525C4.978 9.71 6.427 10 8 10c.262 0 .52-.008.774-.024a4.525 4.525 0 0 1 1.102-1.132C9.298 8.944 8.666 9 8 9c-1.464 0-2.766-.27-3.682-.687C3.356 7.875 3 7.373 3 7V5.698c.271.202.58.378.904.525C4.978 6.711 6.427 7 8 7s3.022-.289 4.096-.777ZM3 4c0-.374.356-.875 1.318-1.313C5.234 2.271 6.536 2 8 2s2.766.27 3.682.687C12.644 3.125 13 3.627 13 4c0 .374-.356.875-1.318 1.313C10.766 5.729 9.464 6 8 6s-2.766-.27-3.682-.687C3.356 4.875 3 4.373 3 4Z"/>
+                            </svg>
+                        </div>
+                        <div v-else></div>
                     </div>
                     <div class="dropdown">
                         <div class="user col align-self-end"><img id="userDropdown" src="../../assets/1.jpg" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
@@ -946,5 +1090,174 @@
             </div>
         </div>
     </div>
+
+<div v-if="otprov2" class="otp">           
+      <div class="col-md-12 mb-3">
+        <div class="card text-left">
+          <div class="card-body">
+            <div class="serc mb-2">
+                <button v-on:click="otprov2 = false" class="btn btn-danger btn-sm m-1">Назад</button>
+                <button v-on:click="saxranit" class="mx-3 btn-sm m-1 btn btn-primary">Сохранить</button>
+            </div>
+              <div class="table-responsive">
+                <div class="scroltabbd2">
+                  <table class="tabl scroltab">
+                    <thead>
+                        <tr>
+                            <th>Тип</th>
+                            <th>Адрес</th>
+                            <th>Товар</th>
+                            <th>N.1</th>
+                            <th>Штрих код</th>
+                            <th>Количество</th>
+                            <th>Получающий</th>
+                            <th>Низкая</th>
+                            <th>Стандартная</th>
+                            <th>Валюта</th>
+                            <th>Управление</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="item in dbitms" :key="item.id" class="tir">
+                        <td>{{ item.tip }}</td>
+                        <td>{{ item.adress }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.kod }}</td>
+                        <td>{{ item.ogoh }}</td>
+                        <td>{{ item.soni }}</td>
+                        <td>{{ item.olinish }}</td>
+                        <td>{{ item.sotilish }}</td>
+                        <td>{{ item.sotilish2 }}</td>
+                        <td>{{ item.valyuta }}</td>
+                        <td>
+                            <a class="text-success mx-3 cursor-pointer" v-on:click="editsqdb(item)">
+                                <i class="nav-icon i-Pen-2 font-weight-bold"></i>
+                            </a>
+                             <a class="text-danger mr-2" v-on:click="delettipdb(item.id, item.name)">
+                                <i class="nav-icon i-Close-Window font-weight-bold"></i>
+                            </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                </table>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div> 
+  </div>
+<div v-if="showModal">
+  <transition name="modal">
+    <div class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Товар</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" v-on:click="showModal = false">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-6 form-group mb-3">
+                  <label for="firstName1">Тип</label>
+                  <input type="text" class="form-control" v-on:keyup="tipkey(tip)" v-model="tip">
+                   <div v-if="toxtatish" 
+                    style="
+                      position: absolute;
+                      background-color: white;
+                      width: 100%;
+                      width: 87%;
+                      z-index: 2;
+                      border: 1px solid #c0c0c0;
+                    ">
+                    <option v-for="item in option1" :value="item.name"
+                      class="cursor-pointer ho" v-on:click="valpush(item)">
+                      {{item.name}}
+                    </option>
+                  </div>
+                  <div v-else></div>
+                </div>
+                <div class="col-md-6 form-group mb-3">
+                  <label for="firstName1">Адрес</label>
+                   <input class="form-control" id="firstName1" type="text" v-model="adress" disabled>
+                </div>
+                <div class="col-md-6 form-group mb-3">
+                  <label for="firstName1">Товар</label>
+                  <input class="form-control" id="firstName1" type="text" v-model="name">
+                </div>
+                <div class="col-md-6 form-group mb-3">
+                  <label for="firstName1">N.1</label>
+                  <input class="form-control" id="firstName1" type="number" v-model="ogoh">
+                </div>
+                <div class="col-md-6 form-group mb-3">
+                  <label for="firstName1">Количество</label>
+                  <input class="form-control" id="firstName1" type="number" v-model="soni">
+                </div>
+                <div class="col-md-6 form-group mb-3">
+                  <label for="firstName1">Получающий</label>
+                  <input class="form-control" id="firstName1" type="text" v-model="olinish">
+                </div>
+                <div class="col-md-6 form-group mb-3">
+                  <label for="firstName1">Низкая</label>
+                  <input class="form-control" id="firstName1" type="text" v-model="sotilish">
+                </div>
+                <div class="col-md-6 form-group mb-3">
+                  <label for="firstName1">Стандартная</label>
+                  <input class="form-control" id="firstName1" type="text" v-model="sotilish2">
+                </div>
+                <div class="col-md-6 form-group mb-3">
+                  <label for="firstName1">Валюта</label>
+                  <select class="form-control" v-model="valyuta" name="adress" id="adress">
+                    <option v-for="item in valyudata">
+                      {{item.name}}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-6 form-group mb-3">
+                  <label for="firstName1">Штрих код</label>
+                  <input class="form-control" id="firstName1" type="text" v-model="shtrix">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" v-on:click="showModal = false">Назад</button>
+              <button type="button" class="btn btn-primary" v-on:click="CreateSqladdb">Сохранить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
+
+
+<div v-if="showModalDel">
+  <transition name="modal">
+    <div class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title text-danger">Удалить</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" @click="showModalDel = false">&times;</span>
+              </button>
+            </div>
+              <input type="hidden" name="" id="" v-model="id">
+              <div class="col-md-12 form-group mb-3">
+                <input class="form-control text-center" type="text"  v-model="name" disabled>
+            </div>
+            <div class="modal-body text-center">
+              <button type="button" class="btn btn-danger mx-2" @click="showModalDel = false">Нет</button>
+              <button type="button" class="btn btn-primary" v-on:click="SqladDeletdb">Да</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
 
 </template>

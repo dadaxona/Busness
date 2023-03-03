@@ -32,6 +32,7 @@ const idgroup = {
             karzina: [],
             tugl: [],
             magazin: [],
+            jonatma: [],
             tug: true
         },
         foydaobj: {
@@ -67,6 +68,7 @@ const idgroup = {
         ishchila: [],
         Item2: [],
         Item2search: [],
+        dbitmsm: [],
         code: true,
         
     },
@@ -98,6 +100,7 @@ const idgroup = {
                                 state.objectauth2.srok = data.data.srok;
                                 state.objectauth2.karzina = data.data.karzina;
                                 state.objectauth2.magazin = data.data.magazin;
+                                state.objectauth2.jonatma = data.data.jonatma;
                                 if (data.data.user.status == 'brend') {
                                     const auth = JSON.parse(localStorage.getItem('auth'));
                                     if (auth.method_id) {
@@ -581,7 +584,7 @@ const idgroup = {
 
                 } else {         
                     local.push(request);
-                    localStorage.setItem('sotuv', JSON.stringify(local));                  
+                    localStorage.setItem('sotuv', JSON.stringify(local));
                 }
             } else {
                 praduct.push(request)
@@ -998,6 +1001,45 @@ const idgroup = {
                     state.objectauth2.karzina = []; 
                 }
             });
+        },
+        JonatishDBSQL: ({commit, state}, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url,
+                data: request,
+            }).then(data => {
+                if (data.data.code == 200) {
+                    localStorage.removeItem('dbsql');                  
+                } else {}
+            });
+        },
+        Olishfn: ({commit, state}, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url2,
+                data: request,
+            }).then(data => {
+                state.dbitmsm = data.data;
+            });
+            commit('SqladDBMut', request)
+        },
+        CreateSqladdbAc: ({commit, state}, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url,
+                data: request,
+            }).then(data => {
+                state.dbitmsm = data.data;
+            });
+        },
+        SqladMethoddb: ({commit, state}, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url,
+                data: request,
+            }).then(data => {
+                state.dbitmsm = data.data;
+            });
         }
     },
     getters: {
@@ -1288,6 +1330,9 @@ const idgroup = {
         },
         option1(state){
             return state.option;
+        },
+        dbitms(state){
+            return state.dbitmsm;
         }
     },
 };

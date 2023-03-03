@@ -57,7 +57,10 @@
         Kamentariya2: '',
         showModalEditor: false,
         ModalOplate: false,
-        someJSONdata: []
+        otprov: false,
+        someJSONdata: [],
+        Otkazishdb: [],
+        magadb: ''
       }
     },
     methods: {
@@ -76,7 +79,8 @@
         'Oplata_Start_Action',
         'Driver_Act',
         'Delet_Stor_act',
-        'OriginalM'
+        'OriginalM',
+        'JonatishDBSQL'
       ]),
       Localstor(){
         this.login = auth.login,
@@ -566,6 +570,107 @@
           });
         }else{}
       },
+      otprovdbshow(){
+        this.otprov = true;
+        this.dbchaqirish();
+      },              
+      otkazish(item){
+        const praduct = [];
+        var mas = [];
+        if (item.soni == 0) {
+          
+        } else {
+          mas = {
+              "id": item.id,
+              "userId": item.userId,
+              "magazinId": item.magazinId,
+              "magazin": item.magazin,
+              "tip": item.tip,
+              "adress": item.adress,
+              "name":  item.name,
+              "ogoh": item.ogoh,
+              "soni": 1,
+              "soni2": item.soni,
+              "olinish": item.olinish,
+              "sotilish": item.sotilish,
+              "sotilish2": item.sotilish2,
+              "valyuta": item.valyuta,
+              "summa": item.summa,
+              "kod": item.kod,
+          }
+          const local = JSON.parse(localStorage.getItem('dbsql'));
+          if (local) {
+            var fin = local.find(e => { if (e.id === item.id) return e; })
+            if (fin) {
+  
+            } else {
+              local.push(mas);
+              localStorage.setItem('dbsql', JSON.stringify(local));                  
+            }
+          } else {
+            praduct.push(mas);
+            localStorage.setItem('dbsql', JSON.stringify(praduct));
+          }
+          this.dbchaqirish();          
+        }
+      },
+      Deletsotuvdb(i){
+        const local = JSON.parse(localStorage.getItem('dbsql'));
+        local.splice(i, 1);
+        localStorage.setItem('dbsql', JSON.stringify(local));
+        this.dbchaqirish();
+      },
+      UpdateSondb(item){
+        const local1 = JSON.parse(localStorage.getItem('dbsql'));
+        local1.find(e => {
+          if (e.id === item.id) {
+            if (e.soni2 < item.soni) {
+              e.soni = e.soni2;
+            } else if (item.soni < 1) {
+              e.soni = 1;              
+            } else {
+             e.soni = item.soni;
+            }
+          }else{}
+        });
+        localStorage.setItem('dbsql', JSON.stringify(local1));
+        this.dbchaqirish();
+      },
+      Updatesotilishdb(item){
+        const local1 = JSON.parse(localStorage.getItem('dbsql'));
+        local1.find(e => {
+          if (e.id === item.id) {
+             e.olinish = item.olinish;
+          }else{}
+        });
+        localStorage.setItem('dbsql', JSON.stringify(local1));
+        this.dbchaqirish();
+      },
+      dbchaqirish(){
+        const local = JSON.parse(localStorage.getItem('dbsql'));
+        this.Otkazishdb = local;
+      },
+      magarewdb(meg){
+        this.magadb = meg;
+      },
+      jonatishbd(){
+        if (this.magadb) {
+          if (auth.method_id) {
+            this.JonatishDBSQL({
+              'method': 'post',
+              'url': 'magadb',
+              'sql': this.magadb,
+              'login': this.login,
+              'token': this.token,
+              'status': this.statustyp,
+              'magazinId': auth.method_id,
+              'magazin': auth.method_name,
+              'databd': JSON.parse(localStorage.getItem('dbsql'))
+            });
+            this.otprov = false;
+          } else {}
+        } else {}
+      }
     },
     watch: {
       search(row){
@@ -810,6 +915,7 @@
             <div class="card-body">            
               <div class="serc mb-2">
                 <input type='text' id="search" v-model="search" class="searchbar" />
+                <button v-on:click="otprovdbshow" class="mx-3 btn btn-primary">Отправлять</button>
               </div>
                 <div class="table-responsive">
                   <div class="scroltab2">
@@ -989,5 +1095,101 @@
         </div>
       </div>
     </div>
+  </div>
+  <div v-if="otprov" class="otp">
+      <div class="col-md-12 mb-3">
+        <div class="card text-left">
+            <div class="card-body">            
+              <div class="serc mb-2">
+                <button v-on:click="otprov = false" class="btn btn-danger btn-sm m-1">Назад</button>
+                <button v-on:click="jonatishbd" class="mx-3 btn-sm m-1 btn btn-primary">Отправлять</button>
+                <select name="" id="" v-on:change="magarewdb(magadb)" v-model="magadb" class="ffdd">
+                  <option value="">Магазин</option>
+                  <option v-for="itema in objectauth2.magazin" :value="itema.id">{{ itema.name }}</option>
+                </select>
+                <input type="number" v-model="magadb" style="width: 50px; padding: 0; text-align: center;">
+              </div>
+                <div class="table-responsive">
+                  <div class="scroltabbd">
+                    <table class="tabl scroltab">
+                      <thead>
+                          <tr>
+                            <th>Тип</th>
+                            <th>Адрес</th>
+                            <th>Товар</th>
+                            <th>Количество</th>
+                            <th>Продаж</th>
+                            <th>Низкая</th>
+                            <th>Стандартная</th>
+                            <th>Валюта</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(item, index) in Otkazishdb" :key="item.id" class="tir">
+                          <td>{{ item.tip }}</td>
+                          <td>{{ item.name }}</td>
+                          <td> {{ item.adress }} </td>
+                          <td>
+                            <input type="number" class="keyinp_son" v-on:keyup="UpdateSondb(item)" v-model="item.soni">
+                          </td>
+                          <td>
+                            <input type="text" class="keyinp_son" v-on:keyup="Updatesotilishdb(item)" v-model="item.olinish">
+                          </td>
+                          <td>{{ item.sotilish }}</td>
+                          <td>{{ item.sotilish2 }}</td>
+                          <td>{{ item.valyuta }}</td>
+                          <td>
+                            <a class="text-danger" v-on:click="Deletsotuvdb(index)">
+                              <i class="nav-icon i-Close-Window font-weight-bold"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                  </table>
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div> 
+
+      <div class="col-md-12 mb-3">
+        <div class="card text-left">
+          <div class="card-body">            
+            <div class="serc mb-2">
+              <input type='text' id="search" v-model="search" class="searchbar" />
+            </div>
+              <div class="table-responsive">
+                <div class="scroltabbd">
+                  <table class="tabl scroltab">
+                    <thead>
+                        <tr>
+                          <th>Тип</th>
+                          <th>Адрес</th>
+                          <th>Товар</th>
+                          <th>Количество</th>
+                          <th>Получающий</th>
+                          <th>Низкая</th>
+                          <th>Стандартная</th>
+                          <th>Валюта</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="item in Items" :key="item.id" v-on:click="otkazish(item)" class="tir">
+                        <td>{{ item.tip }}</td>
+                        <td>{{ item.adress }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.soni }}</td>
+                        <td>{{ item.olinish }}</td>
+                        <td>{{ item.sotilish }}</td>
+                        <td>{{ item.sotilish2 }}</td>
+                        <td>{{ item.valyuta }}</td>
+                      </tr>
+                    </tbody>
+                </table>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div> 
   </div>
 </template>

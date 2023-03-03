@@ -74,6 +74,10 @@
 }
 .tir{
     border-bottom: 1px solid #e3e3e3;
+    cursor: pointer;
+}
+.tir :hover {
+    background: #6affb5;
 }
 .tir2{
     border-top: 2px solid #a2a2a2;
@@ -116,6 +120,15 @@
     height: 100vh;
     right: 0;
     top: 0%;
+}
+.otp{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    z-index: 102;
 }
 .tdp{
     position: relative;
@@ -232,6 +245,9 @@
 .scroltab3{
     height: 80vh;
 }
+.scroltabbd{
+    height: 38vh;
+}
 .modal-mask {
     position: fixed;
     z-index: 9998;
@@ -275,6 +291,10 @@
 }
 .keyinp_son{
     border: none;
+}
+.alre22{
+    border-radius: 5px;
+    animation: shuu 1s infinite;
 }
 .alre{
     border-radius: 5px;
