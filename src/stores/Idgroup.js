@@ -97,10 +97,10 @@ const idgroup = {
                                 state.savdoobj = data.data.sotuv;
                                 state.objectauth2.zaqaz = data.data.zaqaz;
                                 state.objectauth2.qarz = data.data.karz;
-                                state.objectauth2.srok = data.data.srok;
+                                state.objectauth2.srok = data.data.srok || [];
                                 state.objectauth2.karzina = data.data.karzina;
                                 state.objectauth2.magazin = data.data.magazin;
-                                state.objectauth2.jonatma = data.data.jonatma;
+                                state.objectauth2.jonatma = data.data.jonatma || [];
                                 if (data.data.user.status == 'brend') {
                                     const auth = JSON.parse(localStorage.getItem('auth'));
                                     if (auth.method_id) {
@@ -995,10 +995,12 @@ const idgroup = {
             }).then(data => {
                 if (data.data.code == 200) {
                     state.objectauth2.zaqaz = data.data.zaqaz;
-                    state.objectauth2.karzina = data.data.karzina;                    
+                    state.objectauth2.karzina = data.data.karzina;
+                    state.objectauth2.jonatma = data.data.jonatma;
                 } else {
                     state.objectauth2.zaqaz = [];
-                    state.objectauth2.karzina = []; 
+                    state.objectauth2.karzina = [];
+                    state.objectauth2.jonatma = [];
                 }
             });
         },
