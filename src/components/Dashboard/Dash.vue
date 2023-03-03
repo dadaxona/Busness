@@ -188,11 +188,12 @@
             obnovleniya(){
                 window.location.reload(true);
             },
-            vazwrad(item){
-                this.vaz.savdoId = item.savdoId;
-                this.vaz.id = item.id;
-                this.vaz.name = item.name;
-                this.vaz.soni = item.soni;
+            vazwrad(){
+                const row = JSON.parse(localStorage.getItem('vaz'));
+                this.vaz.savdoId = row.savdoid;
+                this.vaz.id = row.id;
+                this.vaz.name = row.name;
+                this.vaz.soni = row.soni;
                 this.vaz.soni2 = '';
                 this.vazvratModal = true;
             },
@@ -209,11 +210,10 @@
                     this.VazvredClickAct({
                         'method': 'post',
                         'url2': 'vazvrad_post',
-                        'url': 'sotuv_post_id',
                         'id': this.vaz.savdoId,
                         'id2': this.vaz.id,
                         'soni2': this.vaz.soni2,
-                        'savdoId': 1
+                        'savdoId': 1,
                     });
                     this.vaz.savdoId = '';
                     this.vaz.id = '';
@@ -221,6 +221,7 @@
                     this.vaz.soni = '';
                     this.vaz.soni2 = '';
                     this.vazvratModal = false;
+                    localStorage.removeItem('vaz')
                 }else{}
             },
             intervals(){
@@ -265,7 +266,7 @@
                         });
                     }, 5000);
                 }
-            }
+            },
         },
         computed: {
           ...mapGetters({
@@ -284,9 +285,11 @@
             this.intervals2();
         }
     }
+
 </script>
 
 <template>
+    <span id="clickon" v-on:click="vazwrad"></span>
     <div class="set" v-on:click="kabinet2(true)">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-gear set2" viewBox="0 0 16 16">
             <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
@@ -906,6 +909,9 @@
         </div>
     </div>
 
+    <button type="button" class="close mb-3 mt-3 mr-3" id="clik" v-on:click="vazvratModal = true">
+        <span aria-hidden="true">&times;</span>
+    </button>
     <div v-if="vazvratModal" class="oknamodal">
         <button type="button" class="close mb-3 mt-3 mr-3" v-on:click="vazvratModal = false">
             <span aria-hidden="true">&times;</span>
@@ -918,7 +924,7 @@
                 <path d="M12.412 14.572V10.29h1.428V16H1v-5.71h1.428v4.282h9.984z"/>
                 <path d="M3.857 13.145h7.137v-1.428H3.857v1.428zM10.254 0 9.108.852l4.26 5.727 1.146-.852L10.254 0zm-3.54 3.377 5.484 4.567.913-1.097L7.627 2.28l-.914 1.097zM4.922 6.55l6.47 3.013.603-1.294-6.47-3.013-.603 1.294zm-.925 3.344 6.985 1.469.294-1.398-6.985-1.468-.294 1.397z"/>
             </svg>
-            <input type="text" name="" class="text-right form-control" v-model="vaz.soni" disabled>
+            <input type="text" name="" class="text-right form-control" v-model="vaz.soni"  id="vazsoni" disabled>
         </div>
         <label for="" class="mx-3 mt-2">Возврат шт</label>
         <div class="col-12">

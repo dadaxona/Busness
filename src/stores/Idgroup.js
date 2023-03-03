@@ -970,7 +970,7 @@ const idgroup = {
                 url: http_url + request.url2,
                 data: request
             }).then(data => {
-                context.commit('SavdoBut_Mut', request);
+                context.commit('FilterAuthMut');
             });  
         },
         suniyIntelAC: (context, request) => {
@@ -980,7 +980,7 @@ const idgroup = {
                 data: request,
             }).then(data => {
                 if (data.data == 200) {
-                    context('FilterAuthMut');
+                    context.commit('FilterAuthMut');
                 } else { }
             });
         },
@@ -1021,50 +1021,56 @@ const idgroup = {
                         <th>Товар</th>
                         <th>Количество</th>
                         <th>Продажи</th>
-                        <th>Скидка сумма</th>
-                        <th>Скидка протсент</th>
-                        <th>Итого сумма</th>
+                        <th>Скидка</th>
+                        <th>Протсент</th>
+                        <th>Итого</th>
                         <th>Продавец</th>
                     </tr>
                 </thead>
                 <tbody>`;
                 for (let i2 = 0; i2 < state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item}).length; i2++) {
-                        rows2 += `
-                            <tr class="tir">
-                                <td>
-                                ${state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].name}
-                                </td>
-                                <td>
-                                ${state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].soni}
-                                </td>
-                                <td>
-                                ${formatter.format(state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].sotilish)}
-                                </td>
-                                <td>
-                                ${formatter.format(state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].chegrma)}
-                                </td>
-                                <td>
-                                ${state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].skidka}
-                                </td>
-                                <td>
-                                ${formatter.format(state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].jami)} ${state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].valyuta}
-                                </td>
-                                <td>
-                                ${state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].sotivchi}
-                                </td>
-                                <td>
-                                    <button class="btn-danger" onclick="vazwrad(${state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].id})">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
-                                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
-                                            <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z"/>
-                                        </svg>
-                                        Возврат
-                                    </button>
-                                </td>
-                            </tr>
-                        `;
-                    }
-                    rows2 += `</tbody></table>`;
+                    rows2 += `
+                        <tr class="tir">
+                            <td>
+                            ${state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].name}
+                            </td>
+                            <td>
+                            ${state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].soni}
+                            </td>
+                            <td>
+                            ${formatter.format(state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].sotilish)}
+                            </td>
+                            <td>
+                            ${formatter.format(state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].chegrma)}
+                            </td>
+                            <td>
+                            ${state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].skidka}
+                            </td>
+                            <td>
+                            ${formatter.format(state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].jami)} ${state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].valyuta}
+                            </td>
+                            <td>
+                            ${state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].sotivchi}
+                            </td>
+                            <td>
+                                <button class="btn-danger" id="vazwrad"
+                                    data-id="${state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].id}"
+                                    data-savdoid="${state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].savdoId}"
+                                    data-name="${state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].name}"
+                                    data-soni="${state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item})[i2].soni}"
+                                    data-vazvratmo="true"
+                                    >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
+                                        <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z"/>
+                                    </svg>
+                                    Возврат
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }
+                rows2 += `</tbody></table>`;
                 rows += `<tr class="tir2" @click="SavdoBut(${ state.objectauth2.tugl[i].id})">
                 <td> 
                     <span style="color: #2b64e2;">

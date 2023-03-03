@@ -107,36 +107,47 @@
       chaq();
 
       function createpdf(myDiv){
-          const local = JSON.parse(localStorage.getItem('sotuv'));
-          const jami = JSON.parse(localStorage.getItem('Jami'));
-          document.getElementById("snaqsana").innerHTML = day + "-" + monh + "-" + year;
-          var row = '';
-          for (let i = 0; i < local.length; i++) {
-              var r = i + 1;
-              row += '<tr>';
-              row += '<td>' + r + '</td>';
-              row += '<td>' + local[i].name + '</td>';
-              row += '<td>' + local[i].soni + '</td>';
-              row += '<td>' + local[i].sotilish_prise + '</td>';
-              row += '<td>' + local[i].sotilish + '</td>';
-              row += '<td>' + local[i].jami + '</td>';
-              row += '</tr>';
-          }
-          document.getElementById("tablitsa").innerHTML = row;
-          var skid = 0;
-          for (let i = 0; i < local.length; i++) {
-              skid += local[i].chegirma;
-          }
-          document.getElementById("lengcount").innerHTML = local.length;
-          document.getElementById("skidka").innerHTML = "Скидка:" + "  " +  skid;
-          document.getElementById("JamiItog").innerHTML = "Всего:" + "  " +  jami.summa;
+        const local = JSON.parse(localStorage.getItem('sotuv'));
+        const jami = JSON.parse(localStorage.getItem('Jami'));
+        document.getElementById("snaqsana").innerHTML = day + "-" + monh + "-" + year;
+        var row = '';
+        for (let i = 0; i < local.length; i++) {
+            var r = i + 1;
+            row += '<tr>';
+            row += '<td>' + r + '</td>';
+            row += '<td>' + local[i].name + '</td>';
+            row += '<td>' + local[i].soni + '</td>';
+            row += '<td>' + local[i].sotilish_prise + '</td>';
+            row += '<td>' + local[i].sotilish + '</td>';
+            row += '<td>' + local[i].jami + '</td>';
+            row += '</tr>';
+        }
+        document.getElementById("tablitsa").innerHTML = row;
+        var skid = 0;
+        for (let i = 0; i < local.length; i++) {
+            skid += local[i].chegirma;
+        }
+        document.getElementById("lengcount").innerHTML = local.length;
+        document.getElementById("skidka").innerHTML = "Скидка:" + "  " +  skid;
+        document.getElementById("JamiItog").innerHTML = "Всего:" + "  " +  jami.summa;
 
-          var myvar = document.getElementById(myDiv);
-          newwin = window.open("");
-          newwin.document.write(myvar.outerHTML)
-          newwin.print();
-          newwin.close();       
+        var myvar = document.getElementById(myDiv);
+        newwin = window.open("");
+        newwin.document.write(myvar.outerHTML)
+        newwin.print();
+        newwin.close();
       }
+
+      $(document).on("click", "#vazwrad", function() {
+        localStorage.setItem('vaz', JSON.stringify({
+          'savdoid': $(this).data("savdoid"),
+          'id': $(this).data("id"),
+          'name': $(this).data("name"),
+          'soni': $(this).data("soni"),
+        }));
+        $("#clickon").click();
+      });
+
     </script>
     <script src="/src/assets/klavish.js"></script>
     <script src="/src/assets/Pleshol.js"></script>
