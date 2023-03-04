@@ -401,16 +401,16 @@
             }
         },
         computed: {
-          ...mapGetters({
-            authtenticat:'authtenticat',
-            objectauth2: 'objectauth2',
-            savdoobj: 'savdoobj',
-            JamisummaSotuv: 'JamisummaSotuv',
-            tablestyil: 'tablestyil',
-            dbitms: 'dbitms',
-            option1: 'option1',
-            valyudata: 'valyudata',
-          }),
+            ...mapGetters({
+                authtenticat:'authtenticat',
+                objectauth2: 'objectauth2',
+                savdoobj: 'savdoobj',
+                JamisummaSotuv: 'JamisummaSotuv',
+                tablestyil: 'tablestyil',
+                dbitms: 'dbitms',
+                option1: 'option1',
+                valyudata: 'valyudata',
+            }),
         },
         mounted() {
             this.FilterAuth();
