@@ -5,6 +5,7 @@ import Login from '../components/Auth/Login.vue'
 import Dash from '../components/Dashboard/Dash.vue'
 import Savdo from '../components/Pages/Savdo.vue'
 import Chiqim from '../components/Pages/Chiqim.vue'
+import Oylik from '../components/Pages/Oylik.vue'
 import Foyda from '../components/Pages/Foyda.vue'
 import Sqlar from '../components/Pages/Sqlar.vue'
 import Tovartip from '../components/Pages/Tovartip.vue'
@@ -73,6 +74,11 @@ const router = createRouter({
           path: '/yetkazuvchi',
           name: 'yetkazuvchi',
           component: Yetkazuvchi
+        },
+        {
+          path: '/oylik',
+          name: 'oylik',
+          component: Oylik
         },
         {
           path: '/chiqim',

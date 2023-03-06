@@ -69,6 +69,10 @@ const idgroup = {
         Item2: [],
         Item2search: [],
         dbitmsm: [],
+        oyloks: {
+            date: [],
+            oylik: [],
+        },
         code: true,
         
     },
@@ -386,9 +390,20 @@ const idgroup = {
                 url: http_url + request.url,
                 data: request
             }).then(data => {
-                state.ishchila = data.data;           
+                state.ishchila = data.data;
             });  
-        }
+        },
+        OyliklarMut: (state, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url,
+                data: request,
+            }).then(data => {
+                state.oyloks.date = data.data.oylikdata;
+                state.oyloks.oylik = data.data.oyliklar;
+                state.objects4 = data.data.valyuta;
+            });
+        },
     },
     actions: {
         FilterAuthAc (context) {
@@ -877,7 +892,17 @@ const idgroup = {
             });
         },
         Saqlas_Kassa_Get: (context, request) => {
-            context.commit('Saqlas_Kassa_Mut', request)
+            if (request.item) {
+                axios({
+                    method: request.method,
+                    url: http_url + request.url2,
+                    data: request,
+                }).then(data => {
+                    context.commit('Saqlas_Kassa_Mut', request)        
+                });                
+            } else {
+                context.commit('Saqlas_Kassa_Mut', request) 
+            }
         },
         Saqlas_Kassa_Ac: (context, request) => {
             axios({
@@ -1042,6 +1067,26 @@ const idgroup = {
             }).then(data => {
                 state.dbitmsm = data.data;
             });
+        },
+        Oyliklar: ({commit, state}, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url,
+                data: request,
+            }).then(data => { 
+                state.oyloks.date = data.data.oylikdata;
+                state.oyloks.oylik = data.data.oyliklar;
+                state.objects4 = data.data.valyuta;
+            });
+        },
+        OriginalMethodOylik: ({commit, state}, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url2,
+                data: request,
+            }).then(data => {
+                commit('OyliklarMut', request)
+            });  
         }
     },
     getters: {
@@ -1054,23 +1099,76 @@ const idgroup = {
         objectauth2(state){
             return state.objectauth2;
         },
+        Itemobjoy(state){
+            const formatter = new Intl.NumberFormat();
+            let rows =  '';
+            let rows2 =  [];
+            for (let i = 0; i < state.oyloks.date.length; i++) {
+                for (let i2 = 0; i2 < state.oyloks.oylik.filter((item) => { if(item.oylikdataId == state.oyloks.date[i].id) return item}).length; i2++) {
+                    rows2 += `
+                    <tr class="tir">
+                        <td>
+                            ${state.oyloks.oylik.filter((item) => { if(item.oylikdataId == state.oyloks.date[i].id) return item})[i2].name}
+                        </td>
+                        <td>
+                            ${state.oyloks.oylik.filter((item) => { if(item.oylikdataId == state.oyloks.date[i].id) return item})[i2].sana}
+                        </td>
+                        <td>
+                            ${state.oyloks.oylik.filter((item) => { if(item.oylikdataId == state.oyloks.date[i].id) return item})[i2].koment}
+                        </td>
+                        <td>
+                            ${formatter.format(state.oyloks.oylik.filter((item) => { if(item.oylikdataId == state.oyloks.date[i].id) return item})[i2].summa)} ${state.oyloks.oylik.filter((item) => { if(item.oylikdataId == state.oyloks.date[i].id) return item})[i2].valyuta}
+                        </td>
+                        <td>
+                            <button class="btn-success" id="editoy"
+                                data-id="${state.oyloks.oylik.filter((item) => { if(item.oylikdataId == state.oyloks.date[i].id) return item})[i2].id}"
+                                data-sana="${state.oyloks.oylik.filter((item) => { if(item.oylikdataId == state.oyloks.date[i].id) return item})[i2].sana}"
+                                data-koment="${state.oyloks.oylik.filter((item) => { if(item.oylikdataId == state.oyloks.date[i].id) return item})[i2].koment}"
+                                data-summa="${state.oyloks.oylik.filter((item) => { if(item.oylikdataId == state.oyloks.date[i].id) return item})[i2].summa}"
+                                data-editoymodal="true"
+                                >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
+                                </svg>                    
+                            </button>
+                        </td>
+                    </tr>
+                    `;
+                }
+                rows += `<tr class="tir2">
+                        <td>${state.oyloks.oylik.find(e => { if (e.ishchilarId === state.oyloks.date[i].ishchilarId ) return e; }).name }</td>
+                            <td>
+                                ${state.oyloks.date[i].sana}
+                            </td>
+                            <td></td>
+                            <td>
+                                ${formatter.format(state.oyloks.date[i].jami)}
+                            </td>
+                        </tr>
+                    ${rows2}
+                `;
+                rows2 = '';
+            }
+            return rows;
+            
+        },
         tablestyil(state){
             const formatter = new Intl.NumberFormat();
             let rows =  '';
             let rows2 =  [];;
             for (let i = 0; i < state.objectauth2.tugl.length; i++) {
                 rows2 += `<table class="tabl scroltab">
-                <thead>
-                    <tr>
-                        <th>Товар</th>
-                        <th>Количество</th>
-                        <th>Продажи</th>
-                        <th>Скидка</th>
-                        <th>Протсент</th>
-                        <th>Итого</th>
-                        <th>Продавец</th>
-                    </tr>
-                </thead>
+                    <thead>
+                        <tr>
+                            <th>Товар</th>
+                            <th>Количество</th>
+                            <th>Продажи</th>
+                            <th>Скидка</th>
+                            <th>Протсент</th>
+                            <th>Итого</th>
+                            <th>Продавец</th>
+                        </tr>
+                    </thead>
                 <tbody>`;
                 for (let i2 = 0; i2 < state.savdoobj.filter((item) => { if(item.savdoId == state.objectauth2.tugl[i].id) return item}).length; i2++) {
                     rows2 += `

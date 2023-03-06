@@ -580,7 +580,14 @@
                                             <label class="toggle" for="drop-2">Расход</label><RouterLink to="chiqim"><i class="nav-icon mr-2 i-Administrator"></i> Расход</RouterLink>
                                         </div>
                                     </div>
-                                </li>                  
+                                </li>
+                                <li>
+                                    <div>
+                                        <div>
+                                            <label class="toggle" for="drop-2">Ежемесячно</label><RouterLink to="oylik"><i class="nav-icon mr-2 i-Administrator"></i>Ежемесячно</RouterLink>
+                                        </div>
+                                    </div>
+                                </li>
                                 <li>
                                     <div>
                                         <div>
