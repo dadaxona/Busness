@@ -148,6 +148,25 @@
         $("#clickon").click();
       });
 
+      $(document).on("click", "#editoy", function() {
+        localStorage.setItem('oy', JSON.stringify({
+          'id': $(this).data("id"),
+          'sana': $(this).data("sana"),
+          'koment': $(this).data("koment"),
+          'summa': $(this).data("summa"),
+          'kurs': $(this).data("kurs"),
+          'valyuta': $(this).data("valyuta"),
+        }));
+        $("#clickon2").click();
+      });
+
+      $(document).on("click", "#deloy", function() {
+        localStorage.setItem('oy', JSON.stringify({
+          'id': $(this).data("id"),
+        }));
+        $("#clickon3").click();
+      });
+  
     </script>
     <script src="/src/assets/klavish.js"></script>
     <script src="/src/assets/Pleshol.js"></script>

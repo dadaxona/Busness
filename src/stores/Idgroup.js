@@ -69,6 +69,7 @@ const idgroup = {
         Item2: [],
         Item2search: [],
         dbitmsm: [],
+        mbal: [],
         oyloks: {
             date: [],
             oylik: [],
@@ -1087,6 +1088,15 @@ const idgroup = {
             }).then(data => {
                 commit('OyliklarMut', request)
             });  
+        },
+        OriginalBalans: ({commit, state}, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url,
+                data: request,
+            }).then(data => { 
+                state.mbal = data.data;
+            });
         }
     },
     getters: {
@@ -1099,10 +1109,14 @@ const idgroup = {
         objectauth2(state){
             return state.objectauth2;
         },
+        Mdat(state){
+            return state.mbal;
+        },
         Itemobjoy(state){
             const formatter = new Intl.NumberFormat();
             let rows =  '';
             let rows2 =  [];
+            var summ  = '';
             for (let i = 0; i < state.oyloks.date.length; i++) {
                 for (let i2 = 0; i2 < state.oyloks.oylik.filter((item) => { if(item.oylikdataId == state.oyloks.date[i].id) return item}).length; i2++) {
                     rows2 += `
@@ -1125,32 +1139,43 @@ const idgroup = {
                                 data-sana="${state.oyloks.oylik.filter((item) => { if(item.oylikdataId == state.oyloks.date[i].id) return item})[i2].sana}"
                                 data-koment="${state.oyloks.oylik.filter((item) => { if(item.oylikdataId == state.oyloks.date[i].id) return item})[i2].koment}"
                                 data-summa="${state.oyloks.oylik.filter((item) => { if(item.oylikdataId == state.oyloks.date[i].id) return item})[i2].summa}"
-                                data-editoymodal="true"
+                                data-kurs="${state.oyloks.oylik.filter((item) => { if(item.oylikdataId == state.oyloks.date[i].id) return item})[i2].kurs}"
+                                data-valyuta="${state.oyloks.oylik.filter((item) => { if(item.oylikdataId == state.oyloks.date[i].id) return item})[i2].valyuta}"
                                 >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
                                     <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
-                                </svg>                    
+                                </svg>
+                            </button>
+                            <button class="btn-danger" id="deloy" data-id="${state.oyloks.oylik.filter((item) => { if(item.oylikdataId == state.oyloks.date[i].id) return item})[i2].id}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
+                                </svg>
                             </button>
                         </td>
                     </tr>
                     `;
                 }
+                summ = parseFloat(state.oyloks.date[i].oylik) - parseFloat(state.oyloks.date[i].jami); 
                 rows += `<tr class="tir2">
-                        <td>${state.oyloks.oylik.find(e => { if (e.ishchilarId === state.oyloks.date[i].ishchilarId ) return e; }).name }</td>
+                            <td>
+                                ${state.oyloks.oylik.find(e => { if (e.ishchilarId === state.oyloks.date[i].ishchilarId ) return e; }).name }
+                            </td>
                             <td>
                                 ${state.oyloks.date[i].sana}
                             </td>
-                            <td></td>
                             <td>
-                                ${formatter.format(state.oyloks.date[i].jami)}
+                                ${state.oyloks.oylik.filter((item) => { if(item.oylikdataId == state.oyloks.date[i].id) return item}).length}
+                            </td>
+                            <td>
+                                ${formatter.format(state.oyloks.date[i].oylik)} - ${formatter.format(state.oyloks.date[i].jami)} = ${formatter.format(summ)}
                             </td>
                         </tr>
                     ${rows2}
                 `;
                 rows2 = '';
+                summ = '';
             }
             return rows;
-            
         },
         tablestyil(state){
             const formatter = new Intl.NumberFormat();
