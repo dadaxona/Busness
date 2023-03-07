@@ -1121,7 +1121,7 @@ const idgroup = {
                 commit('OyliklarMut', request)
             });  
         },
-        OriginalBalans: ({commit, state}, request) => {
+        OriginalBalans: ({state}, request) => {
             axios({
                 method: request.method,
                 url: http_url + request.url,
