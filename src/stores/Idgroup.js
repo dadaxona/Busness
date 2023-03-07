@@ -476,7 +476,7 @@ const idgroup = {
                     data: request
                 }).then(data => {
                     if (data.data == 200){
-                        context.commit('OriginalBalansMut', request);
+                        context.commit('OriginalBalansMut', request)
                     }
                 });
             } else {
@@ -486,7 +486,7 @@ const idgroup = {
                     data: request
                 }).then(data => {
                     if (data.data == 200){
-                        context.commit('OriginalMethodUrlMutGet', request);
+                        context.commit('OriginalMethodUrlMutGet', request)
                     }
                 });
             }
