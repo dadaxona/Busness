@@ -405,6 +405,15 @@ const idgroup = {
                 state.objects4 = data.data.valyuta;
             });
         },
+        OriginalBalansMut: (state, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url3,
+                data: request,
+            }).then(data => { 
+                state.mbal = data.data;
+            });
+        }
     },
     actions: {
         FilterAuthAc (context) {
@@ -455,9 +464,32 @@ const idgroup = {
                 data: request
             }).then(data => {
                 if (data.data == 200){
-                    context.commit('OriginalMethodUrlMutGet', request)
+                    context.commit('OriginalMethodUrlMutGet', request);
                 }
             });
+        },
+        OrigiDate: (context, request) => {
+            if (request.id2) {
+                axios({
+                    method: request.method,
+                    url: http_url + request.url2,
+                    data: request
+                }).then(data => {
+                    if (data.data == 200){
+                        context.commit('OriginalBalansMut', request);
+                    }
+                });
+            } else {
+                axios({
+                    method: request.method,
+                    url: http_url + request.url2,
+                    data: request
+                }).then(data => {
+                    if (data.data == 200){
+                        context.commit('OriginalMethodUrlMutGet', request);
+                    }
+                });
+            }
         },
         SqladDB: ({commit, state}, request) => {
             if (request.search) {

@@ -34,6 +34,8 @@
               telegram: '',
               summa: 0,
               kurs: '',
+              sumformat: '',
+              dolg: '',
               valyuta: '',
               summa2: '',
               kurs2: '',
@@ -44,6 +46,7 @@
               showModalDel: false,
               showModalBal: false,
               oknaSavdo2: false,
+              showModalDel22: false,
               excel: []
             }
         },
@@ -52,7 +55,8 @@
             'FilterAuthAc',
             'OriginalMethodUrlGet',
             'OriginalMethodUrlPost',
-            'OriginalBalans'
+            'OriginalBalans',
+            'OrigiDate'
           ]),
           FilterAuth(){
             this.FilterAuthAc();
@@ -224,32 +228,41 @@
           this.valyuta = item.valyuta,
           this.showModalBal = true;
         },
-        UserBalans(){
+        Del(){
           if (auth.method_id) {
-              this.OriginalMethodUrlPost({
-                'method': 'post',
-                'url2': 'mijozbalans',
-                'url': 'mijozget',
-                'id': this.id,
-                'id2': this.id2,
-                'sana': this.date,
-                'summa': this.summa2,
-                'kurs': this.kurs2,
-                'valyuta': this.valyuta2,
-                'login': this.login,
-                'token': this.token,
-                'magazinId': auth.method_id,
-                'magazin': auth.method_name,
-                'status': this.statustyp,
-              });
-              this.Clears();              
-            } else { }
+            this.OrigiDate({
+              'method': 'post',
+              'url3': 'mijozbalansget',
+              'url2': 'mijozbalans',
+              'url': 'mijozget',
+              'id': this.id,
+              'id2': this.id2,
+              'sana': this.date,
+              'summa': this.summa2,
+              'kurs': this.kurs2,
+              'valyuta': this.valyuta2,
+              'login': this.login,
+              'token': this.token,
+              'magazinId': auth.method_id,
+              'magazin': auth.method_name,
+              'status': this.statustyp,
+            });
+            this.id2 = '';
+            this.summa2 = '';
+            this.kurs2 = '';
+            this.valyuta2 = '';
+            this.showModalBal = false;
+          } else { }
         },
         mijozmalumot(item){
+          const formatter = new Intl.NumberFormat();
           this.id = item.id;
+          this.name = item.name;
+          this.sumformat = formatter.format(item.summa);
+          this.dolg = formatter.format(item.karz);
           if (auth.method_id) {
             this.OriginalBalans({
-              'method': 'post',
+              'method': 'post', 
               'url': 'mijozbalansget',
               'id': item.id,
               'login': this.login,
@@ -262,13 +275,39 @@
           this.oknaSavdo2 = true;
         },
         editdate(item){
+          this.id = item.mijozId,
           this.id2 = item.id,
           this.summa = item.summa,
           this.summa2 = item.summa,
+          this.kurs2 = item.kurs,
           this.valyuta = item.valyuta,
           this.valyuta2 = item.valyuta,
           this.showModalBal = true;
+        },
+        deletdate(item){
+          this.id = item.mijozId,
+          this.id2 = item.id,
+          this.showModalDel22 = true;
+        },
+        UserBalansDel(){
+          if (auth.method_id) {
+              this.OrigiDate({
+                'method': 'post',
+                'url3': 'mijozbalansget',
+                'url2': 'mijozbalansdel',
+                'id': this.id,
+                'id2': this.id2,
+                'login': this.login,
+                'token': this.token,
+                'magazinId': auth.method_id,
+                'magazin': auth.method_name,
+                'status': this.statustyp,
+              });
+              this.id2 = '';
+              this.showModalDel22 = false;
+            } else { }
         }
+
       },
       watch: {
         Searvh(row){
@@ -473,7 +512,7 @@
             </div>
             <div class="modal-body text-center">
               <button type="button" class="btn btn-danger mx-2" @click="showModalBal = false">Назад</button>
-              <button type="button" class="btn btn-primary" v-on:click="UserBalans">Сохранить</button>
+              <button type="button" class="btn btn-primary" v-on:click="Del">Сохранить</button>
             </div>
           </div>
         </div>
@@ -484,6 +523,7 @@
 <div v-if="oknaSavdo2" class="div1">
   <div class="div25457">
       <!-- <button class="btn btn-success mt-2" v-on:click="showModal = true">Ежемесячно</button> -->
+      <span class="ml-2" style="font-size: 25px; font-weight: 800;">{{ name }}: </span><span class="mx-2" style="font-size: 20px; font-weight: 800; color: green;">Баланс: {{ sumformat }};</span><span style="font-size: 20px; font-weight: 800; color: red;">Долг: {{ dolg }};</span>
       <button type="button" class="close mb-3 mt-3 mr-3" v-on:click="oknaSavdo2 = false">
           <span aria-hidden="true">&times;</span>
       </button>
@@ -505,7 +545,7 @@
                         <a class="text-success mr-2" v-on:click="editdate(item)">
                           <i class="nav-icon i-Pen-2 font-weight-bold"></i>
                         </a>
-                        <a class="text-danger mr-2" v-on:click="deletdate(item)">
+                        <a class="text-danger mx-2" v-on:click="deletdate(item)">
                           <i class="nav-icon i-Close-Window font-weight-bold"></i>
                         </a>
                       </td>
@@ -517,4 +557,26 @@
   </div>
 </div>
 
+<div v-if="showModalDel22">
+  <transition name="modal">
+    <div class="modal-mask">
+      <div class="modal-wrapper">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title text-danger">Удалить</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" @click="showModalDel22 = false">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body text-center">
+              <button type="button" class="btn btn-danger mx-2" @click="showModalDel22 = false">Нет</button>
+              <button type="button" class="btn btn-primary" v-on:click="UserBalansDel">Да</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </transition>
+</div>
 </template>
