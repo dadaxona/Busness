@@ -4,6 +4,22 @@
   import readXisFile from "read-excel-file"
   import { saveExcel } from '@progress/kendo-vue-excel-export'
   const auth = JSON.parse(localStorage.getItem('auth'));
+      var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1;
+    var day1 = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+    var monh = '';
+    var day = '';
+    if (month < 10) {
+        monh = '0' + month;
+    } else {
+        monh = month;
+    }
+    if (day1 < 10) {
+        day = '0' + day1;
+    } else {
+        day = day1;
+    }
   export default {
         data() {
             return {
@@ -19,7 +35,8 @@
               login:'',
               token:'',
               statustyp: '',
-              excel: []
+              excel: [],
+              date:  year + "-" + monh + "-" + day,
             }
         },
         methods: {
@@ -98,6 +115,7 @@
                 'qayerga': this.qayerga,
                 'sabap': this.sabap,
                 'summa': this.summa,
+                'sana': this.date,
                 'kurs': this.kurs,
                 'valyuta': this.valyuta,
                 'login': this.login,

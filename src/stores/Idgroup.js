@@ -33,6 +33,8 @@ const idgroup = {
             tugl: [],
             magazin: [],
             jonatma: [],
+            foyda: '',
+            jami: '',
             tug: true
         },
         foydaobj: {
@@ -1055,10 +1057,14 @@ const idgroup = {
                     state.objectauth2.zaqaz = data.data.zaqaz;
                     state.objectauth2.karzina = data.data.karzina;
                     state.objectauth2.jonatma = data.data.jonatma;
+                    state.objectauth2.jami = data.data.jami;
+                    state.objectauth2.foyda  = data.data.foyda;
                 } else {
                     state.objectauth2.zaqaz = [];
                     state.objectauth2.karzina = [];
                     state.objectauth2.jonatma = [];
+                    state.objectauth2.jami = 0;
+                    state.objectauth2.foyda  = 0;
                 }
             });
         },

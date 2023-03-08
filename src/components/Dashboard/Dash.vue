@@ -59,6 +59,10 @@
                     name: '',
                     soni: '',
                     soni2: '',
+                },
+                for1: {
+                    format2: '',
+                    format3: '',
                 }
             }
         },
@@ -281,9 +285,16 @@
                             'magazinId': auth.method_id,
                             'magazin': auth.method_name,
                             'status': this.statustyp,
+                            'date': this.date,
                         });
+                        this.formats();
                     }, 5000);
                 }
+            },
+            formats(){
+                const formatter = new Intl.NumberFormat();
+                this.for1.format2 = formatter.format(this.objectauth2.jami);
+                this.for1.format3 = formatter.format(this.objectauth2.foyda);
             },
             modalsoknadb(typ){
                 const auth = JSON.parse(localStorage.getItem('auth'));
@@ -472,14 +483,15 @@
             <div class="logo"><img src="../../assets/logo.png" alt="" /></div>         
                 <div style="margin: auto"></div>                    
                     <div class="header-part-right">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" v-on:click="obnovleniya" class="bi bi-arrow-clockwise mr-2 cursor-pointer" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-                    </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" v-on:click="obnovleniya" class="bi bi-arrow-clockwise mr-2 cursor-pointer" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                        </svg>
+                    <span class="mx-2" style="font-size: 15px; font-weight: 800;">$ +{{ for1.format2 }};  $ +{{ for1.format3 }};</span>
                     <div v-if="authtenticat.status == 'brend'">
                         <select name="" id="" v-on:change="magarew(maga)" v-model="maga" class="ffdd">
                             <option value="">Магазин</option>
-                            <option v-for="itema in objectauth2.magazin" :value="itema.id">{{ itema.name }}</option>
+                            <option v-for="itema in objectauth2.magazin" :value="itema.id"> ID-( {{ itema.id }} ) {{ itema.name }}</option>
                         </select>
                     </div>
                     <div v-else></div>
