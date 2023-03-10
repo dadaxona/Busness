@@ -596,7 +596,7 @@
                                 <li>
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Ежемесячно</label><RouterLink to="oylik"><i class="nav-icon mr-2 i-Administrator"></i>Ежемесячно</RouterLink>
+                                            <label class="toggle" for="drop-2">Зарплата</label><RouterLink to="oylik"><i class="nav-icon mr-2 i-Administrator"></i>Зарплата</RouterLink>
                                         </div>
                                     </div>
                                 </li>
@@ -708,7 +708,7 @@
                             <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                                 <div class="card-body text-center"><i class="i-Financial"></i>
                                     <div class="content">
-                                        <p class="text-muted mt-2 mb-0">Торговы</p>
+                                        <p class="text-muted mt-2 mb-0">Продажи</p>
                                         <p class="text-primary text-24 line-height-1 mb-2">$ {{ objectauth2.savdo.length }}</p>
                                     </div>
                                 </div>

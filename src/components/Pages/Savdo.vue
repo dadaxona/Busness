@@ -925,15 +925,14 @@
                               <th>Товар</th>
                               <th>Шт</th>
                               <th>Низкая</th>
-                              <th>Стандартная</th>
                           </tr>
                       </thead>
                       <tbody>
                         <tr v-for="item in Items" :key="item.id" v-on:click="Sotuvga_Olish(item)" class="tir">
                           <td>{{ item.name }}</td>
                           <td>{{ item.soni }}</td>
-                          <td>{{ item.sotilish }}</td>
-                          <td>{{ item.sotilish2 }} {{ item.valyuta }}</td>
+                          <td v-if="this.checke == 0">{{ item.sotilish }} {{ item.valyuta }}</td>
+                          <td v-else>{{ item.sotilish2 }} {{ item.valyuta }}</td>
                         </tr>
                       </tbody>
                   </table>

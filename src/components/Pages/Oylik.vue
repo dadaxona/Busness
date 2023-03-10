@@ -287,7 +287,7 @@
                                     <th>Имя</th>
                                     <th>Телефон</th>
                                     <th>Логин</th>
-                                    <th>Ежемесячно</th>
+                                    <th>Зарплата</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -317,7 +317,7 @@
 
 <div v-if="oknaSavdo2" class="div1">
     <div class="div25457">
-        <button class="btn btn-success mt-2" v-on:click="showModal = true">Ежемесячно</button>
+        <button class="btn btn-success mt-2" v-on:click="showModal = true">Зарплата</button>
         <!-- <input type="file" id="archiveExcel" v-on:change="subirExcel()">
         <button class="btn btn-success mt-2 mx-3" v-on:click="clik">                  
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
