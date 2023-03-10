@@ -480,7 +480,7 @@
 
     <div class="app-admin-wrap layout-horizontal-bar">
         <div class="main-header">
-            <div class="logo"><img src="../../assets/logo.png" alt="" /></div>         
+            <div class="logo"><img src="../../assets/ig.jpg" alt="" /></div>         
                 <div style="margin: auto"></div>                    
                     <div class="header-part-right">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" v-on:click="obnovleniya" class="bi bi-arrow-clockwise mr-2 cursor-pointer" viewBox="0 0 16 16">

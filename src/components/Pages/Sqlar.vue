@@ -86,6 +86,7 @@
           },
           subirExcel(){
             const input = document.getElementById("archiveExcel");
+            const auth = JSON.parse(localStorage.getItem('auth'));
             readXisFile(input.files[0]).then((rows)=>{
               for (let i = 1; i < rows.length; i++) {
                 this.excel.push({
