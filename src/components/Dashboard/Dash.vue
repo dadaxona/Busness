@@ -534,7 +534,7 @@
                             <ul v-if="authtenticat.status == 'brend'" class="menu float-left">
                                 <li>
                                     <div>
-                                        <div>
+                                        <div v-on:click="intervals">
                                             <label class="toggle" for="drop-2">Главная страница</label><RouterLink to="dash"><i class="nav-icon mr-2 i-Bar-Chart"></i> Главная страница</RouterLink>
                                         </div>
                                     </div>

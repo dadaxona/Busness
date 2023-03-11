@@ -1,8 +1,8 @@
 import axios from 'axios';
-// const http_url = 'https://node.5155.uz/api/';
+const http_url = 'https://njs.5155.uz/api/';
 // const http_url = 'https://uz.idsoft.uz/api/';
 // const http_url = 'https://control.idsoft.uz/api/';
-const http_url = 'http://localhost:1122/api/';
+// const http_url = 'http://localhost:1122/api/';
 // const http_url = 'http://beckendm/api/';
 
 var dateObj = new Date();
@@ -1042,9 +1042,18 @@ const idgroup = {
                 url: http_url + request.url,
                 data: request,
             }).then(data => {
-                if (data.data.code == 200) {
-                    console.log(data.data.chat_id, data.data.msg)
-                } else { }
+                for (let p = 0; p < data.data.length; p++) {
+                    if (data.data[p].mega && data.data[p].chat_id) {
+                        axios({
+                            method: 'post',
+                            url: "https://api.telegram.org/bot" + data.data[p].mega + "/sendMessage",
+                            data: {
+                                chat_id: data.data[p].chat_id,
+                                text: data.data[p].msg
+                            },
+                        });                  
+                    } else { }
+                }
             });
         },
         suniyIntelACzaqaz: ({state}, request) => {
