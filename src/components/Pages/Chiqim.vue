@@ -60,12 +60,10 @@
               fileName: "Export",
               columns: [
                 {field: 'id'},
-                {field: 'userId'},
-                {field: 'magazinId'},
-                {field: 'magazin'},
                 {field: 'qayerga'},
                 {field: 'sabap'},
                 {field: 'summa'},
+                {field: 'sana'},
                 {field: 'kurs'},
                 {field: 'valyuta'},
               ]
@@ -76,17 +74,18 @@
           },
           subirExcel(){
             const input = document.getElementById("archiveExcel");
+            const auth = JSON.parse(localStorage.getItem('auth'));
             readXisFile(input.files[0]).then((rows)=>{
               for (let i = 1; i < rows.length; i++) {
                 this.excel.push({
-                  'userId': rows[i][1],
-                  'magazinId': rows[i][2],
-                  'magazin': rows[i][3],
-                  'qayerga': rows[i][4],
-                  'sabap': rows[i][5],
-                  'summa': rows[i][6],
-                  'kurs': rows[i][7],
-                  'valyuta': rows[i][8],
+                  'magazinId': auth.method_id,
+                  'magazin': auth.method_name,
+                  'qayerga': rows[i][2],
+                  'sabap': rows[i][3],
+                  'summa': rows[i][1],
+                  'sana': this.date,
+                  'kurs': rows[i][5],
+                  'valyuta': rows[i][6],
                 });
               }
               this.OriginalMethodUrlPost({

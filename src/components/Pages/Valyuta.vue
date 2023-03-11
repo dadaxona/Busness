@@ -39,9 +39,6 @@
               fileName: "Export",
               columns: [
                 {field: 'id'},
-                {field: 'userId'},
-                {field: 'magazinId'},
-                {field: 'magazin'},
                 {field: 'name'},
                 {field: 'summa'},
               ]
@@ -52,14 +49,14 @@
           },
           subirExcel(){
             const input = document.getElementById("archiveExcel");
+            const auth = JSON.parse(localStorage.getItem('auth'));
             readXisFile(input.files[0]).then((rows)=>{
               for (let i = 1; i < rows.length; i++) {
                 this.excel.push({
-                  'userId': rows[i][1],
-                  'magazinId': rows[i][2],
-                  'magazin': rows[i][3],
-                  'name': rows[i][4],
-                  'summa': rows[i][5]
+                  'magazinId': auth.method_id,
+                  'magazin': auth.method_name,
+                  'name': rows[i][1],
+                  'summa': rows[i][2]
                 });                
               }
               this.OriginalMethodUrlPost({

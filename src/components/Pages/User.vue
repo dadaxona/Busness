@@ -99,17 +99,16 @@
             readXisFile(input.files[0]).then((rows)=>{
               for (let i = 1; i < rows.length; i++) {
                 this.excel.push({
-                  'userId': rows[i][1],
-                  'magazinId': rows[i][2],
-                  'magazin': rows[i][3],
-                  'name': rows[i][4],
-                  'firma': rows[i][5],
-                  'tel': rows[i][6],
-                  'telegram': rows[i][7],
-                  'karz': rows[i][8],
-                  'summa': rows[i][9],
-                  'kurs': rows[i][10],
-                  'valyuta': rows[i][11],
+                  'magazinId': auth.method_id,
+                  'magazin': auth.method_name,
+                  'name': rows[i][1],
+                  'firma': rows[i][4],
+                  'tel': rows[i][2],
+                  'telegram': rows[i][3],
+                  'karz': rows[i][5],
+                  'summa': rows[i][6],
+                  'kurs': rows[i][7],
+                  'valyuta': rows[i][8],
                 });                
               }
               this.OriginalMethodUrlPost({

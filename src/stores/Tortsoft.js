@@ -1,5 +1,5 @@
 import axios from 'axios';
-// const http_url = 'https://node.5858.uz/api/';
+// const http_url = 'https://node.5155.uz/api/';
 // const http_url = 'https://uz.idsoft.uz/api/';
 // const http_url = 'https://control.idsoft.uz/api/';
 const http_url = 'http://localhost:1122/api/';

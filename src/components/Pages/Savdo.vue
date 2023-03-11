@@ -924,7 +924,7 @@
                           <tr>
                               <th>Товар</th>
                               <th>Шт</th>
-                              <th>Низкая</th>
+                              <th>Сумма</th>
                           </tr>
                       </thead>
                       <tbody>

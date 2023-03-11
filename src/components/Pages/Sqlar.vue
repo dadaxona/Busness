@@ -64,9 +64,6 @@
               fileName: "Export",
               columns: [
                 {field: 'id'},
-                {field: 'userId'},
-                {field: 'magazinId'},
-                {field: 'magazin'},
                 {field: 'tip'},
                 {field: 'adress'},
                 {field: 'name'},
@@ -90,20 +87,19 @@
             readXisFile(input.files[0]).then((rows)=>{
               for (let i = 1; i < rows.length; i++) {
                 this.excel.push({
-                  'userId': rows[i][1],
-                  'magazinId': rows[i][2],
-                  'magazin': rows[i][3],
-                  'tip': rows[i][4],
-                  'adress': rows[i][5],
-                  'name': rows[i][6],
-                  'ogoh': rows[i][7],
-                  'soni': rows[i][8],
-                  'olinish': rows[i][9],
-                  'sotilish': rows[i][10],
-                  'sotilish2': rows[i][11],
-                  'valyuta': rows[i][12],
-                  'summa': rows[i][13],
-                  'kod': rows[i][14],
+                  'magazinId': auth.method_id,
+                  'magazin': auth.method_name,
+                  'tip': rows[i][1],
+                  'adress': rows[i][2],
+                  'name': rows[i][3],
+                  'ogoh': rows[i][4],
+                  'soni': rows[i][5],
+                  'olinish': rows[i][6],
+                  'sotilish': rows[i][7],
+                  'sotilish2': rows[i][8],
+                  'valyuta': rows[i][9],
+                  'summa': rows[i][10],
+                  'kod': rows[i][11],
                 });
               }
               this.SqladMethodUrlPost({
