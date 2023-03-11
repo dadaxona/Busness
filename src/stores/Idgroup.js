@@ -1,8 +1,8 @@
 import axios from 'axios';
-const http_url = 'https://njs.5155.uz/api/';
+// const http_url = 'https://njs.5155.uz/api/';
 // const http_url = 'https://uz.idsoft.uz/api/';
 // const http_url = 'https://control.idsoft.uz/api/';
-// const http_url = 'http://localhost:1122/api/';
+const http_url = 'http://localhost:1122/api/';
 // const http_url = 'http://beckendm/api/';
 
 var dateObj = new Date();
@@ -895,6 +895,16 @@ const idgroup = {
                 data: request,
             }).then(data => {
                 if (data.data == 200) {
+                    if (data.data.code == 200) {
+                        axios({
+                            method: 'post',
+                            url: "https://api.telegram.org/bot" + data.data.mega + "/sendMessage",
+                            data: {
+                                chat_id: data.data.chat_id,
+                                text: data.data.msg
+                            },
+                        }); 
+                    } else { }
                     context.commit('FilterAuthMut')
                 } else {
                     

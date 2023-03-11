@@ -753,29 +753,6 @@
                     </tr>
                     </thead>
                     <tbody>
-                      <!-- <tr v-for="(item, index) in Sotish" :key="item.id" class="tir">
-                        <td>
-                          <input type="text" class="keyinp_son" v-model="item.name" disabled>
-                        </td>
-                        <td>
-                          <input type="text" class="keyinp_son" v-on:keyup="UpdateSotilish(item)" v-model="item.sotilish">
-                        </td>
-                        <td>
-                          <input type="number" class="keyinp_son" v-on:keyup="UpdateSon(item)" v-model="item.soni">
-                        </td>
-                        <td>
-                          <input type="text" class="keyinp_son" v-on:keyup="UpdateChgirma(item)" v-model="item.chegirma">
-                        </td>
-                        <td>
-                          <input type="text" class="keyinp_son" v-on:keyup="UpdateJami(item)" v-model="item.jami">
-                        </td>
-                        <td>
-                          <a class="text-danger" v-on:click="Deletsotuv(index, item.jami)">
-                            <i class="nav-icon i-Close-Window font-weight-bold"></i>
-                          </a>
-                        </td>
-                      </tr> -->
-
                       <tr v-for="(item, index) in Sotish" :key="item.id" class="tir">
                         <td>
                           <input type="text" class="keyinp_son" v-model="item.name" disabled>

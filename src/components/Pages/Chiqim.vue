@@ -80,12 +80,12 @@
                 this.excel.push({
                   'magazinId': auth.method_id,
                   'magazin': auth.method_name,
-                  'qayerga': rows[i][2],
-                  'sabap': rows[i][3],
-                  'summa': rows[i][1],
+                  'qayerga': rows[i][1],
+                  'sabap': rows[i][2],
+                  'summa': rows[i][3],
                   'sana': this.date,
-                  'kurs': rows[i][5],
-                  'valyuta': rows[i][6],
+                  'kurs': rows[i][4],
+                  'valyuta': rows[i][5],
                 });
               }
               this.OriginalMethodUrlPost({
