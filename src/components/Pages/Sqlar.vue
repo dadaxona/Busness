@@ -367,12 +367,12 @@
                                 <th>Тип</th>
                                 <th>Адрес</th>
                                 <th>Товар</th>
-                                <th>N.1</th>
+                                <th>Предупреждение</th>
                                 <th>Штрих код</th>
                                 <th>Количество</th>
-                                <th>Получающий</th>
-                                <th>Низкая</th>
-                                <th>Стандартная</th>
+                                <th>Приход</th>
+                                <th>B2B</th>
+                                <th>B2C</th>
                                 <th>Валюта</th>
                                 <th>Action</th>
                             </tr>
@@ -481,7 +481,7 @@
                   <input class="form-control" id="firstName1" type="text" v-model="name">
                 </div>
                 <div class="col-md-6 form-group mb-3">
-                  <label for="firstName1">N.1</label>
+                  <label for="firstName1">предупреждение</label>
                   <input class="form-control" id="firstName1" type="number" v-model="ogoh">
                 </div>
                 <div class="col-md-6 form-group mb-3">

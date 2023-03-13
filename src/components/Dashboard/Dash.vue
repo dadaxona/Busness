@@ -566,7 +566,7 @@
                                 <li>
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Тип товар</label><RouterLink to="tovartip"><i class="nav-icon mr-2 i-File-Clipboard-File--Text"></i> Тип товар</RouterLink>
+                                            <label class="toggle" for="drop-2">Тип товар</label><RouterLink to="tovartip"><i class="nav-icon i-Library mr-2"></i> Тип товар</RouterLink>
                                         </div>
                                     </div>
                                 </li>
@@ -574,7 +574,7 @@
                                 <li>
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Доставщик</label><RouterLink to="yetkazuvchi"><i class="nav-icon mr-2 i-Bar-Chart-5"></i> Доставщик</RouterLink>
+                                            <label class="toggle" for="drop-2">Доставщик</label><RouterLink to="yetkazuvchi"><i class="nav-icon mr-2 i-Administrator"></i> Доставщик</RouterLink>
                                         </div>
                                     </div>
                                 </li>
@@ -610,13 +610,13 @@
                                 <!--end-doc  -->
                             </ul>
                             <ul v-else class="menu float-left">
-                                <li>
+                                <!-- <li>
                                     <div>
                                         <div>
                                             <label class="toggle" for="drop-2">Главная страница</label><RouterLink to="dash"><i class="nav-icon mr-2 i-Bar-Chart"></i> Главная страница</RouterLink>
                                         </div>
                                     </div>
-                                </li>
+                                </li> -->
                                 <li>
                                     <div>
                                         <div>
@@ -644,7 +644,7 @@
                                 <li v-if="authtenticat.tip == 1">
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Тип товар</label><RouterLink to="tovartip"><i class="nav-icon mr-2 i-File-Clipboard-File--Text"></i> Тип товар</RouterLink>
+                                            <label class="toggle" for="drop-2">Тип товар</label><RouterLink to="tovartip"><i class="nav-icon i-Library mr-2"></i> Тип товар</RouterLink>
                                         </div>
                                     </div>
                                 </li>
@@ -652,7 +652,7 @@
                                 <li v-if="authtenticat.yetkazu == 1">
                                     <div>
                                         <div>
-                                            <label class="toggle" for="drop-2">Доставщик</label><RouterLink to="yetkazuvchi"><i class="nav-icon mr-2 i-Bar-Chart-5"></i> Доставщик</RouterLink>
+                                            <label class="toggle" for="drop-2">Доставщик</label><RouterLink to="yetkazuvchi"><i class="nav-icon mr-2 i-Administrator"></i> Доставщик</RouterLink>
                                         </div>
                                     </div>
                                 </li>

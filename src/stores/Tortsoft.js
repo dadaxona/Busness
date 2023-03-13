@@ -1,7 +1,7 @@
 import axios from 'axios';
 // const http_url = 'https://njs.5155.uz/api/';
 // const http_url = 'https://uz.idsoft.uz/api/';
-// const http_url = 'https://control.idsoft.uz/api/';
+// const http_url = 'https://njs.5858.uz/api/';
 const http_url = 'http://localhost:1122/api/';
 // const http_url = 'http://beckendm/api/';
 const tortsoft = {
@@ -11,6 +11,11 @@ const tortsoft = {
             rasxod: 0,
             kirishqarz: 0,
             foyda: 0,
+
+        },
+        Itmmag: {
+            dbmag: [],
+            pradav: [],
         },
     },
     mutations: {
@@ -33,11 +38,24 @@ const tortsoft = {
     actions: {
         Foyda_Act_bugun: (context, request) => {
             context.commit('Foyda_Act_bugun_Mut', request);
+        },
+        GetMagazin: ({state, commit}, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url,
+                data: request
+            }).then(data => {
+                state.Itmmag.dbmag = data.data.mag;
+                state.Itmmag.pradav = data.data.prad;
+            });
         }
     },
     getters: {
         nbir(state){
             return state.foydaobjtorgo;
+        },
+        Itmmag(state){
+            return state.Itmmag;
         }
     }
 };

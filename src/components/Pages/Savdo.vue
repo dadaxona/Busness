@@ -1058,13 +1058,13 @@
       </div>
       <div class="col-md-12 border-top">
         <div v-if="karz == 0" class="mt-4 mb-4 text-right">
-          <button type="button" class="btn btn-success" v-on:click="OplataStart">Сохранить</button>
+          <button type="button" class="btn btn-success" v-on:click="OplataStart">Оплата</button>
         </div>
         <div v-else-if="chesxbox == 1 && Kamentariya2" class="mt-4 mb-4 text-right">
-          <button type="button" class="btn btn-success" v-on:click="OplataStart">Сохранить</button>
+          <button type="button" class="btn btn-success" v-on:click="OplataStart">Оплата</button>
         </div>
         <div v-else-if="srok && mijozs" class="mt-4 mb-4 text-right">
-          <button type="button" class="btn btn-success" v-on:click="OplataStart">Сохранить</button>
+          <button type="button" class="btn btn-success" v-on:click="OplataStart">Оплата</button>
         </div>
         <div v-else class="mt-4 mb-4 text-right">
           <button type="button" class="btn btn-light">Сохранить</button>
