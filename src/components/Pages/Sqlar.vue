@@ -38,7 +38,51 @@
               statustyp: '',
               date:  year + "-" + monh + "-" + day,
               excel: [],
-              toxtatish: false
+              toxtatish: false,
+              shablons: [
+                {
+                  'id': '',
+                  'tip': 'Тип имя',
+                  'adress': 'Поставчик имя',
+                  'name': 'Товар имя',
+                  'ogoh': '5',
+                  'soni': '10',
+                  'olinish': '100',
+                  'sotilish': '120',
+                  'sotilish2': '140',
+                  'valyuta': 'USD',
+                  'summa': '10000',
+                  'kod': '123456789', 
+                },
+                {
+                  'id': '',
+                  'tip': 'Тип имя',
+                  'adress': 'Поставчик имя',
+                  'name': 'Товар имя',
+                  'ogoh': '5',
+                  'soni': '10',
+                  'olinish': '100',
+                  'sotilish': '120',
+                  'sotilish2': '140',
+                  'valyuta': 'USD',
+                  'summa': '10000',
+                  'kod': '123456789', 
+                },
+                {
+                  'id': '',
+                  'tip': 'null',
+                  'adress': 'null',
+                  'name': 'Товар имя',
+                  'ogoh': '5',
+                  'soni': '10',
+                  'olinish': '100',
+                  'sotilish': '120',
+                  'sotilish2': '140',
+                  'valyuta': 'null',
+                  'summa': 'null',
+                  'kod': 'null', 
+                },
+              ]
             }
         },
         methods: {
@@ -58,64 +102,95 @@
             this.token = auth.token,
             this.statustyp = auth.action
           },
+          dolon(){
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
+              saveExcel({
+                data: this.shablons,
+                fileName: "Export",
+                columns: [
+                  {field: 'id'},
+                  {field: 'tip'},
+                  {field: 'adress'},
+                  {field: 'name'},
+                  {field: 'ogoh'},
+                  {field: 'soni'},
+                  {field: 'olinish'},
+                  {field: 'sotilish'},
+                  {field: 'sotilish2'},
+                  {field: 'valyuta'},
+                  {field: 'summa'},
+                  {field: 'kod'},
+                ]
+              });
+            } else {}
+          },
           exp(){
-            saveExcel({
-              data: this.objects3,
-              fileName: "Export",
-              columns: [
-                {field: 'id'},
-                {field: 'tip'},
-                {field: 'adress'},
-                {field: 'name'},
-                {field: 'ogoh'},
-                {field: 'soni'},
-                {field: 'olinish'},
-                {field: 'sotilish'},
-                {field: 'sotilish2'},
-                {field: 'valyuta'},
-                {field: 'summa'},
-                {field: 'kod'},
-              ]
-            });
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
+              saveExcel({
+                data: this.objects3,
+                fileName: "Export",
+                columns: [
+                  {field: 'id'},
+                  {field: 'tip'},
+                  {field: 'adress'},
+                  {field: 'name'},
+                  {field: 'ogoh'},
+                  {field: 'soni'},
+                  {field: 'olinish'},
+                  {field: 'sotilish'},
+                  {field: 'sotilish2'},
+                  {field: 'valyuta'},
+                  {field: 'summa'},
+                  {field: 'kod'},
+                ]
+              });
+            } else {}
           },
           clik(){
-            document.getElementById("archiveExcel").click();
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
+              document.getElementById("archiveExcel").click();
+            } else {}
           },
           subirExcel(){
             const input = document.getElementById("archiveExcel");
             const auth = JSON.parse(localStorage.getItem('auth'));
-            readXisFile(input.files[0]).then((rows)=>{
-              for (let i = 1; i < rows.length; i++) {
-                this.excel.push({
-                  'magazinId': auth.method_id,
-                  'magazin': auth.method_name,
-                  'tip': rows[i][1],
-                  'adress': rows[i][2],
-                  'name': rows[i][3],
-                  'ogoh': rows[i][4],
-                  'soni': rows[i][5],
-                  'olinish': rows[i][6],
-                  'sotilish': rows[i][7],
-                  'sotilish2': rows[i][8],
-                  'valyuta': rows[i][9],
-                  'summa': rows[i][10],
-                  'kod': rows[i][11],
+            if (auth.method_id) {
+              readXisFile(input.files[0]).then((rows)=>{
+                for (let i = 1; i < rows.length; i++) {
+                  this.excel.push({
+                    'magazinId': auth.method_id,
+                    'magazin': auth.method_name,
+                    'tip': rows[i][1],
+                    'adress': rows[i][2],
+                    'name': rows[i][3],
+                    'ogoh': rows[i][4],
+                    'soni': rows[i][5],
+                    'olinish': rows[i][6],
+                    'sotilish': rows[i][7],
+                    'sotilish2': rows[i][8],
+                    'valyuta': rows[i][9],
+                    'summa': rows[i][10],
+                    'kod': rows[i][11],
+                  });
+                }
+                this.SqladMethodUrlPost({
+                    'method': 'post',
+                    'url2': 'post_update_sqlad_exsel',
+                    'url': 'getdb',
+                    'massivname': this.excel,
+                    'login': this.login,
+                    'token': this.token,
+                    'magazinId': auth.method_id,
+                    'magazin': auth.method_name,
+                    'status': this.statustyp,
                 });
-              }
-              this.SqladMethodUrlPost({
-                  'method': 'post',
-                  'url2': 'post_update_sqlad_exsel',
-                  'url': 'getdb',
-                  'massivname': this.excel,
-                  'login': this.login,
-                  'token': this.token,
-                  'magazinId': auth.method_id,
-                  'magazin': auth.method_name,
-                  'status': this.statustyp,
               });
-            });
-            this.excel = [];
-            input.value = '';
+              this.excel = [];
+              input.value = '';
+            }else {}
           },
           CreateSqlad(){
             if (auth.method_id) {
@@ -159,14 +234,16 @@
             this.showModal = true;
           },
           getSqlad(){
-            this.SqladDB({
-              'method': 'post',
-              'url': 'getdb',
-              'login': this.login,
-              'token': this.token,
-              'magazinId': auth.method_id,
-              'status': this.statustyp,
-            });
+            if (auth.method_id) {
+              this.SqladDB({
+                'method': 'post',
+                'url': 'getdb',
+                'login': this.login,
+                'token': this.token,
+                'magazinId': auth.method_id,
+                'status': this.statustyp,
+              });
+            } else {}
           },
           delettip(id, name){
             this.id = id;
@@ -319,19 +396,22 @@
     <div class="col-md-12 mb-3">
         <div class="card text-left">
             <div class="card-body">
-                <button class="btn btn-success mb-2" @click="showModal = true">Товар добавлять</button>
+                <button class="btn btn-success btn-sm mb-2" @click="showModal = true">Товар добавлять</button>
                 <input type="file" id="archiveExcel" v-on:change="subirExcel()">
-                <button class="btn btn-success mb-2 mx-3" v-on:click="clik">                  
+                <button class="btn btn-success btn-sm mb-2 mx-3" v-on:click="clik">                  
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
                     <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
                     <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
                   </svg>
                 </button>
-                <button class="btn btn-primary mb-2" v-on:click="exp">
+                <button class="btn btn-primary btn-sm mb-2" v-on:click="exp">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
                     <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
                     <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
                   </svg>
+                </button>
+                <button class="btn btn-warning btn-sm ml-3 mb-2" v-on:click="dolon">
+                  Шаблон
                 </button>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" v-on:click="obnovit" class="bi bi-funnel filtddd" viewBox="0 0 16 16">
                   <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>

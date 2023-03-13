@@ -47,7 +47,42 @@
               showModalBal: false,
               oknaSavdo2: false,
               showModalDel22: false,
-              excel: []
+              excel: [],
+              shablons: [
+                {
+                  'id': '',
+                  'name': 'Имя',
+                  'firma': 'ID Group',
+                  'tel': '99890123456',
+                  'telegram': '123654789',
+                  'karz': '',
+                  'summa': '100000',
+                  'kurs': '10000',
+                  'valyuta': 'USD',
+                },
+                {
+                  'id': '',
+                  'name': 'Имя',
+                  'firma': 'ID Group',
+                  'tel': '99890123456',
+                  'telegram': '123654789',
+                  'karz': '',
+                  'summa': '100000',
+                  'kurs': '1',
+                  'valyuta': 'UZS',
+                },
+                {
+                  'id': '',
+                  'name': 'Имя',
+                  'firma': 'null',
+                  'tel': 'null',
+                  'telegram': 'null',
+                  'karz': '',
+                  'summa': 'null',
+                  'kurs': 'null',
+                  'valyuta': 'null',
+                },
+              ]
             }
         },
         methods: {
@@ -56,7 +91,8 @@
             'OriginalMethodUrlGet',
             'OriginalMethodUrlPost',
             'OriginalBalans',
-            'OrigiDate'
+            'OrigiDate',
+            'suniyIntelAC'
           ]),
           FilterAuth(){
             this.FilterAuthAc();
@@ -71,15 +107,48 @@
             this.name = name,
             this.showModalDel = true
           },
+          SmsTelegram(){
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
+              this.suniyIntelAC({
+                'method': 'post',
+                'url': 'dolgicilent',
+                'login': this.login,
+                'token': this.token,
+                'date': this.date,
+                'magazinId': auth.method_id,
+                'magazin': auth.method_name,
+                'status': this.statustyp,
+              });
+            }
+          },
+          dolon3(){
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
+              saveExcel({
+                data: this.shablons,
+                fileName: "Export",
+                columns: [
+                  {field: 'id'},
+                  {field: 'name'},
+                  {field: 'firma'},
+                  {field: 'tel'},
+                  {field: 'telegram'},
+                  {field: 'karz'},
+                  {field: 'summa'},
+                  {field: 'kurs'},
+                  {field: 'valyuta'},
+                ]
+              });
+            } else {}
+          },
           exp(){
+            if (auth.method_id) {
             saveExcel({
               data: this.Itemobjects,
               fileName: "Export",
               columns: [
                 {field: 'id'},
-                {field: 'userId'},
-                {field: 'magazinId'},
-                {field: 'magazin'},
                 {field: 'name'},
                 {field: 'firma'},
                 {field: 'tel'},
@@ -90,28 +159,32 @@
                 {field: 'valyuta'},
               ]
             });
+            }else{}
           },
           clik(){
-            document.getElementById("archiveExcel").click();
+            if (auth.method_id) {
+              document.getElementById("archiveExcel").click();
+            }else{}
           },
           subirExcel(){
-            const input = document.getElementById("archiveExcel");
-            readXisFile(input.files[0]).then((rows)=>{
-              for (let i = 1; i < rows.length; i++) {
-                this.excel.push({
-                  'magazinId': auth.method_id,
-                  'magazin': auth.method_name,
-                  'name': rows[i][1],
-                  'firma': rows[i][2],
-                  'tel': rows[i][3],
-                  'telegram': rows[i][4],
-                  'karz': rows[i][5],
-                  'summa': rows[i][6],
-                  'kurs': rows[i][7],
-                  'valyuta': rows[i][8],
-                });                
-              }
-              this.OriginalMethodUrlPost({
+            if (auth.method_id) {
+              const input = document.getElementById("archiveExcel");
+              readXisFile(input.files[0]).then((rows)=>{
+                for (let i = 1; i < rows.length; i++) {
+                  this.excel.push({
+                    'magazinId': auth.method_id,
+                    'magazin': auth.method_name,
+                    'name': rows[i][1],
+                    'firma': rows[i][2],
+                    'tel': rows[i][3],
+                    'telegram': rows[i][4],
+                    'karz': rows[i][5],
+                    'summa': rows[i][6],
+                    'kurs': rows[i][7],
+                    'valyuta': rows[i][8],
+                  });                
+                }
+                this.OriginalMethodUrlPost({
                   'method': 'post',
                   'url2': 'post_update_mijoz_exsel',
                   'url': 'mijozget',
@@ -121,10 +194,11 @@
                   'magazinId': auth.method_id,
                   'magazin': auth.method_name,
                   'status': this.statustyp,
+                });
               });
-            });
-            this.excel = [];
-            input.value = '';
+              this.excel = [];
+              input.value = '';
+            }else{}
           },
           UserDelet(){
             this.OriginalMethodUrlPost({
@@ -356,6 +430,12 @@
                     <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
                     <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
                   </svg>
+                </button>
+                <button class="btn btn-warning mx-3 mb-2" v-on:click="dolon3">
+                  Шаблон
+                </button>
+                <button class="btn btn-success mb-2" v-on:click="SmsTelegram">
+                  SMS
                 </button>
                 <input type='text' id="usersearch" class="usersearch" v-model="Searvh"/>
                 <div class="table-responsive">

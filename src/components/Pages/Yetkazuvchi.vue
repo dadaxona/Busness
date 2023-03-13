@@ -29,6 +29,29 @@
               arxivsana: '',
               arxivModal: false,
               arxivModaledit: false,
+              shablons: [
+                {
+                  'id': '',
+                  'name': 'Имя',
+                  'summa': '0',
+                  'kurs': '1000',
+                  'valyuta': 'USD',
+                },
+                {
+                  'id': '',
+                  'name': 'Имя',
+                  'summa': '100000',
+                  'kurs': '1',
+                  'valyuta': 'USZ',
+                },
+                {
+                  'id': '',
+                  'name': 'Имя',
+                  'summa': '0',
+                  'kurs': 'null',
+                  'valyuta': 'null',
+                },
+              ]
             }
         },
         methods: {
@@ -47,7 +70,24 @@
             this.token = auth.token,
             this.statustyp = auth.action
           },
+          dolon2(){
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
+              saveExcel({
+                data: this.shablons,
+                fileName: "Export",
+                columns: [
+                  {field: 'id'},
+                  {field: 'name'},
+                  {field: 'summa'},
+                  {field: 'kurs'},
+                  {field: 'valyuta'},
+                ]
+              });
+            } else {}
+          },
           exp(){
+            if (auth.method_id) {
             saveExcel({
               data: this.Itemobjects,
               fileName: "Export",
@@ -56,16 +96,20 @@
                 {field: 'name'},
                 {field: 'summa'},
                 {field: 'kurs'},
-                {field: 'valyuta'},                
+                {field: 'valyuta'},
               ]
             });
+            }else{}
           },
           clik(){
-            document.getElementById("archiveExcel").click();
+            if (auth.method_id) {
+              document.getElementById("archiveExcel").click();
+            }else{}
           },
           subirExcel(){
-            const input = document.getElementById("archiveExcel");
             const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
+            const input = document.getElementById("archiveExcel");
             readXisFile(input.files[0]).then((rows)=>{
               for (let i = 1; i < rows.length; i++) {
                 this.excel.push({
@@ -91,6 +135,7 @@
             });
             this.excel = [];
             input.value = '';
+            }else{}
           },
           CreateYetkazuvchi(){
             if (auth.method_id) {
@@ -279,6 +324,9 @@
                     <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
                     <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
                   </svg>
+                </button>
+                 <button class="btn btn-warning ml-3 mb-2" v-on:click="dolon2">
+                  Шаблон
                 </button>
                 <input type='text' id="yerkaz" class="yerkaz" v-model="yerkazse" />
                 <div class="table-responsive">

@@ -148,17 +148,6 @@
             }
           }
           this.Sotuvga_Olish_Action({
-            // 'id': obj.id,
-            // 'name': obj.name,
-            // 'olinish': olsh,
-            // 'soni': 1,
-            // 'soni2': obj.soni,
-            // 'chegirma': 0,
-            // 'sotilish': sum,
-            // 'jami': sum,
-            // 'summa': obj.summa,
-            // 'valyuta': obj.valyuta,
-
             'id': obj.id,
             'name': obj.name,
             'shtrix': obj.kod,
@@ -173,9 +162,7 @@
             'summa': obj.summa,
             'valyuta': obj.valyuta,
           });
-        } else {
-          
-        }
+        } else {}
       },
       Minus(id, i, typ){
         this.Plus_Minus_Ac({
@@ -539,19 +526,19 @@
           data: JSON.parse(localStorage.getItem('sotuv')),
           fileName: "Export",
           columns: [
-            {field: 'id'},
-            {field: 'name'},
-            {field: 'shtrix'},
-            {field: 'olinish'},
-            {field: 'soni'},
-            {field: 'soni2'},
-            {field: 'chegirma'},
-            {field: 'sotilish'},
-            {field: 'sotilish_prise'},
-            {field: 'skidka'},
-            {field: 'jami'},
-            {field: 'summa'},
-            {field: 'valyuta'}
+              {field: 'id'},
+              {field: 'name'},
+              {field: 'shtrix'},
+              {field: 'olinish'},
+              {field: 'soni'},
+              {field: 'soni2'},
+              {field: 'chegirma'},
+              {field: 'sotilish'},
+              {field: 'sotilish_prise'},
+              {field: 'skidka'},
+              {field: 'jami'},
+              {field: 'summa'},
+              {field: 'valyuta'}
             ]
           });
       },
@@ -560,13 +547,13 @@
         const auth = JSON.parse(localStorage.getItem('auth'));
         if (auth.method_id) {
           this.OriginalM({
-              'method': 'post',
-              'url': 'mijozget',
-              'login': this.login,
-              'token': this.token,
-              'magazinId': auth.method_id,
-              'magazin': auth.method_name,
-              'status': this.statustyp,
+            'method': 'post',
+            'url': 'mijozget',
+            'login': this.login,
+            'token': this.token,
+            'magazinId': auth.method_id,
+            'magazin': auth.method_name,
+            'status': this.statustyp,
           });
         }else{}
       },

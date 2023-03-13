@@ -22164,9 +22164,9 @@ a.typo_link.text-gray-900:after {
 .layout-horizontal-bar .main-content-wrap {
   width: 100%;
   float: right;
-  margin-top: 140px !important;
+  margin-top: 130px !important;
   transition: all 0.24s ease-in-out;
-  padding: 2rem 2rem 0;
+  padding: 1rem 1rem 0;
   position: relative;
   min-height: calc(100vh - 160px);
   background: #e9e9e9;
@@ -22333,9 +22333,9 @@ a.typo_link.text-gray-900:after {
   .layout-horizontal-bar .main-content-wrap {
     width: 100%;
     float: right;
-    margin-top: 80px !important;
+    margin-top: 130px !important;
     transition: all 0.24s ease-in-out;
-    padding: 2rem 2rem 0;
+    padding: 1rem 1rem 0;
     position: relative;
     min-height: calc(100vh - 160px);
     background: #e9e9e9;

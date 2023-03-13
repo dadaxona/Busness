@@ -20,7 +20,7 @@
                 'SignUpAc',
                 'SessiondAc'
             ]),
-            SignUp() {
+            onSubmitRegist() {
                 if (this.password == this.repassword) {
                     this.token = Math.random().toString(36).substr(2);
                     this.answer = true;
@@ -75,34 +75,36 @@
                     </div>
                     <div class="col-md-6">
                         <div class="p-4">
-                            <h1 class="mb-3 text-18">Регистрация</h1>                           
-                            <div class="form-group">
-                                <label for="username">Имя</label>
-                                <input class="form-control form-control-rounded" v-model="username" id="username" type="text">
-                            </div>
-                            <div class="form-group">
-                                <label for="login">Логин</label>
-                                <input class="form-control form-control-rounded" v-model="login" id="login" type="login">
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Бизнес тип</label>
-                                <select class="form-control form-control-rounded" v-model="biznesty" name="biznesty" id="biznesty">
-                                    <option v-for="item in items">
-                                        {{item.biznes}}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Парол</label>
-                                <input class="form-control form-control-rounded" v-model="password" id="password" type="password">
-                            </div>
-                            <div class="form-group">
-                                <label for="repassword">Повторите Парол</label>
-                                <input class="form-control form-control-rounded" v-model="repassword" id="repassword" type="password">
-                            </div>
-                            <p v-if="answer === true" style="color: green;"></p>
-                            <p v-if="answer === false" style="color: red;">Парол ошибка</p>
-                            <button class="btn btn-primary btn-block btn-rounded mt-3" v-on:click="SignUp">Регистрация</button>                    
+                            <h1 class="mb-3 text-18">Регистрация</h1>
+                            <form v-on:submit.prevent="onSubmitRegist">
+                                <div class="form-group">
+                                    <label for="username">Имя</label>
+                                    <input class="form-control form-control-rounded" v-model="username" id="username" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label for="login">Логин</label>
+                                    <input class="form-control form-control-rounded" v-model="login" id="login" type="login">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Бизнес тип</label>
+                                    <select class="form-control form-control-rounded" v-model="biznesty" name="biznesty" id="biznesty">
+                                        <option v-for="item in items">
+                                            {{item.biznes}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Парол</label>
+                                    <input class="form-control form-control-rounded" v-model="password" id="password" type="password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="repassword">Повторите Парол</label>
+                                    <input class="form-control form-control-rounded" v-model="repassword" id="repassword" type="password">
+                                </div>
+                                <p v-if="answer === true" style="color: green;"></p>
+                                <p v-if="answer === false" style="color: red;">Парол ошибка</p>
+                                <button class="btn btn-primary btn-block btn-rounded mt-3">Регистрация</button>
+                            </form>
                             <div class="mt-3 text-center"><RouterLink class="text-muted" to="/">
                                 <u>Вход</u></RouterLink></div>
                         </div>

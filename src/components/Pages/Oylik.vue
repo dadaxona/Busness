@@ -191,7 +191,7 @@
                 },
                 modeloy(item){
                     const auth = JSON.parse(localStorage.getItem('auth'));
-                    if (auth.method_id) {
+                    if (item && auth.method_id) {
                         this.Saqlas_Kassa_Get({
                             'method': 'post',
                             'url2': 'kassa_post_oy',

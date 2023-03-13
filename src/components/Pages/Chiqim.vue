@@ -37,6 +37,35 @@
               statustyp: '',
               excel: [],
               date:  year + "-" + monh + "-" + day,
+              shablons: [
+                {
+                  'id': '',
+                  'qayerga': 'Где',
+                  'sabap': 'Проблем',
+                  'summa': '100',
+                  'sana': '2023-01-31',
+                  'kurs': '10000',
+                  'valyuta': 'USD',
+                },
+                {
+                  'id': '',
+                  'qayerga': 'Где',
+                  'sabap': 'Проблем',
+                  'summa': '100',
+                  'sana': '2023-01-31',
+                  'kurs': '1',
+                  'valyuta': 'UZS',
+                }, 
+                {
+                  'id': '',
+                  'qayerga': 'Где',
+                  'sabap': 'Проблем',
+                  'summa': '100',
+                  'sana': '2023-01-31',
+                  'kurs': 'null',
+                  'valyuta': 'null',
+                },
+              ]
             }
         },
         methods: {
@@ -53,6 +82,24 @@
             this.login = auth.login,
             this.token = auth.token
             this.statustyp = auth.action
+          },
+          dolon4(){
+            const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
+              saveExcel({
+                data: this.shablons,
+                fileName: "Export",
+                columns: [
+                  {field: 'id'},
+                  {field: 'qayerga'},
+                  {field: 'sabap'},
+                  {field: 'summa'},
+                  {field: 'sana'},
+                  {field: 'kurs'},
+                  {field: 'valyuta'},
+                ]
+              });
+            } else {}
           },
           exp(){
             saveExcel({
@@ -73,35 +120,37 @@
             document.getElementById("archiveExcel").click();
           },
           subirExcel(){
-            const input = document.getElementById("archiveExcel");
             const auth = JSON.parse(localStorage.getItem('auth'));
-            readXisFile(input.files[0]).then((rows)=>{
-              for (let i = 1; i < rows.length; i++) {
-                this.excel.push({
+            if (auth.method_id) {
+              const input = document.getElementById("archiveExcel");
+              readXisFile(input.files[0]).then((rows)=>{
+                for (let i = 1; i < rows.length; i++) {
+                  this.excel.push({
+                    'magazinId': auth.method_id,
+                    'magazin': auth.method_name,
+                    'qayerga': rows[i][1],
+                    'sabap': rows[i][2],
+                    'summa': rows[i][3],
+                    'sana': this.date,
+                    'kurs': rows[i][4],
+                    'valyuta': rows[i][5],
+                  });
+                }
+                this.OriginalMethodUrlPost({
+                  'method': 'post',
+                  'url2': 'post_update_chiqim_exsel',
+                  'url': 'chiqim_get',
+                  'massivname': this.excel,
+                  'login': this.login,
+                  'token': this.token,
                   'magazinId': auth.method_id,
                   'magazin': auth.method_name,
-                  'qayerga': rows[i][1],
-                  'sabap': rows[i][2],
-                  'summa': rows[i][3],
-                  'sana': this.date,
-                  'kurs': rows[i][4],
-                  'valyuta': rows[i][5],
+                  'status': this.statustyp,
                 });
-              }
-              this.OriginalMethodUrlPost({
-                'method': 'post',
-                'url2': 'post_update_chiqim_exsel',
-                'url': 'chiqim_get',
-                'massivname': this.excel,
-                'login': this.login,
-                'token': this.token,
-                'magazinId': auth.method_id,
-                'magazin': auth.method_name,
-                'status': this.statustyp,
               });
-            });
-            this.excel = [];
-            input.value = '';
+              this.excel = [];
+              input.value = '';
+            }else{}
           },
           CreateChiqim(){
             const auth = JSON.parse(localStorage.getItem('auth'));
@@ -237,6 +286,9 @@
                     <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
                     <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
                   </svg>
+                </button>
+                <button class="btn btn-warning ml-3 mb-2" v-on:click="dolon4">
+                  Шаблон
                 </button>
                 <input type='text' id="chiqim" class="chiqim" v-model="chiqimse" />
                 <div class="table-responsive">
