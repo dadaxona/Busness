@@ -29,7 +29,7 @@
                 tolov: '',
                 dinamik: '',
                 maga: '',
-
+                filtdate: '',
                 id: '',
                 tip:'',
                 adress:'',
@@ -81,6 +81,7 @@
                 'VariantAct',
                 'CreateSqladdbAc',
                 'SqladMethoddb',
+                'FiltdatefnAc'
             ]),
             kabinet2(typ){
                 this.kabinet1 = typ;
@@ -381,6 +382,19 @@
                     'magazinId': auth.method_id,
                     'magazin': auth.method_name,
                     'status': this.statustyp,              
+                });
+            },
+            filtdatefn(date){
+                this.FiltdatefnAc({
+                    'method': 'post',
+                    'url': 'filtrsotuv',
+                    'login': this.login,
+                    'token': this.token,
+                    'clent': date,
+                    'date': date,
+                    'magazinId': auth.method_id,
+                    'magazin': auth.method_name,
+                    'status': this.statustyp,  
                 });
             }
         },
@@ -730,7 +744,8 @@
                                 <th>Банк</th>
                                 <th>Karz</th>
                                 <th>Продавец</th>
-                                <th>Дата</th>
+                                <!-- <th>Дата</th> -->
+                                <th><input type="date" v-on:change="filtdatefn(filtdate)" v-model="filtdate"></th>
                             </tr>
                         </thead>
                         <tbody v-html="tablestyil">

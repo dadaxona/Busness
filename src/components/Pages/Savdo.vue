@@ -40,6 +40,7 @@
         checke: '',
         Jamisum: '',
         mijozs: '',
+        mijozs2: '',
         naqt: '',
         plastik: '',
         bank: '',
@@ -60,7 +61,9 @@
         otprov: false,
         someJSONdata: [],
         Otkazishdb: [],
-        magadb: ''
+        magadb: '',
+        toxtatish: false,
+        filclent: []
       }
     },
     methods: {
@@ -542,7 +545,6 @@
             ]
           });
       },
-
       suniyIntel(){
         const auth = JSON.parse(localStorage.getItem('auth'));
         if (auth.method_id) {
@@ -565,25 +567,24 @@
         const praduct = [];
         var mas = [];
         if (item.soni == 0) {
-          
         } else {
           mas = {
-              "id": item.id,
-              "userId": item.userId,
-              "magazinId": item.magazinId,
-              "magazin": item.magazin,
-              "tip": item.tip,
-              "adress": item.adress,
-              "name":  item.name,
-              "ogoh": item.ogoh,
-              "soni": 1,
-              "soni2": item.soni,
-              "olinish": item.olinish,
-              "sotilish": item.sotilish,
-              "sotilish2": item.sotilish2,
-              "valyuta": item.valyuta,
-              "summa": item.summa,
-              "kod": item.kod,
+            "id": item.id,
+            "userId": item.userId,
+            "magazinId": item.magazinId,
+            "magazin": item.magazin,
+            "tip": item.tip,
+            "adress": item.adress,
+            "name":  item.name,
+            "ogoh": item.ogoh,
+            "soni": 1,
+            "soni2": item.soni,
+            "olinish": item.olinish,
+            "sotilish": item.sotilish,
+            "sotilish2": item.sotilish2,
+            "valyuta": item.valyuta,
+            "summa": item.summa,
+            "kod": item.kod,
           }
           const local = JSON.parse(localStorage.getItem('dbsql'));
           if (local) {
@@ -657,6 +658,31 @@
             this.otprov = false;
           } else {}
         } else {}
+      },
+      valpush2(item){
+        this.clentsummafn(item.id);
+        this.mijozs = item.id;
+        this.mijozs2 = item.name;
+        this.toxtatish = false;
+      },
+      tipkey2(row){
+        if (row) {
+          const auth = JSON.parse(localStorage.getItem('auth'));
+            if (auth.method_id) {
+            this.filclent = this.MijozSelect.filter((item) => item.name.toLowerCase().includes(row));
+            if (this.filclent.length > 0) {
+              this.toxtatish = true;
+            } else {
+              this.toxtatish = false;
+              this.clentsumma = '';
+              this.clentkarz = '';
+            }
+          }else{}          
+        } else {
+          this.toxtatish = false;
+          this.clentsumma = '';
+          this.clentkarz = '';
+        }
       }
     },
     watch: {
@@ -965,10 +991,26 @@
           </div>
           <div class="col-md-6 form-group mt-0">
             <label for="firstName1">Слент выбирать</label>
-            <select class="form-control" v-on:change="clentsummafn(mijozs)" v-model="mijozs">
+            <!-- <select class="form-control" v-on:change="clentsummafn(mijozs)" v-model="mijozs">
               <option value="">-- Выбирать --</option>
               <option v-for="itema in MijozSelect" :value="itema.id">{{ itema.name }}</option>
-            </select>
+            </select> -->
+            <input type="text" class="form-control" v-on:keyup="tipkey2(mijozs2)" v-model="mijozs2">
+              <div v-if="toxtatish" 
+                style="
+                  position: absolute;
+                  background-color: white;
+                  width: 100%;
+                  width: 87%;
+                  z-index: 2;
+                  border: 1px solid #c0c0c0;
+                ">
+              <option v-for="item in filclent" :value="item.id"
+                class="cursor-pointer ho" v-on:click="valpush2(item)">
+                {{item.name}}
+              </option>
+            </div>
+            <div v-else></div>
             <span class="text-primary position-absolute">{{ clentsumma }}</span>
             <span class="text-danger mt-3 position-absolute">{{ clentkarz }}</span>
           </div>

@@ -1154,6 +1154,16 @@ const idgroup = {
             }).then(data => { 
                 state.mbal = data.data;
             });
+        },
+        FiltdatefnAc: ({state}, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url,
+                data: request,
+            }).then(data => {
+                state.objectauth2.tugl = data.data.savdo;
+                state.savdoobj = data.data.sotuv;
+            });
         }
     },
     getters: {
