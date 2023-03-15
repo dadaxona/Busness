@@ -1000,7 +1000,6 @@
                 style="
                   position: absolute;
                   background-color: white;
-                  width: 100%;
                   width: 87%;
                   z-index: 2;
                   border: 1px solid #c0c0c0;

@@ -41,7 +41,7 @@
                 sotilish2:'',
                 valyuta:'',
                 shtrix: '',
-                toxtatish: '',
+                toxtatish3: '',
                 filtretr: false,
                 oknamod: false,
                 oknamodzaqaz: false,
@@ -52,6 +52,10 @@
                 showModal: false,
                 showModalDel: false,
                 otprov2: false,
+                filclent2: [],
+                mijozs: '',
+                mijozs2: '',
+                ishname: '',
                 date:  year + "-" + monh + "-" + day,
                 vaz: {
                     savdoId: '',
@@ -81,7 +85,8 @@
                 'VariantAct',
                 'CreateSqladdbAc',
                 'SqladMethoddb',
-                'FiltdatefnAc'
+                'FiltdatefnAc',
+                'IshchiGet'
             ]),
             kabinet2(typ){
                 this.kabinet1 = typ;
@@ -171,7 +176,15 @@
                this.oknamodzaqaz = false;
             },
             oknaSavdobut(typ){
-               this.oknaSavdo = typ;
+                const auth = JSON.parse(localStorage.getItem('auth'));
+                if (auth.method_id) {
+                    this.IshchiGet({
+                        'method': 'post',
+                        'url': 'ishchiget_get',
+                        'magazinId': auth.method_id,
+                    });
+                    this.oknaSavdo = typ;
+                } else {}
             },
             oknaSavdobut2(typ){
                 this.oknaSavdo2 = typ;
@@ -312,10 +325,10 @@
             tipkey(row){
                 const auth = JSON.parse(localStorage.getItem('auth'));
                 if (auth.method_id) {
-                this.VariantAct({
-                    'tip': row,
-                });
-                this.toxtatish = true;
+                    this.VariantAct({
+                        'tip': row,
+                    });
+                    this.toxtatish = true;
                 }else{}
             },
             CreateSqladdb(){
@@ -384,18 +397,43 @@
                     'status': this.statustyp,              
                 });
             },
-            filtdatefn(date){
+            filtdatefn(){
                 this.FiltdatefnAc({
                     'method': 'post',
                     'url': 'filtrsotuv',
                     'login': this.login,
                     'token': this.token,
-                    'clent': date,
-                    'date': date,
+                    'clent': this.mijozs,
+                    'date': this.filtdate,
+                    'ishchi': this.ishname,
                     'magazinId': auth.method_id,
                     'magazin': auth.method_name,
                     'status': this.statustyp,  
                 });
+            },
+            valpush3(item){
+                this.mijozs = item.id;
+                this.mijozs2 = item.name;
+                this.toxtatish3 = false;
+                this.filtdatefn();
+            },
+            tipkey3(row){
+                if (row) {
+                const auth = JSON.parse(localStorage.getItem('auth'));
+                    if (auth.method_id) {
+                        this.filclent2 = this.objectauth2.mijoz.filter((item) => item.name.toLowerCase().includes(row));
+                        if (this.filclent2.length > 0) {
+                            this.toxtatish3 = true;
+                        } else {
+                            this.toxtatish3 = false;
+                        }
+                    }else{}
+                } else {
+                    this.toxtatish3 = false;
+                }
+            },
+            ishnamefn(){
+                this.filtdatefn();
             }
         },
         computed: {
@@ -408,6 +446,7 @@
                 dbitms: 'dbitms',
                 option1: 'option1',
                 valyudata: 'valyudata',
+                Ishch: 'Ishch'
             }),
         },
         mounted() {
@@ -737,15 +776,38 @@
                     <table class="tabl scroltab">
                         <thead>
                             <tr>
-                                <th>Клент</th>
+                                <!-- <th>Клент</th> -->
+                                <th>
+                                    <input type="text"  v-on:keyup="tipkey3(mijozs2)" v-model="mijozs2" placeholder="Клент имя">
+                                    <div v-if="toxtatish3" 
+                                        style="
+                                        position: absolute;
+                                        background-color: white;
+                                        width: 20%;
+                                        z-index: 2;
+                                        border: 1px solid #c0c0c0;
+                                        ">
+                                        <option v-for="item in filclent2" :value="item.name"
+                                        class="cursor-pointer ho" v-on:click="valpush3(item)">
+                                        {{item.name}}
+                                        </option>
+                                    </div>
+                                    <div v-else></div>
+                                </th>
                                 <th>Торговы</th>
                                 <th>Налични</th>
                                 <th>Карта</th>
                                 <th>Банк</th>
                                 <th>Karz</th>
-                                <th>Продавец</th>
+                                <th>
+                                    <select v-on:change="ishnamefn" v-model="ishname">
+                                        <option value="">--Выбирать продавец--</option>
+                                        <option v-for="item in Ishch" :value="item.name">{{ item.name }}</option>
+                                    </select>
+                                </th>
+                                <!-- <th>Продавец</th> -->
                                 <!-- <th>Дата</th> -->
-                                <th><input type="date" v-on:change="filtdatefn(filtdate)" v-model="filtdate"></th>
+                                <th><input type="date" v-on:change="filtdatefn" v-model="filtdate"></th>
                             </tr>
                         </thead>
                         <tbody v-html="tablestyil">

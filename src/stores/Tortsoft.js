@@ -4,6 +4,8 @@ import axios from 'axios';
 // const http_url = 'https://njs.5858.uz/api/';
 const http_url = 'http://localhost:1122/api/';
 // const http_url = 'http://beckendm/api/';
+
+import { Chart } from 'chart.js';
 const tortsoft = {
     state: {
         foydaobjtorgo: {
@@ -16,6 +18,7 @@ const tortsoft = {
         Itmmag: {
             dbmag: [],
             pradav: [],
+            ishch: [],
         },
     },
     mutations: {
@@ -47,6 +50,7 @@ const tortsoft = {
             }).then(data => {
                 state.Itmmag.dbmag = data.data.mag;
                 state.Itmmag.pradav = data.data.prad;
+                state.Itmmag.ishch = data.data.ish;
             });
         }
     },

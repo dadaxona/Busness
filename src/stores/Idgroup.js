@@ -60,6 +60,7 @@ const idgroup = {
         objects6: [],
         objecfiltr: [],
         MijozTel: [],
+        ishchigets: [],
         status: '',
         jami: '',
         togl: '',
@@ -1164,6 +1165,15 @@ const idgroup = {
                 state.objectauth2.tugl = data.data.savdo;
                 state.savdoobj = data.data.sotuv;
             });
+        },
+        IshchiGet: ({state}, request) => {
+            axios({
+                method: request.method,
+                url: http_url + request.url,
+                data: request,
+            }).then(data => {
+                state.ishchigets = data.data;
+            });
         }
     },
     getters: {
@@ -1178,6 +1188,9 @@ const idgroup = {
         },
         Mdat(state){
             return state.mbal;
+        },
+        Ishch(state){
+            return state.ishchigets;
         },
         Itemobjoy(state){
             const formatter = new Intl.NumberFormat();
