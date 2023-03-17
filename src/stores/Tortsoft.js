@@ -16,9 +16,11 @@ const tortsoft = {
 
         },
         Itmmag: {
+            savdos: [],
             dbmag: [],
             pradav: [],
             ishch: [],
+            rasxd2: [],
         },
     },
     mutations: {
@@ -48,9 +50,11 @@ const tortsoft = {
                 url: http_url + request.url,
                 data: request
             }).then(data => {
+                state.Itmmag.savdos = data.data.savdo;
                 state.Itmmag.dbmag = data.data.mag;
                 state.Itmmag.pradav = data.data.prad;
                 state.Itmmag.ishch = data.data.ish;
+                state.Itmmag.rasxd2 = data.data.rasxod;
             });
         }
     },
