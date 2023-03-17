@@ -80,43 +80,9 @@
                 this.chartData = [];
                 this.stchart();
             },
-            mijoztipfn(typ){
-                this.mijoz = '';
-                this.tipv = '';
-                this.mijoztip = typ;
-                this.pradave = '';
-                this.chartData = [];
-                if (typ == 1) {
-                    this.clentarray = this.objectauth2.tugl.filter((item) => { if(item.magazinId == this.magazin && item.mijozId > 0) return item; });
-                } else {
-                    this.clentarray = this.objectauth2.tugl.filter((item) => { if(item.magazinId == this.magazin && item.mijozId == 0) return item; });
-                }
-                if (this.clentarray.length > 0) {
-                    for (let i = 0; i < this.clentarray.length; i++) {
-                        var sum = '';
-                        var san = this.chartData.find(e => { if(e.sana == this.clentarray[i].sana) return e;});
-                        if (san) {
-                            if (this.clentarray[i].valyuta) {
-                                san.summa = parseFloat(this.clentarray[i].jamisumma) * parseFloat(this.clentarray[i].kurs);
-                            } else {
-                                san.summa = parseFloat(this.clentarray[i].jamisumma);
-                            }
-                            console.log(san)
-                        } else {
-                            if (this.clentarray[i].valyuta) {
-                                sum = parseFloat(this.clentarray[i].jamisumma) * parseFloat(this.clentarray[i].kurs);
-                            } else {
-                                sum = parseFloat(this.clentarray[i].jamisumma);
-                            }
-                            this.chartData.push({'sana': this.clentarray[i].sana, 'summa': sum });
-                        }
-                    }
-                } else {
-                    this.chartData = [];
-                }
-                this.stchart();
-            },
             fncl(arg){
+                this.data1 = '';
+                this.data2 = '';
                 this.mijoz = '';
                 this.mijoztip = '';
                 this.tipv = '';
@@ -134,7 +100,7 @@
                 } else {
                     this.magazinish = [];
                 }
-                this.clentarray = this.objectauth2.tugl.filter((item) => { if(item.magazinId == arg) return item; });
+                this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == arg) return item; });
                 if (this.clentarray.length > 0) {
                     for (let i = 0; i < this.clentarray.length; i++) {
                         var sum = '';
@@ -145,7 +111,6 @@
                             } else {
                                 san.summa = parseFloat(this.clentarray[i].jamisumma);
                             }
-                            console.log(san)
                         } else {
                             if (this.clentarray[i].valyuta) {
                                 sum = parseFloat(this.clentarray[i].jamisumma) * parseFloat(this.clentarray[i].kurs);
@@ -160,27 +125,18 @@
                 }
                 this.stchart();
             },
-            tips(typ){
+            data1ch(){
+                this.data2 = '';
+                this.mijoz = '';
+                this.tipv = '';
+                this.mijoztip = '';
                 this.pradave = '';
                 this.chartData = [];
-                if (typ == 1) {
-                    if (this.magazin && this.mijoztip == 1 && this.mijoz) {
-                        this.clentarray = this.objectauth2.tugl.filter((item) => { if(item.mijoz == this.mijoz && item.jamisumma > 0) return item; });
-                    } else if (this.magazin && this.mijoztip == 1) {
-                        this.clentarray = this.objectauth2.tugl.filter((item) => { if(item.jamisumma > 0) return item; });
-                    } else {
-                        this.clentarray = [];
-                    }
+                if (this.magazin) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sana == this.data1) return item; });
                 } else {
-                    if (this.magazin && this.mijoztip == 1 && this.mijoz) {
-                        this.clentarray = this.objectauth2.tugl.filter((item) => { if(item.mijoz == this.mijoz && item.karz > 0) return item; });
-                    } else if (this.magazin && this.mijoztip == 1) {
-                        this.clentarray = this.objectauth2.tugl.filter((item) => { if(item.karz > 0) return item; });
-                    } else {
-                        this.clentarray = [];
-                    }
+                    this.clentarray = [];
                 }
-
                 if (this.clentarray.length > 0) {
                     for (let i = 0; i < this.clentarray.length; i++) {
                         var sum = '';
@@ -191,7 +147,82 @@
                             } else {
                                 san.summa = parseFloat(this.clentarray[i].jamisumma);
                             }
-                            console.log(san)
+                        } else {
+                            if (this.clentarray[i].valyuta) {
+                                sum = parseFloat(this.clentarray[i].jamisumma) * parseFloat(this.clentarray[i].kurs);
+                            } else {
+                                sum = parseFloat(this.clentarray[i].jamisumma);
+                            }
+                            this.chartData.push({'sana': this.clentarray[i].sana, 'summa': sum });
+                        }
+                    }
+                } else {
+                    this.chartData = [];
+                }
+                this.stchart();
+            },
+            data1ch2(){
+                this.mijoz = '';
+                this.tipv = '';
+                this.mijoztip = '';
+                this.pradave = '';
+                this.chartData = [];
+                if (this.magazin) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sana >= this.data1 && item.sana <= this.data2) return item; });
+                } else {
+                    this.clentarray = [];
+                }
+                if (this.clentarray.length > 0) {
+                    for (let i = 0; i < this.clentarray.length; i++) {
+                        var sum = '';
+                        var san = this.chartData.find(e => { if(e.sana == this.clentarray[i].sana) return e;});
+                        if (san) {
+                            if (this.clentarray[i].valyuta) {
+                                san.summa = parseFloat(this.clentarray[i].jamisumma) * parseFloat(this.clentarray[i].kurs);
+                            } else {
+                                san.summa = parseFloat(this.clentarray[i].jamisumma);
+                            }
+                        } else {
+                            if (this.clentarray[i].valyuta) {
+                                sum = parseFloat(this.clentarray[i].jamisumma) * parseFloat(this.clentarray[i].kurs);
+                            } else {
+                                sum = parseFloat(this.clentarray[i].jamisumma);
+                            }
+                            this.chartData.push({'sana': this.clentarray[i].sana, 'summa': sum });
+                        }
+                    }
+                } else {
+                    this.chartData = [];
+                }
+                this.stchart();
+            },
+            mijoztipfn(typ){
+                this.mijoz = '';
+                this.tipv = '';
+                this.mijoztip = typ;
+                this.pradave = '';
+                this.chartData = [];
+                if (typ == 1 && this.data1 && this.data2) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.mijozId > 0 && item.sana >= this.data1 && item.sana <= this.data2) return item; });
+                } else if(typ == 1 && this.data1) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.mijozId > 0 && item.sana == this.data1) return item; });
+                } else if (this.data1 && this.data2) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.mijozId == 0 && item.sana >= this.data1 && item.sana <= this.data2) return item; });
+                } else if (this.data1) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.mijozId == 0 && item.sana == this.data1) return item; });
+                } else {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.mijozId == 0) return item; });
+                }
+                if (this.clentarray.length > 0) {
+                    for (let i = 0; i < this.clentarray.length; i++) {
+                        var sum = '';
+                        var san = this.chartData.find(e => { if(e.sana == this.clentarray[i].sana) return e;});
+                        if (san) {
+                            if (this.clentarray[i].valyuta) {
+                                san.summa = parseFloat(this.clentarray[i].jamisumma) * parseFloat(this.clentarray[i].kurs);
+                            } else {
+                                san.summa = parseFloat(this.clentarray[i].jamisumma);
+                            }
                         } else {
                             if (this.clentarray[i].valyuta) {
                                 sum = parseFloat(this.clentarray[i].jamisumma) * parseFloat(this.clentarray[i].kurs);
@@ -210,8 +241,12 @@
                 this.tipv = '';
                 this.pradave = '';
                 this.chartData = [];
-                if (this.magazin && this.mijoztip == 1) {
-                    this.clentarray = this.objectauth2.tugl.filter((item) => { if(item.mijoz == items) return item; });                    
+                if (this.magazin && this.mijoztip == 1 && this.data1 && this.data2) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sana >= this.data1 && item.sana <= this.data2 && item.mijoz == items) return item; });
+                } else if (this.magazin && this.mijoztip == 1 && this.data1) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sana == this.data1 && item.mijoz == items) return item; });
+                } else if (this.magazin && this.mijoztip == 1) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.mijoz == items) return item; });
                 } else {
                     this.clentarray = [];
                 }
@@ -225,7 +260,72 @@
                             } else {
                                 san.summa = parseFloat(this.clentarray[i].jamisumma);
                             }
-                            console.log(san)
+                        } else {
+                            if (this.clentarray[i].valyuta) {
+                                sum = parseFloat(this.clentarray[i].jamisumma) * parseFloat(this.clentarray[i].kurs);
+                            } else {
+                                sum = parseFloat(this.clentarray[i].jamisumma);
+                            }
+                            this.chartData.push({'sana': this.clentarray[i].sana, 'summa': sum });
+                        }
+                    }
+                } else {
+                    this.chartData = [];
+                }
+                this.stchart();
+            },
+            tips(typ){
+                this.pradave = '';
+                this.chartData = [];
+                if (this.magazin && typ == 1 && this.data1 && this.data2) {
+                    if (this.magazin && this.mijoztip == 1 && this.mijoz) {
+                        this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sana >= this.data1 && item.sana <= this.data2 && item.mijoz == this.mijoz && item.jamisumma > 0) return item; });
+                    } else if (this.magazin && this.mijoztip == 1) {
+                        this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sana >= this.data1 && item.sana <= this.data2 && item.jamisumma > 0) return item; });
+                    } else {
+                        this.clentarray = [];
+                    }
+                } else if (this.magazin && typ == 1 && this.data1) {
+                    if (this.magazin && this.mijoztip == 1 && this.mijoz) {
+                        this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sana == this.data1 && item.mijoz == this.mijoz && item.jamisumma > 0) return item; });
+                    } else if (this.magazin && this.mijoztip == 1) {
+                        this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sana == this.data1 && item.jamisumma > 0) return item; });
+                    } else {
+                        this.clentarray = [];
+                    }
+                } else if (this.magazin && typ == 1) {
+                    if (this.magazin && this.mijoztip == 1 && this.mijoz) {
+                        this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.mijoz == this.mijoz && item.jamisumma > 0) return item; });
+                    } else if (this.magazin && this.mijoztip == 1) {
+                        this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.jamisumma > 0) return item; });
+                    } else {
+                        this.clentarray = [];
+                    }
+                } else {
+                    if (this.magazin && this.mijoztip == 1 && this.mijoz && this.data1 && this.data2) {
+                        this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.mijoz == this.mijoz && item.sana >= this.data1 && item.sana <= this.data2 && item.karz > 0) return item; });
+                    } else if (this.magazin && this.mijoztip == 1 && this.mijoz && this.data1) {
+                        this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.mijoz == this.mijoz && item.sana == this.data1 && item.karz > 0) return item; });
+                    } else if (this.magazin && this.mijoztip == 1 && this.data1 && this.data2) {
+                        this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sana >= this.data1 && item.sana <= this.data2  && item.karz > 0) return item; });
+                    } else if (this.magazin && this.mijoztip == 1 && this.data1) {
+                        this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sana == this.data1 && item.karz > 0) return item; });
+                    } else if (this.magazin && this.mijoztip == 1) {
+                        this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.karz > 0) return item; });
+                    } else {
+                        this.clentarray = [];
+                    }
+                }
+                if (this.clentarray.length > 0) {
+                    for (let i = 0; i < this.clentarray.length; i++) {
+                        var sum = '';
+                        var san = this.chartData.find(e => { if(e.sana == this.clentarray[i].sana) return e;});
+                        if (san) {
+                            if (this.clentarray[i].valyuta) {
+                                san.summa = parseFloat(this.clentarray[i].jamisumma) * parseFloat(this.clentarray[i].kurs);
+                            } else {
+                                san.summa = parseFloat(this.clentarray[i].jamisumma);
+                            }
                         } else {
                             if (this.clentarray[i].valyuta) {
                                 sum = parseFloat(this.clentarray[i].jamisumma) * parseFloat(this.clentarray[i].kurs);
@@ -242,22 +342,46 @@
             },
             prodaverts(items){
                 this.chartData = [];
-                if (this.mijoztip == 1 && this.mijoz && this.tipv) {
-                    if (this.tipv == 1) {
-                        this.clentarray = this.objectauth2.tugl.filter((item) => { if(item.sotivchi == items && item.mijoz == this.mijoz && item.jamisumma > 0) return item; });
-                    } else {
-                        this.clentarray = this.objectauth2.tugl.filter((item) => { if(item.sotivchi == items && item.mijoz == this.mijoz && item.karz > 0) return item; });
-                    }
-                } else if (this.mijoztip == 1 && this.mijoz) {
-                    this.clentarray = this.objectauth2.tugl.filter((item) => { if(item.sotivchi == items && item.mijoz == this.mijoz) return item; });
-                } else if (this.mijoztip == 1) {
-                    this.clentarray = this.objectauth2.tugl.filter((item) => { if(item.sotivchi == items && item.mijozId > 0) return item; });
-                } else if (this.mijoztip == 2 && this.mijoz) {
-                    this.clentarray = [];
-                } else if (this.mijoztip == 2) {
-                    this.clentarray = this.objectauth2.tugl.filter((item) => { if(item.sotivchi == items && item.mijozId == 0) return item; });
+                if (this.magazin && this.mijoztip == 1 && this.mijoz && this.tipv == 1 && this.data1 && this.data2) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items && item.mijoz == this.mijoz && item.sana >= this.data1 && item.sana <= this.data2 && item.jamisumma > 0) return item; });
+                } else if (this.magazin && this.mijoztip == 1 && this.mijoz && this.tipv == 1 && this.data1) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items && item.mijoz == this.mijoz && item.sana == this.data1 && item.jamisumma > 0) return item; });            
+                } else if (this.magazin && this.mijoztip == 1 && this.mijoz && this.tipv == 1) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items && item.mijoz == this.mijoz && item.jamisumma > 0) return item; });            
+                } else if (this.magazin && this.mijoztip == 1 && this.mijoz && this.tipv == 2 && this.data1 && this.data2) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items && item.mijoz == this.mijoz && item.sana >= this.data1 && item.sana <= this.data2 && item.karz > 0) return item; });            
+                } else if (this.magazin && this.mijoztip == 1 && this.mijoz && this.tipv == 2 && this.data1) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items && item.mijoz == this.mijoz && item.sana == this.data1 && item.karz > 0) return item; });            
+                } else if (this.magazin && this.mijoztip == 1 && this.mijoz && this.tipv == 2) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items && item.mijoz == this.mijoz && item.karz > 0) return item; });            
+                } else if (this.magazin && this.mijoztip == 1 && this.tipv == 2) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items && item.karz > 0) return item; });               
+                } else if (this.magazin && this.mijoztip == 1 && this.mijoz && this.data1 && this.data2) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items && item.mijoz == this.mijoz && item.sana >= this.data1 && item.sana <= this.data2) return item; });            
+                } else if (this.magazin && this.mijoztip == 1 && this.mijoz && this.data1) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items && item.mijoz == this.mijoz && item.sana == this.data1) return item; });            
+                } else if (this.magazin && this.mijoztip == 1 && this.mijoz) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items && item.mijoz == this.mijoz) return item; });            
+                } else if (this.magazin && this.mijoztip == 1 && this.data1 && this.data2) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items && item.mijozId > 0 && item.sana >= this.data1 && item.sana <= this.data2) return item; });            
+                } else if (this.magazin && this.mijoztip == 1 && this.data1) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items && item.mijozId > 0 && item.sana == this.data1) return item; });            
+                } else if (this.magazin && this.mijoztip == 1) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items && item.mijozId > 0) return item; });            
+                } else if (this.magazin && this.mijoztip == 2 && this.data1 && this.data2) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items && item.mijozId == 0 && item.sana >= this.data1 && item.sana <= this.data2) return item; });            
+                } else if (this.magazin && this.mijoztip == 2 && this.data1) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items && item.mijozId == 0 && item.sana == this.data1) return item; });            
+                } else if (this.magazin && this.mijoztip == 2) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items && item.mijozId == 0) return item; });            
+                } else if (this.magazin && this.data1 && this.data2) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items && item.sana >= this.data1 && item.sana <= this.data2) return item; });            
+                } else if (this.magazin && this.data1) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items && item.sana == this.data1) return item; });            
+                } else if (this.magazin) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sotivchi == items) return item; });
                 } else {
-                    this.clentarray = this.objectauth2.tugl.filter((item) => { if(item.sotivchi == items) return item; });
+                    this.clentarray = [];
                 }
 
                 if (this.clentarray.length > 0) {
@@ -270,7 +394,6 @@
                             } else {
                                 san.summa = parseFloat(this.clentarray[i].jamisumma);
                             }
-                            console.log(san)
                         } else {
                             if (this.clentarray[i].valyuta) {
                                 sum = parseFloat(this.clentarray[i].jamisumma) * parseFloat(this.clentarray[i].kurs);
@@ -285,19 +408,82 @@
                 }
                 this.stchart();
             },
-            data1ch(){
-                if (this.magazin) {
-                    this.clentarray = this.objectauth2.tugl.filter((item) => { if(items.magazinId == this.magazin && item.sana == this.data1) return item; });
+            dolgisum(){
+                this.mijoz = '';
+                this.tipv = '';
+                this.mijoztip = '';
+                this.pradave = '';
+                if (this.magazin && this.data1 && this.data2) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sana >= this.data1 && item.sana <= this.data2 && item.karz > 0) return item; });  
+                } else if (this.magazin && this.data1) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.sana == this.data1 && item.karz > 0) return item; });  
+                } else if (this.magazin) {
+                    this.clentarray = this.Itmmag.savdos.filter((item) => { if(item.magazinId == this.magazin && item.karz > 0) return item; });  
                 } else {
                     this.clentarray = [];
                 }
+
+                if (this.clentarray.length > 0) {
+                    for (let i = 0; i < this.clentarray.length; i++) {
+                        var sum = '';
+                        var san = this.chartData.find(e => { if(e.sana == this.clentarray[i].sana) return e;});
+                        if (san) {
+                            if (this.clentarray[i].valyuta) {
+                                san.summa = parseFloat(this.clentarray[i].jamisumma) * parseFloat(this.clentarray[i].kurs);
+                            } else {
+                                san.summa = parseFloat(this.clentarray[i].jamisumma);
+                            }
+                        } else {
+                            if (this.clentarray[i].valyuta) {
+                                sum = parseFloat(this.clentarray[i].jamisumma) * parseFloat(this.clentarray[i].kurs);
+                            } else {
+                                sum = parseFloat(this.clentarray[i].jamisumma);
+                            }
+                            this.chartData.push({'sana': this.clentarray[i].sana, 'summa': sum });
+                        }
+                    }
+                } else {
+                    this.chartData = [];
+                }
                 this.stchart();
             },
-            data1ch2(){
-                if (this.magazin) {
-                    this.clentarray = this.objectauth2.tugl.filter((item) => { if(items.magazinId == this.magazin && item.sana == this.data1 && item.sana <= this.data2) return item; });
+            rasxodsum(){
+                this.mijoz = '';
+                this.tipv = '';
+                this.mijoztip = '';
+                this.pradave = '';
+                this.chartData = [];
+                this.clentarray = [];
+                if (this.magazin && this.data1 && this.data2) {
+                    this.clentarray = this.Itmmag.rasxd2.filter((item) => { if(item.magazinId == this.magazin && item.sana >= this.data1 && item.sana <= this.data2) return item; });  
+                } else if (this.magazin && this.data1) {
+                    this.clentarray = this.Itmmag.rasxd2.filter((item) => { if(item.magazinId == this.magazin && item.sana == this.data1) return item; });  
+                } else if (this.magazin) {
+                    this.clentarray = this.Itmmag.rasxd2.filter((item) => { if(item.magazinId == this.magazin) return item; });  
                 } else {
                     this.clentarray = [];
+                }
+                if (this.clentarray.length > 0) {
+                    for (let i = 0; i < this.clentarray.length; i++) {
+                        var sum = '';
+                        var san = this.chartData.find(e => { if(e.sana == this.clentarray[i].sana) return e;});
+                        if (san) {
+                            if (this.clentarray[i].valyuta) {
+                                san.summa = parseFloat(this.clentarray[i].summa) * parseFloat(this.clentarray[i].kurs);
+                            } else {
+                                san.summa = parseFloat(this.clentarray[i].summa);
+                            }
+                        } else {
+                            if (this.clentarray[i].valyuta) {
+                                sum = parseFloat(this.clentarray[i].summa) * parseFloat(this.clentarray[i].kurs);
+                            } else {
+                                sum = parseFloat(this.clentarray[i].summa);
+                            }
+                            this.chartData.push({'sana': this.clentarray[i].sana, 'summa': sum });
+                        }
+                    }
+                } else {
+                    this.chartData = [];
                 }
                 this.stchart();
             },
@@ -388,16 +574,10 @@
             </select>
         </div>
         <div class="col-2 mt-3">
-            <button class="btn btn-danger btn-sm" v-on:click="" style="width: 100%;">Долги</button>
+            <button class="btn btn-danger btn-sm" v-on:click="dolgisum" style="width: 100%;">Долги</button>
         </div>
         <div class="col-2 mt-3">
-            <button class="btn btn-danger btn-sm" v-on:click="" style="width: 100%;">Расход</button>
-        </div>
-        <div class="col-2 mt-3">
-            <button class="btn btn-success btn-sm" v-on:click="" style="width: 100%;">В2В</button>
-        </div>
-        <div class="col-2 mt-3">
-            <button class="btn btn-success btn-sm" v-on:click="" style="width: 100%;">В2С</button>
+            <button class="btn btn-danger btn-sm" v-on:click="rasxodsum" style="width: 100%;">Расход</button>
         </div>
         <div class="col-2 mt-3">
             <button class="btn btn-warning btn-sm" v-on:click="ochistit" style="width: 100%;">Очистит</button>
