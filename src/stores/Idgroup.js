@@ -151,7 +151,6 @@ const idgroup = {
                                 }
                             } else {
                                 localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'method_name': '', 'action': ''}));
-                                // window.location.href="/";
                                 window.location.href="/";
                             }
                         } else {
