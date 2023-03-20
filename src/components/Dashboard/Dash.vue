@@ -545,7 +545,7 @@
                                 <div class="dropdown-header">
                                     <i class="i-Lock-User mr-1"></i> {{ authtenticat.login }}
                                 </div>
-                                <RouterLink v-if="ty == 'Продавец'" class="dropdown-item" to="/tel">Версия Телефон </RouterLink>
+                                <RouterLink class="dropdown-item" to="/tel">Версия Телефон </RouterLink>
                                 <RouterLink v-if="authtenticat.status == 'brend'" class="dropdown-item" to="/setting">Профил Настройки </RouterLink>
                                 <a class="dropdown-item" v-on:click="Logaut_user">Выход</a>
                             </div>

@@ -529,19 +529,19 @@
           data: JSON.parse(localStorage.getItem('sotuv')),
           fileName: "Export",
           columns: [
-              {field: 'id'},
-              {field: 'name'},
-              {field: 'shtrix'},
-              {field: 'olinish'},
-              {field: 'soni'},
-              {field: 'soni2'},
-              {field: 'chegirma'},
-              {field: 'sotilish'},
-              {field: 'sotilish_prise'},
-              {field: 'skidka'},
-              {field: 'jami'},
-              {field: 'summa'},
-              {field: 'valyuta'}
+            {field: 'id'},
+            {field: 'name'},
+            {field: 'shtrix'},
+            {field: 'olinish'},
+            {field: 'soni'},
+            {field: 'soni2'},
+            {field: 'chegirma'},
+            {field: 'sotilish'},
+            {field: 'sotilish_prise'},
+            {field: 'skidka'},
+            {field: 'jami'},
+            {field: 'summa'},
+            {field: 'valyuta'}
             ]
           });
       },

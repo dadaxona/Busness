@@ -45,6 +45,8 @@
             clentkarz: '',
             checke: '',
             statustyp: '',
+            ty: '',
+            kurs: '',
             showModalEditor: false,
             ModalOplateTel: false,
             showModalkament: false
@@ -66,7 +68,8 @@
           Localstor(){
             this.login = auth.login,
             this.token = auth.token,
-            this.statustyp = auth.action
+            this.statustyp = auth.action,
+            this.ty = auth.ty
           },
           Sotuvga_Olish(obj){
             var sum = '';
@@ -420,6 +423,7 @@
             this.showModalKarzina = false;
           },
           checkedTyp(foo){
+            console.log(foo)
             localStorage.setItem('Checked',  JSON.stringify({'chesked': foo}));          
             this.checkedTyp3();
           },     
@@ -433,6 +437,36 @@
               this.checke = che2.chesked;
             }
           },
+
+          toogler(u){
+            var id = '';
+            var name = '';
+            var summa = '';
+            if (u === 99999) {
+              id = 99999;
+              name = '';
+              summa = '1';
+            } else {
+              const data = this.valyudata.find(e => { return e.id == u });
+              id = data.id;
+              name = data.name;
+              summa = data.summa;
+            }
+            this.Valyuta_Kurs({
+              'kursid': id,
+              'kurs1': summa,
+              'kursname': name,
+            });
+          },
+          toogler2(){
+            var kur =JSON.parse(localStorage.getItem('Kurs'));
+            if (kur) {
+              this.kurs = JSON.parse(localStorage.getItem('Kurs')).uid;
+            } else {
+              localStorage.setItem('Kurs',  JSON.stringify({'u': '1', 'uid': '99999',  'un': ''}));
+              this.kurs = 99999;
+            }
+          },   
         },
         watch: {
           telsearch(row){
@@ -453,7 +487,8 @@
         computed: {
           ...mapGetters({
             Item2: 'Item2',
-            MijozTel: 'MijozTel'
+            MijozTel: 'MijozTel',
+            valyudata: 'valyudata'
           }),
         },
         mounted() {
@@ -461,6 +496,8 @@
           this.Localstor();
           this.getTelversion();
           this.driverpMount();
+          this.toogler2();
+          this.checkedTyp3();
         }
       }
 </script>
@@ -485,6 +522,42 @@
                     </div>
                   </div>
                 </div>
+                <!-- <div class="col-12" v-if="checke == 1">
+                  <div class="row mt-3">
+                    <div class="col-6">
+                      <input class="form-check-input mx-1" type="checkbox" checked>
+                    </div>
+                    <div class="col-8 text-right">
+                      Стандартная
+                    </div>
+                  </div>
+                  <div class="row mt-2 border-bottom">
+                    <div class="col-6">
+                      <input class="form-check-input mx-1" type="checkbox" v-on:click="checkedTyp(0)">
+                    </div>
+                    <div class="col-8 text-right">
+                      Низкая
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12" v-if="checke == 0">
+                  <div class="row mt-3">
+                    <div class="col-6">
+                      <input class="form-check-input mx-1" type="checkbox" v-on:click="checkedTyp(1)">
+                    </div>
+                    <div class="col-8 text-right">
+                      Стандартная
+                    </div>
+                  </div>
+                  <div class="row mt-2 border-bottom">
+                    <div class="col-6">
+                      <input class="form-check-input mx-1" type="checkbox" checked>
+                    </div>
+                    <div class="col-8 text-right">
+                      Низкая
+                    </div>
+                  </div>
+                </div> -->
               </div>
               <div class="table-responsive">
                 <div class="scroltab3">
@@ -517,8 +590,11 @@
   <button type="button" class="close mt-2 mr-2" aria-label="Close">
     <span aria-hidden="true" @click="showModalKarzina = false">&times;</span>
   </button>
-  <button class="btn btn-primary btn-sm m-1" v-on:click="oplata_telv">
+  <button v-if="ty == 'Продавец'" class="btn btn-primary btn-sm m-1" v-on:click="oplata_telv">
     Оплата
+  </button>
+  <button v-else class="btn btn-dark btn-sm m-1">
+      Оплата
   </button>
   <button class="btn btn-success btn-sm m-1 mx-2" v-on:click="JonatishPush">
     Отправлять
@@ -578,7 +654,8 @@
                 </div>
                 <div class="col-12 form-group mb-3">
                   <label for="firstName1">Сумма</label>
-                  <input class="form-control" type="text" v-on:keyup="summaval(summa)" v-model="summa">
+                  <input v-if="ty == 'Продавец'" class="form-control" type="text" v-on:keyup="summaval(summa)" v-model="summa">
+                  <input v-else class="form-control" type="text" v-model="summa" disabled>
                 </div>
                 <div class="col-12 form-group mb-3">
                   <label for="firstName1">Итого</label>
