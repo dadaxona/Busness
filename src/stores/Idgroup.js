@@ -1,8 +1,8 @@
 import axios from 'axios';
 // const http_url = 'https://njs.5155.uz/api/';
 // const http_url = 'https://uz.idsoft.uz/api/';
-// const http_url = 'https://njs.5858.uz/api/';
-const http_url = 'http://localhost:1122/api/';
+const http_url = 'https://njs.5858.uz/api/';
+// const http_url = 'http://localhost:1122/api/';
 // const http_url = 'http://beckendm/api/';
 
 var dateObj = new Date();
@@ -213,7 +213,11 @@ const idgroup = {
             var auth = JSON.parse(localStorage.getItem('auth'));
             if (auth) {
                 if (auth.auth === true) {
-                    window.location.href="/treding";
+                    if (auth.ty == 'Простой') {
+                        window.location.href="/zadacha";
+                    } else {                            
+                        window.location.href="/treding";
+                    }
                 } else {}                    
             } else {}
         },

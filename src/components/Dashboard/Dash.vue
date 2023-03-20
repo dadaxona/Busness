@@ -523,14 +523,14 @@
                     </div>
                     <div v-else></div>
                     <i class="i-Full-Screen header-icon d-none d-sm-inline-block" data-fullscreen=""></i>
-                    <div class="dropdown" v-on:click="modalsokna(true)">
+                    <div v-if="authtenticat.status == 'brend' || ty == 'Продавец'" class="dropdown" v-on:click="modalsokna(true)">
                         <div v-if="objectauth2.srok.length" class="badge-top-container">
                             <span class="badge badge-primary alre">{{ objectauth2.srok.length }}</span>
                             <i class="i-Bell text-muted header-icon"></i>
                         </div>
                         <div v-else></div>
                     </div>
-                    <div class="dropdown" v-on:click="modalsoknadb(true)">
+                    <div v-if="authtenticat.status == 'brend' || ty == 'Продавец'" class="dropdown" v-on:click="modalsoknadb(true)">
                         <div v-if="objectauth2.jonatma.length" class="badge-top-container alre22 cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-database-down ml-3" viewBox="0 0 16 16">
                                 <path d="M12.5 9a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Zm.354 5.854 1.5-1.5a.5.5 0 0 0-.708-.708l-.646.647V10.5a.5.5 0 0 0-1 0v2.793l-.646-.647a.5.5 0 0 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0Z"/>
