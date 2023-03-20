@@ -13,6 +13,7 @@ import User from '../components/Pages/User.vue'
 import Yetkazuvchi from '../components/Pages/Yetkazuvchi.vue'
 import Setting from '../components/Pages/Setting.vue'
 import Valyuta from '../components/Pages/Valyuta.vue'
+import Zadacha from '../components/Pages/Zadacha.vue'
 import Tel from '../components/Pages/Tel.vue'
 import Ensydash from '../components/Ensy/Ensydash.vue'
 import Torgosoft from '../components/Torgo/Torgosoft.vue'
@@ -89,6 +90,11 @@ const router = createRouter({
           path: '/foyda',
           name: 'foyda',
           component: Foyda
+        },
+        {
+          path: '/zadacha',
+          name: 'zadacha',
+          component: Zadacha
         },
       ],
     },

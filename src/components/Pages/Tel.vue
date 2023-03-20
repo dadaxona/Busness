@@ -491,14 +491,14 @@
                   <table class="tabl scroltab">
                     <thead>
                       <tr>
-                          <th>Товар</th>
-                          <th>Шт</th>
-                          <th>Низкая</th>
-                          <th>Стандартная</th>
+                        <th>Товар</th>
+                        <th>Шт</th>
+                        <th>Низкая</th>
+                        <th>Стандартная</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="item in Item2" :key="item.id"  v-on:click="Sotuvga_Olish(item)" class="tir">
+                      <tr v-for="item in Item2" :key="item.id" v-on:click="Sotuvga_Olish(item)" class="tir">
                         <td>{{ item.name }}</td>
                         <td>{{ item.soni }}</td>
                         <td>{{ item.sotilish }}</td>

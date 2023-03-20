@@ -27,6 +27,7 @@
               ktel: '',
               klogin: '',
               kpassword: '',
+              ktip: '',
 
               pagas: {
                 id: '',
@@ -163,6 +164,7 @@
             this.ktel = item.tel,
             this.klogin = item.login,
             this.kpassword = item.password,
+            this.ktip = item.typ,
             this.oknakass = true
           },
 
@@ -179,6 +181,7 @@
               'tel': this.ktel,
               'login2': this.klogin,
               'password': this.kpassword,
+              'typ': this.ktip,
               'token2': this.rend,
               'status2': 'ish',
               'login': this.login,
@@ -193,6 +196,7 @@
             this.ktel = '',
             this.klogin = '',
             this.kpassword = '',
+            this.ktip = '',
             this.oknakass = false
           },
 
@@ -576,6 +580,7 @@
                           <th>Тел</th>
                           <th>Логин</th>
                           <th>Парол</th>
+                          <th>Тип</th>
                           <th>Магазин</th>
                           <th>Action</th>
                       </tr>
@@ -583,19 +588,22 @@
                   <tbody>
                   <tr class="tir" v-for="item in ishchila" :key="item.id">
                       <td>
-                          {{ item.name }}
+                        {{ item.name }}
                       </td>
                       <td>
-                          {{ item.fam }}
+                        {{ item.fam }}
                       </td>
                       <td>
-                          {{ item.tel }}
+                        {{ item.tel }}
                       </td>
                       <td>
-                          {{ item.login }}
+                        {{ item.login }}
                       </td>
                       <td>
-                          {{ item.password }}
+                        {{ item.password }}
+                      </td>
+                      <td>
+                        {{ item.typ }}
                       </td>
                       <td>
                         {{ item.magazin }}
@@ -687,7 +695,15 @@
       </svg>
       <input type="text" name="" class="text-right form-control" v-model="kpassword">
   </div>
-  <label for="" class="mx-3">Парол</label>
+  <label for="" class="mx-3">Тип</label>
+  <div class="col-12">
+       <select class="form-control text-center" v-model="ktip">
+          <option value="">--Тип Выберите--</option>
+          <option value="Продавец">Продавец</option>
+          <option value="Простой">Простой</option>
+      </select>
+  </div>
+  <label for="" class="mx-3">Магазин</label>
   <div class="col-12">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-database-fill-add position-fixed mt-2 ml-2" viewBox="0 0 16 16">
         <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0ZM8 1c-1.573 0-3.022.289-4.096.777C2.875 2.245 2 2.993 2 4s.875 1.755 1.904 2.223C4.978 6.711 6.427 7 8 7s3.022-.289 4.096-.777C13.125 5.755 14 5.007 14 4s-.875-1.755-1.904-2.223C11.022 1.289 9.573 1 8 1Z"/>

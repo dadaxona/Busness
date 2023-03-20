@@ -55,6 +55,7 @@
                 filclent2: [],
                 mijozs: '',
                 mijozs2: '',
+                ty: '',
                 ishname: '',
                 date:  year + "-" + monh + "-" + day,
                 vaz: {
@@ -102,6 +103,7 @@
                 this.login = auth.login,
                 this.token = auth.token,
                 this.statustyp = auth.action
+                this.ty = auth.ty
             },
             modalsokna(typ){
                 this.okna = typ;
@@ -543,7 +545,7 @@
                                 <div class="dropdown-header">
                                     <i class="i-Lock-User mr-1"></i> {{ authtenticat.login }}
                                 </div>
-                                <RouterLink class="dropdown-item" to="/tel">Версия Телефон </RouterLink>
+                                <RouterLink v-if="ty == 'Продавец'" class="dropdown-item" to="/tel">Версия Телефон </RouterLink>
                                 <RouterLink v-if="authtenticat.status == 'brend'" class="dropdown-item" to="/setting">Профил Настройки </RouterLink>
                                 <a class="dropdown-item" v-on:click="Logaut_user">Выход</a>
                             </div>
@@ -632,9 +634,16 @@
                                         </div>
                                     </div>
                                 </li>
+                                <li>
+                                    <div>
+                                        <div>
+                                            <label class="toggle" for="drop-2">Задача</label><RouterLink to="zadacha"><i class="nav-icon mr-2 i-File-Horizontal-Text"></i> Задача</RouterLink>
+                                        </div>
+                                    </div>
+                                </li>
                                 <!--end-doc  -->
                             </ul>
-                            <ul v-else class="menu float-left">
+                            <ul v-if="ty == 'Продавец'" class="menu float-left">
                                 <!-- <li>
                                     <div>
                                         <div>
@@ -706,6 +715,15 @@
                                 <li v-else>
 
                                 </li>
+                                <li>
+                                    <div>
+                                        <div>
+                                            <label class="toggle" for="drop-2">Задача</label><RouterLink to="zadacha"><i class="nav-icon mr-2 i-File-Horizontal-Text"></i> Задача</RouterLink>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul v-else>
                             </ul>
                         </div>
                     </div>
@@ -715,7 +733,7 @@
             <div class="main-content-wrap d-flex flex-column">
                 <!-- ============ Body content start ============= -->
                 <div class="main-content">
-                    <div class="row">
+                    <div v-if="authtenticat.status == 'brend' || ty == 'Продавец'" class="row">
                         <!-- ICON BG-->
                         <div class="col-lg-3 col-md-6 col-sm-6">
                             <RouterLink to="user">

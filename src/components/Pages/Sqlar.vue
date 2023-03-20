@@ -495,7 +495,7 @@
                             <td>
                               <select class="keyinp2" v-on:change="updatechangeVal(item)" v-model="item.valyuta">
                                 <option value="">----</option>
-                                <option  v-for="itema in valyudata" :value="itema.name">{{itema.name}}</option>
+                                <option v-for="itema in valyudata" :value="itema.name">{{itema.name}}</option>
                               </select>
                             </td>
                             <td>                              

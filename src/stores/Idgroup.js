@@ -121,7 +121,8 @@ const idgroup = {
                                             'method_id': auth.method_id,
                                             'method_name': auth.method_name,
                                             'method_chat': auth.method_chat,
-                                            'action': data.data.user.status
+                                            'action': data.data.user.status,
+                                            'ty': 'brend'
                                         }));  
                                     } else {
                                         localStorage.setItem('auth', JSON.stringify({
@@ -130,7 +131,8 @@ const idgroup = {
                                             'login': data.data.user.login, 
                                             'biznesty': data.data.user.biznes, 
                                             'token': data.data.user.token,
-                                            'action': data.data.user.status
+                                            'action': data.data.user.status,
+                                            'ty': 'brend'
                                         }));                                            
                                     }
                                 } else {
@@ -143,8 +145,9 @@ const idgroup = {
                                         'method_id': data.data.user.magazinId,
                                         'method_name': data.data.user.magazin,
                                         'method_chat': data.data.user.telegram,
-                                        'action': data.data.user.status
-                                    }));  
+                                        'action': data.data.user.status,
+                                        'ty': data.data.user.typ
+                                    }));
                                 }
                             } else {
                                 localStorage.setItem('auth', JSON.stringify({"auth": false, "username": '', "login": '', "token": '', 'method_id': '', 'method_name': '', 'action': ''}));
@@ -178,7 +181,8 @@ const idgroup = {
                             "login": data.data.data.login, 
                             "biznesty": data.data.data.biznes, 
                             "token": data.data.data.token,
-                            'action': data.data.data.status
+                            'action': data.data.data.status,
+                            'ty': 'brend'
                         }));
                         window.location.href="/treding";
                     } else {
@@ -191,9 +195,14 @@ const idgroup = {
                             'method_id': data.data.data.magazinId,
                             'method_name': data.data.data.magazin,
                             'method_chat': data.data.data.telegram,
-                            'action': data.data.data.status
+                            'action': data.data.data.status,
+                            'ty': data.data.data.typ
                         }));
-                        window.location.href="/treding";
+                        if (data.data.data.typ == 'Простой') {
+                            window.location.href="/zadacha";
+                        } else {                            
+                            window.location.href="/treding";
+                        }
                     }
                 } else {
                     alert(data.data.msg)

@@ -389,6 +389,9 @@
     width: 150%;
     overflow-y: scroll;
 }
+.scroltel2{
+    overflow-y: scroll;
+}
 .oplatit{
     position: absolute;
     top: 0;
@@ -732,3 +735,10 @@
 .tex{
     margin-left: 500px;
 }
+
+@media only screen and (max-width: 500px) {
+    .scroltel2{
+        width: 200%;
+        overflow-y: scroll;
+    }
+  }
