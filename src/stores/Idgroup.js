@@ -1,8 +1,8 @@
 import axios from 'axios';
 // const http_url = 'https://njs.5155.uz/api/';
 // const http_url = 'https://uz.idsoft.uz/api/';
-const http_url = 'https://njs.5858.uz/api/';
-// const http_url = 'http://localhost:1122/api/';
+// const http_url = 'https://njs.5858.uz/api/';
+const http_url = 'http://localhost:1122/api/';
 // const http_url = 'http://beckendm/api/';
 
 var dateObj = new Date();
@@ -69,8 +69,6 @@ const idgroup = {
         date: year + "-" + monh + "-" + day,
         savdoobj: [],
         ishchila: [],
-        Item2: [],
-        Item2search: [],
         dbitmsm: [],
         mbal: [],
         oyloks: {
@@ -692,7 +690,7 @@ const idgroup = {
             localStorage.setItem('sotuv', JSON.stringify([]));
             const local = JSON.parse(localStorage.getItem('sotuv'));
             for (let i = 0; i < state.objectauth2.karzina.length; i++) {
-                if (state.objectauth2.karzina[i].zaqazId == request.id) {
+                if (state.objectauth2.karzina[i].zaqazId == request.item.id) {
                     var sq = state.Itemsfiltr.find(e => { if (e.id === parseInt(state.objectauth2.karzina[i].tovar)) return e; });
                     var cheg = '';
                     var son = '';
@@ -705,6 +703,11 @@ const idgroup = {
                         son = sq.soni;
                     } else {
                         son = state.objectauth2.karzina[i].soni;
+                    }
+                    if (request.item.valyuta) {
+                        localStorage.setItem('Kurs', JSON.stringify({'u': request.item.kurs, 'uid': request.item.valyutaId, 'un': request.item.valyuta}));
+                    } else {
+                        localStorage.setItem('Kurs', JSON.stringify({'u': '1', 'uid': '99999', 'un': ''}));
                     }
                     var sql = {
                         "id": sq.id,
@@ -992,20 +995,6 @@ const idgroup = {
                 url: http_url + request.url,
                 data: request.item,
             });
-        },
-        OriginalTelV: ({state}, request) => {
-            if (request.search) {
-                state.Item2 = state.Item2search.filter((item) => item.name.toLowerCase().includes(request.search));
-            } else {
-                axios({
-                    method: request.method,
-                    url: http_url + request.url,
-                    data: request,
-                }).then(data => {
-                    state.Item2search = data.data;
-                    state.Item2 = data.data;
-                });                
-            }
         },
         ClentGets: ({state}, request) => {
             axios({
@@ -1523,9 +1512,6 @@ const idgroup = {
         },
         code(state){
             return state.code;
-        },
-        Item2(state){
-            return state.Item2;
         },
         MijozTel(state){
             return state.MijozTel;

@@ -60,7 +60,8 @@
             'Delete_Sotuv_Ac',
             'Sotuvga_Olish_Action',
             'ClentGets',
-            'Oplata_Start_Action'
+            'Oplata_Start_Action',
+            'Valyuta_Kurs'
           ]),
           FilterAuth(){
             this.FilterAuthAc();
@@ -72,6 +73,7 @@
             this.ty = auth.ty
           },
           Sotuvga_Olish(obj){
+            console.log(obj)
             var sum = '';
             var olsh = '';
             const kurs = JSON.parse(localStorage.getItem('Kurs'));
@@ -338,6 +340,7 @@
           },
           Pushkament(){
             if (auth.method_id) {
+              const kurs2 = JSON.parse(localStorage.getItem('Kurs'));
               this.Oplata_Start_Action({
                 'method': 'post',
                 'url2': 'karzina',
@@ -348,6 +351,9 @@
                 'magazinId': auth.method_id,
                 'magazin': auth.method_name,
                 'status': this.statustyp,
+                'vid': kurs2.uid,
+                'vname': kurs2.un,
+                'vsumma': kurs2.u,
                 'local': JSON.parse(localStorage.getItem('sotuv'))
               });
               this.Kamentariya = '';
@@ -385,7 +391,7 @@
           },
           OplataStartPush(){
             const jami1 = JSON.parse(localStorage.getItem('Jami'));
-            const kurs2 = JSON.parse(localStorage.getItem('Kurs'));  
+            const kurs2 = JSON.parse(localStorage.getItem('Kurs'));
             const auth2 = JSON.parse(localStorage.getItem('auth'));
             this.Oplata_Start_Action({
               'method': 'post',
@@ -422,9 +428,13 @@
             this.ModalOplateTel = false;
             this.showModalKarzina = false;
           },
-          checkedTyp(foo){
-            console.log(foo)
-            localStorage.setItem('Checked',  JSON.stringify({'chesked': foo}));          
+          checkedTyptel(){
+            var che = JSON.parse(localStorage.getItem('Checked'));
+            if (che.chesked == 1) {
+              localStorage.setItem('Checked',  JSON.stringify({'chesked': 2}));              
+            } else {
+              localStorage.setItem('Checked',  JSON.stringify({'chesked': 1}));
+            }
             this.checkedTyp3();
           },     
           checkedTyp3(){
@@ -447,7 +457,7 @@
               name = '';
               summa = '1';
             } else {
-              const data = this.valyudata.find(e => { return e.id == u });
+              const data = this.Itemval.find(e => { return e.id == u });
               id = data.id;
               name = data.name;
               summa = data.summa;
@@ -488,7 +498,7 @@
           ...mapGetters({
             Item2: 'Item2',
             MijozTel: 'MijozTel',
-            valyudata: 'valyudata'
+            Itemval: 'Itemval'
           }),
         },
         mounted() {
@@ -522,60 +532,46 @@
                     </div>
                   </div>
                 </div>
-                <!-- <div class="col-12" v-if="checke == 1">
-                  <div class="row mt-3">
-                    <div class="col-6">
-                      <input class="form-check-input mx-1" type="checkbox" checked>
-                    </div>
-                    <div class="col-8 text-right">
-                      Стандартная
-                    </div>
-                  </div>
-                  <div class="row mt-2 border-bottom">
-                    <div class="col-6">
-                      <input class="form-check-input mx-1" type="checkbox" v-on:click="checkedTyp(0)">
-                    </div>
-                    <div class="col-8 text-right">
-                      Низкая
-                    </div>
-                  </div>
+                <div class="form-check form-switch mt-1">
+                  <input v-if="checke == 1" class="form-check-input mx-1" type="checkbox" role="switch" v-on:click="checkedTyptel">
+                  <input v-if="checke == 2" class="form-check-input mx-1" type="checkbox" role="switch" v-on:click="checkedTyptel" checked>
                 </div>
-                <div class="col-12" v-if="checke == 0">
-                  <div class="row mt-3">
-                    <div class="col-6">
-                      <input class="form-check-input mx-1" type="checkbox" v-on:click="checkedTyp(1)">
-                    </div>
-                    <div class="col-8 text-right">
-                      Стандартная
-                    </div>
-                  </div>
-                  <div class="row mt-2 border-bottom">
-                    <div class="col-6">
-                      <input class="form-check-input mx-1" type="checkbox" checked>
-                    </div>
-                    <div class="col-8 text-right">
-                      Низкая
-                    </div>
-                  </div>
-                </div> -->
+                <div style="
+                  width: 130px;
+                  position: fixed;
+                  top: 58px;
+                  left: 55px;
+                ">
+                  <select class="text-center" v-on:change="toogler(kurs)" v-model="kurs" style="background: #f8f9fa; border: 1px solid #d1d1d1;">
+                    <option :value="99999">--Выбирать--</option>
+                    <option v-for="iteme in Itemval" :value="iteme.id">{{ iteme.name }}</option>
+                  </select>
+                </div>
               </div>
               <div class="table-responsive">
                 <div class="scroltab3">
                   <table class="tabl scroltab">
                     <thead>
                       <tr>
+                        <th>Карзина</th>
                         <th>Товар</th>
                         <th>Шт</th>
-                        <th>Низкая</th>
-                        <th>Стандартная</th>
+                        <th>Сумма</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="item in Item2" :key="item.id" v-on:click="Sotuvga_Olish(item)" class="tir">
+                      <tr v-for="item in Item2" :key="item.id" class="tirtel">
+                        <td>
+                          <button class="btn btn-primary btn-sm m-1" v-on:click="Sotuvga_Olish(item)"> 
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
+                              <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+                            </svg>
+                          </button>
+                        </td>
                         <td>{{ item.name }}</td>
                         <td>{{ item.soni }}</td>
-                        <td>{{ item.sotilish }}</td>
-                        <td>{{ item.sotilish2 }} {{ item.valyuta }}</td>
+                        <td v-if="checke == 2">{{ item.sotilish }} {{ item.valyuta }}</td>
+                        <td v-else>{{ item.sotilish2 }} {{ item.valyuta }}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -593,8 +589,8 @@
   <button v-if="ty == 'Продавец'" class="btn btn-primary btn-sm m-1" v-on:click="oplata_telv">
     Оплата
   </button>
-  <button v-else class="btn btn-dark btn-sm m-1">
-      Оплата
+  <button v-else v-on:click="showModalKarzina = false" class="btn btn-danger btn-sm m-1">
+    Назад
   </button>
   <button class="btn btn-success btn-sm m-1 mx-2" v-on:click="JonatishPush">
     Отправлять
@@ -614,7 +610,7 @@
         </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in Item3" :key="item.id" class="tir">
+          <tr v-for="(item, index) in Item3" :key="item.id" class="tirtel">
             <td>{{item.name}}</td>
             <td>{{item.soni}}</td>
             <td>{{item.sotilish}}</td>         

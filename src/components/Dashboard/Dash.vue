@@ -173,7 +173,7 @@
                 this.Zaqaz_Olish_Ac({
                     'method': 'post',
                     'url': 'zaqaz_delet',
-                    'id': item.id,
+                    'item': item,
                 });
                this.oknamodzaqaz = false;
             },
@@ -1052,6 +1052,7 @@
                             <tr>
                                 <th>Продавец</th>
                                 <th>Заказ</th>
+                                <th>Валюта</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -1067,6 +1068,9 @@
                                     </svg>
                                 </span>
                                 {{ item.name }}
+                            </td>
+                            <td>
+                                 {{ item.valyuta }}
                             </td>
                             <td>
                                 <button class="btn btn-success pt-0 pb-0" v-on:click="olish(item)">

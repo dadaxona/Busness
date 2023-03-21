@@ -1,8 +1,8 @@
 import axios from 'axios';
 // const http_url = 'https://njs.5155.uz/api/';
 // const http_url = 'https://uz.idsoft.uz/api/';
-const http_url = 'https://njs.5858.uz/api/';
-// const http_url = 'http://localhost:1122/api/';
+// const http_url = 'https://njs.5858.uz/api/';
+const http_url = 'http://localhost:1122/api/';
 // const http_url = 'http://beckendm/api/';
 
 import { Chart } from 'chart.js';
@@ -25,7 +25,10 @@ const tortsoft = {
         Zada: {
             ish: [],
             zad: []
-        }
+        },
+        Item2: [],
+        Itemval: [],
+        Item2search: [],
     },
     mutations: {
         Foyda_Act_bugun_Mut: (state, request) => {
@@ -108,7 +111,22 @@ const tortsoft = {
                     context.commit('Zadacha_Create_Mut', request);
                 // } else {}
             });
-        }
+        },
+        OriginalTelV: ({state}, request) => {
+            if (request.search) {
+                state.Item2 = state.Item2search.filter((item) => item.name.toLowerCase().includes(request.search));
+            } else {
+                axios({
+                    method: request.method,
+                    url: http_url + request.url,
+                    data: request,
+                }).then(data => {
+                    state.Item2search = data.data.data2;
+                    state.Item2 = data.data.data2;
+                    state.Itemval = data.data.data3;
+                });                
+            }
+        },
     },
     getters: {
         nbir(state){
@@ -119,6 +137,12 @@ const tortsoft = {
         },
         IshchiZad(state){
             return state.Zada;
+        },
+        Item2(state){
+            return state.Item2;
+        },
+        Itemval(state){
+            return state.Itemval;
         }
     }
 };

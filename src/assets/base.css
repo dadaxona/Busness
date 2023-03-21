@@ -79,6 +79,10 @@
 .tir :hover {
     background: #6affb5;
 }
+.tirtel{
+    border-bottom: 1px solid #e3e3e3;
+    cursor: pointer;
+}
 .tir2{
     border-top: 2px solid #a2a2a2;
     border-bottom: 2px solid #a2a2a2;
