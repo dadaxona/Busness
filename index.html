@@ -107,6 +107,7 @@
       chaq();
 
       function createpdf(myDiv){
+        const formatter = new Intl.NumberFormat();
         const local = JSON.parse(localStorage.getItem('sotuv'));
         const jami = JSON.parse(localStorage.getItem('Jami'));
         document.getElementById("snaqsana").innerHTML = day + "-" + monh + "-" + year;
@@ -117,9 +118,9 @@
             row += '<td>' + r + '</td>';
             row += '<td>' + local[i].name + '</td>';
             row += '<td>' + local[i].soni + '</td>';
-            row += '<td>' + local[i].sotilish_prise + '</td>';
-            row += '<td>' + local[i].sotilish + '</td>';
-            row += '<td>' + local[i].jami + '</td>';
+            row += '<td>' + formatter.format(local[i].sotilish_prise) + '</td>';
+            row += '<td>' + formatter.format(local[i].sotilish) + '</td>';
+            row += '<td>' + formatter.format(local[i].jami) + '</td>';
             row += '</tr>';
         }
         document.getElementById("tablitsa").innerHTML = row;
