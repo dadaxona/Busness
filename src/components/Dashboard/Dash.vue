@@ -277,7 +277,7 @@
                             'date': this.date,
                         });
                         this.formats();
-                    }, 5000);
+                    }, 10000);
                 }
             },
             formats(){
@@ -558,14 +558,14 @@
                 <div class="header-topnav">
                     <div class="container-fluid">
                         <div class="topnav rtl-ps-none" id="" data-perfect-scrollbar="" data-suppress-scroll-x="true">
-                            <ul v-if="authtenticat.status == 'brend'" class="menu float-left">
-                                <li>
+                            <ul v-if="authtenticat.status == 'brend'" class="menu float-left scroll-menu" style="w">
+                                <!-- <li>
                                     <div>
                                         <div v-on:click="intervals">
                                             <label class="toggle" for="drop-2">Главная страница</label><RouterLink to="dash"><i class="nav-icon mr-2 i-Bar-Chart"></i> Главная страница</RouterLink>
                                         </div>
                                     </div>
-                                </li>
+                                </li> -->
                                 <li>
                                     <div>
                                         <div>

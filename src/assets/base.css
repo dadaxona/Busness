@@ -5,6 +5,20 @@
     background-image: url(./photo-wide-4.jpg);
 }
 
+.scroll-menu {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  white-space: nowrap;
+  gap: 10px; /* elementlar orasida masofa */
+  padding: 10px;
+  scrollbar-width: thin; /* Firefox */
+}
+
+.scroll-menu li {
+  flex: 0 0 auto; /* elementlar kichrayib ketmasligi uchun */
+}
+
 .scroltab2{
     height: 211px;
 }

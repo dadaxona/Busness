@@ -49,7 +49,7 @@
               this.chiqishqarz = format.format(this.foyda.chiqishqarz);
               this.kirishqarz = format.format(this.foyda.kirishqarz);
               this.foyda1 = format.format(this.foyda.foyda);
-              this.sqlad = format.format(this.foyda.sqlad);              
+              this.sqlad = format.format(this.foyda.sqlad);
             }, 3000);
           },
         },
