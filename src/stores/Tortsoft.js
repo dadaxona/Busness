@@ -2,7 +2,7 @@ import axios from 'axios';
 // const http_url = 'https://njs.5155.uz/api/';
 // const http_url = 'https://uz.idsoft.uz/api/';
 // const http_url = 'https://njs.5858.uz/api/';
-const http_url = 'http://localhost:1122/api/';
+const http_url = 'http://94.230.232.179:1122/api/';
 // const http_url = 'http://beckendm/api/';
 
 import { Chart } from 'chart.js';
