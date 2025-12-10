@@ -1,6 +1,5 @@
 import axios from 'axios';
 const http_url = 'https://idgroups.uz/api/';
-
 var dateObj = new Date();
 var month = dateObj.getUTCMonth() + 1;
 var day1 = dateObj.getUTCDate();

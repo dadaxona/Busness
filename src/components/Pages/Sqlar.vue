@@ -176,6 +176,7 @@
                     'kod': rows[i][11],
                   });
                 }
+                
                 this.SqladMethodUrlPost({
                     'method': 'post',
                     'url2': 'post_update_sqlad_exsel',
@@ -431,13 +432,13 @@
                 <input type='text' id="tovarsq" class="tovarsq" v-model="tovarsqlad" />
                 <br>
                 <span class="border-bottom mx-4">
-                  Сумма: $ +{{ itogaTorgo.summa }}
+                  Сумма: $ +{{ new Intl.NumberFormat("en-En").format(itogaTorgo.summa)}}
                 </span>
                 <span class="border-bottom mx-4">
-                  Тип: {{ itogaTorgo.koli }}
+                  Тип: {{  new Intl.NumberFormat("en-En").format(itogaTorgo.koli) }}
                 </span>
                 <span class="border-bottom mx-4">
-                  Шт: {{ itogaTorgo.sht }}
+                  Шт: {{  new Intl.NumberFormat("en-En").format(itogaTorgo.sht) }}
                 </span>
                 <div class="table-responsive">
                   <div class="scroltab3">

@@ -1,6 +1,5 @@
 import axios from 'axios';
 const http_url = 'https://idgroups.uz/api/';
-
 import { Chart } from 'chart.js';
 const tortsoft = {
     state: {
